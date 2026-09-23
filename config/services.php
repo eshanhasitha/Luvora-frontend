@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'luvora' => [
+    'base_url' => env(
+        'LUVORA_API_URL',
+        'http://localhost:5000'
+    ),
+    ],
+
 ];
