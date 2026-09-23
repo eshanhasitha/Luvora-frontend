@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiTestController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,4 +49,14 @@ Route::get(
 Route::get(
     '/products/{id}',
     [ProductController::class, 'show']
+);
+
+Route::get(
+    '/cart',
+    [CartController::class, 'index']
+);
+
+Route::get(
+    '/orders',
+    [OrderController::class, 'index']
 );

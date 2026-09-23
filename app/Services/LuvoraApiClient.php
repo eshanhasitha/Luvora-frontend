@@ -59,6 +59,19 @@ class LuvoraApiClient
             );
     }
 
+    public function getWithToken(
+    string $token,
+    string $endpoint,
+    array $query = []
+    ): Response {
+        return Http::withToken($token)
+            ->acceptJson()
+            ->get(
+                $this->baseUrl . $endpoint,
+                $query
+            );
+    }
+
     public function withToken(
         string $token
     ): self {
