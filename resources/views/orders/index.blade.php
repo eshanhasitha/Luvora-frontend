@@ -1,59 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>My Orders - Luvora</title>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body class="bg-gray-100">
-
-<div class="max-w-6xl mx-auto p-8">
-
-    <h1 class="text-3xl font-bold mb-8">
-        My Orders
-    </h1>
-
-    @if (empty($orders))
-
-        <div class="bg-white p-8 rounded-xl">
-            You have no orders yet.
-        </div>
-
-    @else
-
-        <div class="space-y-4">
-
-            @foreach ($orders as $order)
-
-                <div class="bg-white rounded-xl shadow p-6">
-
-                    <p class="font-bold">
-                        Order:
-                        {{ $order['id'] ?? '' }}
-                    </p>
-
-                    <p class="mt-2">
-                        Status:
-                        {{ $order['status'] ?? 'Unknown' }}
-                    </p>
-
-                    <p class="mt-2">
-                        Total:
-                        ${{ $order['totalAmount'] ?? '0.00' }}
-                    </p>
-
-                </div>
-
-            @endforeach
-
-        </div>
-
-    @endif
-
-</div>
-
-</body>
-</html>
+<html lang="en"><head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Order History | Luvora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script>
+</head><body class="min-h-screen bg-[#f7f9fb] font-['Plus_Jakarta_Sans'] text-[#191c1e]">
+<header class="border-b border-slate-200 bg-white"><div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5"><a href="{{ route('home') }}" class="flex items-center gap-3"><img src="{{ asset('images/logo.png') }}" alt="Luvora" class="h-10 w-auto"></a><nav class="flex items-center gap-4 text-sm"><a href="{{ route('shop.index') }}" class="text-slate-600 hover:text-blue-700">Shop</a><a href="{{ route('cart.index') }}" class="text-slate-600 hover:text-blue-700">Bag</a><a href="{{ route('orders.track') }}" class="font-semibold text-blue-700">Track order</a></nav></div></header>
+<main class="mx-auto max-w-6xl px-5 py-10 sm:py-14"><div class="mb-8 text-sm text-slate-500"><a href="{{ route('home') }}" class="hover:text-blue-700">Home</a><span class="mx-2">/</span><span class="text-slate-900">Order history</span></div><div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Your Luvora account</p><h1 class="mt-2 font-['Bodoni_Moda'] text-4xl sm:text-5xl">My orders &amp; curations</h1><p class="mt-2 text-sm text-slate-500">Review order status, items, and available documents.</p></div><a href="{{ route('orders.track') }}" class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold hover:border-blue-700 hover:text-blue-700"><span class="material-symbols-outlined text-base">local_shipping</span>Track an order</a></div>
+    @if ($ordersUnavailable)<div class="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">We couldn’t reach the order service. Please try again later.</div>@endif
+    <section class="mb-6 grid gap-3 sm:grid-cols-3"><div class="rounded-xl bg-white p-5 shadow-sm"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Orders found</p><p class="mt-2 font-['Bodoni_Moda'] text-3xl">{{ count($orders) }}</p></div><div class="rounded-xl bg-white p-5 shadow-sm"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Account</p><p class="mt-2 truncate text-sm font-semibold">{{ data_get($user,'email') ?? data_get($user,'Email') ?? 'Signed in' }}</p></div><div class="rounded-xl bg-white p-5 shadow-sm"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Need tracking?</p><a href="{{ route('orders.track') }}" class="mt-2 inline-block text-sm font-semibold text-blue-700 hover:underline">Find an order by number</a></div></section>
+    @if (!$ordersUnavailable && empty($orders))<section class="rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm"><span class="material-symbols-outlined text-4xl text-slate-400">receipt_long</span><h2 class="mt-4 font-['Bodoni_Moda'] text-3xl">No orders yet</h2><p class="mx-auto mt-2 max-w-md text-sm text-slate-500">Once you place an order, it will appear here with its current status.</p><a href="{{ route('shop.index') }}" class="mt-6 inline-flex rounded-full bg-[#005baf] px-7 py-3 text-sm font-semibold text-white hover:bg-blue-800">Explore the shop</a></section>@endif
+    <div class="space-y-5">@foreach ($orders as $order)
+        @php
+            $id = data_get($order,'id') ?? data_get($order,'Id') ?? data_get($order,'orderId') ?? data_get($order,'OrderId');
+            $number = data_get($order,'orderNumber') ?? data_get($order,'OrderNumber') ?? data_get($order,'reference') ?? $id ?? '—';
+            $status = data_get($order,'status') ?? data_get($order,'Status') ?? 'Status unavailable';
+            $statusKey = strtolower((string) $status);
+            $statusClass = str_contains($statusKey,'deliver') || str_contains($statusKey,'complete') ? 'bg-emerald-50 text-emerald-800' : (str_contains($statusKey,'cancel') || str_contains($statusKey,'fail') ? 'bg-rose-50 text-rose-800' : 'bg-blue-50 text-blue-800');
+            $items = data_get($order,'items') ?? data_get($order,'Items') ?? [];
+            $items = is_array($items) ? $items : [];
+            $total = data_get($order,'totalAmount') ?? data_get($order,'TotalAmount') ?? data_get($order,'total') ?? data_get($order,'Total') ?? 0;
+            $date = data_get($order,'createdAt') ?? data_get($order,'CreatedAt') ?? data_get($order,'orderDate') ?? data_get($order,'OrderDate');
+            $key = $id ?? $number;
+        @endphp
+        <article data-order-card class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="h-1 bg-gradient-to-r from-blue-700 via-sky-400 to-emerald-400"></div><div class="p-5 sm:p-6"><div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start"><div><div class="flex flex-wrap items-center gap-3"><h2 class="font-['Bodoni_Moda'] text-2xl">Order #{{ $number }}</h2><span class="rounded-full px-3 py-1 text-xs font-semibold {{ $statusClass }}">{{ $status }}</span></div><p class="mt-2 text-xs text-slate-500">{{ $date ? \Illuminate\Support\Carbon::parse($date)->format('M j, Y') : 'Date unavailable' }} <span class="mx-1">·</span> LKR {{ number_format((float) $total,2) }}</p></div><div class="flex flex-wrap gap-2"><a href="{{ route('account.orders.show',$key) }}" class="rounded-full bg-[#005baf] px-4 py-2 text-xs font-semibold text-white hover:bg-blue-800">View details</a><a href="{{ route('orders.track.show',$number) }}" class="rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold hover:border-blue-700 hover:text-blue-700">Track</a></div></div>
+            @if (!empty($items))<div class="mt-5 grid gap-3 border-t border-slate-100 pt-4 sm:grid-cols-2 lg:grid-cols-3">@foreach(array_slice($items,0,3) as $item)@php $name=data_get($item,'product.name')??data_get($item,'productName')??data_get($item,'name')??'Luvora creation'; $image=data_get($item,'product.imageUrl')??data_get($item,'imageUrl')??data_get($item,'image'); @endphp<div class="flex items-center gap-3">@if($image)<img src="{{ $image }}" alt="{{ $name }}" class="h-16 w-12 rounded-lg bg-slate-100 object-cover">@else<div class="flex h-16 w-12 items-center justify-center rounded-lg bg-slate-100"><span class="material-symbols-outlined text-slate-400">checkroom</span></div>@endif<div class="min-w-0"><p class="line-clamp-2 text-sm font-medium">{{ $name }}</p><p class="mt-1 text-xs text-slate-500">Qty {{ data_get($item,'quantity') ?? data_get($item,'Quantity') ?? 1 }}</p></div></div>@endforeach</div>@endif
+            <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-slate-100 pt-4 text-xs font-medium"><a href="{{ route('account.orders.show',$key) }}" class="text-blue-700 hover:underline">Order details</a><a href="{{ route('account.orders.invoice',$key) }}" class="text-blue-700 hover:underline">Invoice / receipt</a><a href="{{ route('account.returns.index') }}" class="text-blue-700 hover:underline">Return status</a></div>
+        </div></article>
+    @endforeach</div>
+</main></body></html>
