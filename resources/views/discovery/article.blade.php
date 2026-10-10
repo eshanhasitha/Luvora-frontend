@@ -1,0 +1,5 @@
+@extends('discovery.layout')
+@section('title',($article['title'] ?? 'Story not found').' | Luvora Journal')
+@section('content')
+@if($article)<p class="text-xs font-semibold uppercase tracking-[.2em] text-blue-700">{{ $article['category'] }}</p><h1 class="mt-2 font-['Bodoni_Moda'] text-4xl sm:text-5xl">{{ $article['title'] }}</h1><article class="prose mt-8 max-w-3xl">{{ $article['body'] }}</article>@else<div class="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center"><span class="material-symbols-outlined text-4xl text-slate-400">article</span><p class="mt-4 text-xs font-semibold uppercase tracking-[.2em] text-blue-700">Luvora Journal</p><h1 class="mt-2 font-['Bodoni_Moda'] text-4xl">This story isn’t available</h1><p class="mt-3 text-sm leading-6 text-slate-500">We couldn’t find a published story for “{{ str($articleSlug)->replace('-', ' ') }}”. Journal content is not connected yet.</p><a href="{{ route('journal.index') }}" class="mt-6 inline-flex rounded-full bg-[#005baf] px-6 py-3 text-sm font-semibold text-white">Back to the journal</a></div>@endif
+@endsection
