@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\LuvoraApiClient;
+use Illuminate\Http\Client\ConnectionException;
 
 class CartController extends Controller
 {
@@ -17,7 +18,7 @@ class CartController extends Controller
 
         $user = session('user');
 
-        $userId = $user['id'] ?? null;
+        $userId = data_get($user, 'id') ?? data_get($user, 'Id');
 
         if (!$userId) {
             session()->flush();
@@ -25,20 +26,46 @@ class CartController extends Controller
             return redirect('/login');
         }
 
-        $response = $api->getWithToken(
-            $token,
-            "/api/cart/{$userId}"
-        );
-
-        if ($response->failed()) {
-            abort($response->status());
+        try {
+            $response = $api->getWithToken($token, "/api/cart/{$userId}");
+        } catch (ConnectionException) {
+            return view('cart.index', [
+                'cart' => ['items' => []],
+                'cartUnavailable' => true,
+            ]);
         }
 
-        $cart = $response->json();
+        if ($response->failed()) {
+            return view('cart.index', [
+                'cart' => ['items' => []],
+                'cartUnavailable' => true,
+            ]);
+        }
+
+        $payload = $response->json();
+        $cart = data_get($payload, 'data.cart')
+            ?? data_get($payload, 'cart')
+            ?? data_get($payload, 'data')
+            ?? $payload
+            ?? [];
+
+        if (! is_array($cart)) {
+            $cart = [];
+        }
+
+        $cart['items'] = data_get($cart, 'items')
+            ?? data_get($cart, 'Items')
+            ?? [];
+
+        if (! is_array($cart['items'])) {
+            $cart['items'] = [];
+        }
+
+        $cartUnavailable = false;
 
         return view(
             'cart.index',
-            compact('cart')
+            compact('cart', 'cartUnavailable')
         );
     }
 }

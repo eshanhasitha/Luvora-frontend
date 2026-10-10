@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ ucfirst($step) }} | Luvora Checkout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{display:['Bodoni Moda','serif'],body:['Plus Jakarta Sans','sans-serif'],label:['Inter','sans-serif']},colors:{primary:'#005baf',surface:'#f7f9fb',ink:'#191c1e',tertiary:'#006947'}}}}</script>
+</head>
+<body class="min-h-screen bg-surface font-body text-ink">
+@php
+    $items = $cart['items'] ?? [];
+    $subtotal = (float) (data_get($cart, 'totalAmount') ?? data_get($cart, 'total') ?? data_get($cart, 'TotalAmount') ?? collect($items)->sum(fn ($item) => (float) (data_get($item, 'unitPrice') ?? data_get($item, 'UnitPrice') ?? data_get($item, 'price') ?? 0) * (int) (data_get($item, 'quantity') ?? data_get($item, 'Quantity') ?? 1)));
+    $address = $checkout['address'] ?? [];
+    $stepNumber = ['address' => 2, 'shipping' => 3, 'payment' => 4, 'review' => 5][$step];
+    $stepNames = ['address' => 'Delivery address', 'shipping' => 'Shipping method', 'payment' => 'Payment method', 'review' => 'Review order'];
+    $shippingMethod = $checkout['shipping'] ?? 'express';
+    $paymentMethod = $checkout['payment'] ?? 'card';
+@endphp
+<div class="bg-ink px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-wider text-white">Island-wide Sri Lanka Express Delivery · Free shipping over LKR 15,000</div>
+<header class="border-b border-slate-200 bg-white"><div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8"><a href="{{ route('home') }}" class="flex items-center gap-3"><img src="{{ asset('images/logo.png') }}" alt="Luvora" class="h-10 w-auto"></a><a href="{{ route('cart.index') }}" class="text-xs font-semibold uppercase tracking-wider text-slate-600 hover:text-primary">← Sanctuary bag ({{ count($items) }})</a><span class="hidden items-center gap-2 text-xs font-semibold uppercase tracking-wider text-tertiary sm:flex"><span class="material-symbols-outlined text-base">lock</span> Secure checkout</span></div></header>
+<main class="mx-auto max-w-7xl px-5 py-8 lg:px-8">
+    <div class="mb-7"><p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Checkout · Step {{ sprintf('%02d', $stepNumber) }}</p><h1 class="mt-2 font-display text-4xl sm:text-5xl">{{ $stepNames[$step] }}</h1><p class="mt-2 text-sm text-slate-500">Review your details and continue through checkout.</p></div>
+    @if ($errors->any())<div class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">Please check the highlighted details and try again.</div>@endif
+    @if ($cartUnavailable)<div class="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Your cart service is temporarily unavailable. Try again shortly.</div>@elseif (empty($items))<div class="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Your bag is empty. <a class="font-semibold underline" href="{{ route('shop.index') }}">Explore the shop</a></div>@endif
+
+    <div class="mb-7 rounded-xl bg-white p-4 shadow-sm sm:p-5"><div class="flex items-center justify-between gap-1">@foreach ([['01','Customer'],['02','Address'],['03','Shipping'],['04','Payment'],['05','Review']] as $index => [$number,$label])<div class="flex min-w-0 items-center gap-2"><span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full {{ $stepNumber >= $index + 2 ? 'bg-primary text-white ring-4 ring-blue-100' : 'bg-slate-100 text-slate-500' }} text-xs font-bold">{{ $number }}</span><span class="hidden text-[10px] font-semibold uppercase tracking-wider {{ $stepNumber === $index + 2 ? 'text-primary' : 'text-slate-400' }} md:inline">{{ $label }}</span></div>@if($index < 4)<span class="h-0.5 min-w-2 flex-1 {{ $stepNumber > $index + 1 ? 'bg-primary' : 'bg-slate-200' }}"></span>@endif @endforeach</div></div>
+
+    <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-8">
+        <section class="rounded-xl bg-white p-5 shadow-sm sm:p-7 lg:col-span-7">
+            @if ($step === 'address')
+                <h2 class="font-display text-2xl">Where should we deliver?</h2><p class="mt-1 text-sm text-slate-500">Enter the address for this order.</p>
+                <form method="POST" action="{{ route('checkout.address.save') }}" class="mt-6 grid gap-4 sm:grid-cols-2">@csrf
+                    @foreach ([['full_name','Recipient name',$address['full_name'] ?? data_get($user,'name','')],['phone','Phone number',$address['phone'] ?? data_get($user,'phone','')],['address_line_1','Address line 1',$address['address_line_1'] ?? ''],['address_line_2','Address line 2 (optional)',$address['address_line_2'] ?? ''],['city','City',$address['city'] ?? ''],['province','Province',$address['province'] ?? ''],['postal_code','Postal code (optional)',$address['postal_code'] ?? '']] as [$field,$label,$value])<label class="block {{ in_array($field,['address_line_1','address_line_2']) ? 'sm:col-span-2' : '' }}"><span class="mb-1.5 block text-xs font-semibold text-slate-600">{{ $label }}</span><input name="{{ $field }}" value="{{ old($field,$value) }}" @required(!str_ends_with($field,'_2') && $field !== 'postal_code') class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-blue-100">@error($field)<span class="mt-1 block text-xs text-red-700">{{ $message }}</span>@enderror</label>@endforeach
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-2 sm:col-span-2"><a href="{{ route('checkout.index') }}" class="text-sm font-medium text-primary hover:underline">Back to overview</a><button @disabled(empty($items) || $cartUnavailable) class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300">Save address &amp; continue</button></div>
+                </form>
+            @elseif ($step === 'shipping')
+                <h2 class="font-display text-2xl">Choose how it arrives</h2><p class="mt-1 text-sm text-slate-500">Delivery fees are estimated from your current order total.</p>
+                <form method="POST" action="{{ route('checkout.shipping.save') }}" class="mt-6 space-y-3">@csrf
+                    <label class="flex cursor-pointer items-start justify-between gap-4 rounded-xl border p-4 {{ $shippingMethod === 'express' ? 'border-2 border-primary bg-blue-50/40' : 'border-slate-200' }}"><span class="flex gap-3"><input type="radio" name="method" value="express" @checked(old('method',$shippingMethod)==='express') class="mt-1 accent-primary"><span><strong class="block text-sm">Island Express Courier</strong><span class="mt-1 block text-xs text-slate-500">Island-wide delivery · Estimated 2–5 business days</span></span></span><span class="shrink-0 text-xs font-semibold">{{ $subtotal >= 15000 ? 'Complimentary' : 'LKR 1,200' }}</span></label>
+                    <label class="flex cursor-pointer items-start justify-between gap-4 rounded-xl border p-4 {{ $shippingMethod === 'colombo_same_day' ? 'border-2 border-primary bg-blue-50/40' : 'border-slate-200' }}"><span class="flex gap-3"><input type="radio" name="method" value="colombo_same_day" @checked(old('method',$shippingMethod)==='colombo_same_day') class="mt-1 accent-primary"><span><strong class="block text-sm">Colombo Same-Day</strong><span class="mt-1 block text-xs text-slate-500">Subject to address and service availability</span></span></span><span class="shrink-0 text-xs font-semibold text-slate-500">Confirm availability</span></label>
+                    @error('method')<p class="text-xs text-red-700">{{ $message }}</p>@enderror
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-3"><a href="{{ route('checkout.address') }}" class="text-sm font-medium text-primary hover:underline">Back to address</a><button @disabled(empty($items) || $cartUnavailable) class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300">Save delivery &amp; continue</button></div>
+                </form>
+            @elseif ($step === 'payment')
+                <h2 class="font-display text-2xl">Select a payment option</h2><p class="mt-1 text-sm text-slate-500">No card details are collected on this page.</p>
+                <form method="POST" action="{{ route('checkout.payment.save') }}" class="mt-6 space-y-3">@csrf
+                    <label class="flex cursor-pointer items-start gap-3 rounded-xl border p-4 {{ $paymentMethod === 'card' ? 'border-2 border-primary bg-blue-50/40' : 'border-slate-200' }}"><input type="radio" name="method" value="card" @checked(old('method',$paymentMethod)==='card') class="mt-1 accent-primary"><span><strong class="block text-sm">Credit or debit card</strong><span class="mt-1 block text-xs text-slate-500">Payment will be securely completed through the payment provider.</span></span></label>
+                    <label class="flex cursor-pointer items-start gap-3 rounded-xl border p-4 {{ $paymentMethod === 'cash_on_delivery' ? 'border-2 border-primary bg-blue-50/40' : 'border-slate-200' }}"><input type="radio" name="method" value="cash_on_delivery" @checked(old('method',$paymentMethod)==='cash_on_delivery') class="mt-1 accent-primary"><span><strong class="block text-sm">Cash on delivery</strong><span class="mt-1 block text-xs text-slate-500">Availability depends on the delivery address.</span></span></label>
+                    @error('method')<p class="text-xs text-red-700">{{ $message }}</p>@enderror
+                    <p class="rounded-lg bg-amber-50 p-3 text-xs leading-5 text-amber-900">Payment processing is not connected yet. This step only saves your preferred payment option.</p>
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-2"><a href="{{ route('checkout.shipping') }}" class="text-sm font-medium text-primary hover:underline">Back to shipping</a><button @disabled(empty($items) || $cartUnavailable) class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300">Save payment option</button></div>
+                </form>
+            @else
+                <h2 class="font-display text-2xl">Review your order</h2><p class="mt-1 text-sm text-slate-500">Confirm the details before completing checkout.</p>
+                <div class="mt-6 space-y-4">
+                    <div class="rounded-xl bg-slate-50 p-4"><div class="flex justify-between gap-3"><strong class="text-sm">Delivery address</strong><a href="{{ route('checkout.address') }}" class="text-xs font-semibold text-primary">Edit</a></div><p class="mt-2 text-sm">{{ $address['full_name'] ?? 'Address not added' }}</p><p class="text-sm text-slate-600">{{ collect([$address['address_line_1'] ?? null,$address['address_line_2'] ?? null,$address['city'] ?? null,$address['province'] ?? null,$address['postal_code'] ?? null])->filter()->join(', ') }}</p><p class="mt-1 text-xs text-slate-500">{{ $address['phone'] ?? '' }}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-4"><div class="flex justify-between gap-3"><strong class="text-sm">Shipping method</strong><a href="{{ route('checkout.shipping') }}" class="text-xs font-semibold text-primary">Edit</a></div><p class="mt-2 text-sm">{{ ($checkout['shipping'] ?? '') === 'colombo_same_day' ? 'Colombo Same-Day (availability to be confirmed)' : 'Island Express Courier' }}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-4"><div class="flex justify-between gap-3"><strong class="text-sm">Payment option</strong><a href="{{ route('checkout.payment') }}" class="text-xs font-semibold text-primary">Edit</a></div><p class="mt-2 text-sm">{{ ($checkout['payment'] ?? '') === 'cash_on_delivery' ? 'Cash on delivery' : 'Credit or debit card' }}</p></div>
+                    @if (empty($address))<p class="text-xs text-red-700">Add a delivery address before proceeding.</p>@endif
+                    <div class="rounded-lg bg-amber-50 p-4 text-xs leading-5 text-amber-900">Order submission is not yet available because this frontend has no connected create-order/payment endpoint. No order or payment has been submitted.</div>
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-1"><a href="{{ route('checkout.payment') }}" class="text-sm font-medium text-primary hover:underline">Back to payment</a><button type="button" disabled class="cursor-not-allowed rounded-full bg-slate-300 px-6 py-3 text-sm font-semibold text-slate-600">Place order unavailable</button></div>
+                </div>
+            @endif
+        </section>
+
+        <aside class="rounded-xl bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-6 lg:col-span-5"><div class="flex items-center justify-between border-b border-slate-100 pb-4"><h2 class="font-display text-2xl">Sanctuary bag</h2><span class="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">{{ count($items) }} {{ count($items)===1?'item':'items' }}</span></div>
+            <div class="divide-y divide-slate-100">@foreach($items as $item)@php $name=data_get($item,'product.name')??data_get($item,'productName')??data_get($item,'name')??'Luvora creation'; $image=data_get($item,'product.imageUrl')??data_get($item,'imageUrl')??data_get($item,'image')??data_get($item,'product.image'); $qty=(int)(data_get($item,'quantity')??data_get($item,'Quantity')??1); $price=(float)(data_get($item,'unitPrice')??data_get($item,'UnitPrice')??data_get($item,'price')??0); @endphp<div class="flex gap-3 py-4"><div class="flex h-20 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100">@if($image)<img src="{{ $image }}" alt="{{ $name }}" class="h-full w-full object-cover">@else<span class="material-symbols-outlined text-2xl text-slate-400">checkroom</span>@endif</div><div class="flex min-w-0 flex-1 items-start justify-between gap-2"><div><h3 class="font-display text-base leading-tight">{{ $name }}</h3><p class="mt-1 text-xs text-slate-500">Qty: {{ $qty }}</p></div><span class="shrink-0 text-xs font-semibold">LKR {{ number_format($price*$qty,2) }}</span></div></div>@endforeach</div>
+            <div class="space-y-3 border-t border-slate-100 pt-4 text-sm"><div class="flex justify-between text-slate-600"><span>Subtotal</span><span>LKR {{ number_format($subtotal,2) }}</span></div><div class="flex justify-between text-slate-600"><span>Delivery</span><span>{{ $subtotal >= 15000 ? 'Complimentary' : ($subtotal > 0 ? 'LKR 1,200' : '—') }}</span></div><div class="flex justify-between border-t border-slate-100 pt-4 font-semibold"><span>Estimated total</span><span>LKR {{ number_format($subtotal + ($subtotal >= 15000 || $subtotal <= 0 ? 0 : 1200),2) }}</span></div></div>
+        </aside>
+    </div>
+</main>
+@include('partials.site-footer')</body>
+</html>
