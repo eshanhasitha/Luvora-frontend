@@ -100,7 +100,7 @@ class AuthController extends Controller
             $response = $api->post('/api/auth/reset-password', [
                 'token' => $token,
                 'email' => $data['email'],
-                'password' => $data['password'],
+                'newPassword' => $data['password'],
             ]);
         } catch (ConnectionException) {
             return back()->withErrors([
@@ -110,7 +110,7 @@ class AuthController extends Controller
 
         if ($response->failed()) {
             return back()->withErrors([
-                'email' => 'This reset link may have expired. Request a new password reset link and try again.',
+                'email' => data_get($response->json(), 'message') ?? 'This reset link may have expired. Request a new password reset link and try again.',
             ])->withInput($request->except('password', 'password_confirmation'));
         }
 
@@ -174,7 +174,7 @@ class AuthController extends Controller
             'user' => $user,
         ]);
 
-        return redirect('/dashboard');
+        return redirect()->intended(route('dashboard'));
     }
 
     public function logout(

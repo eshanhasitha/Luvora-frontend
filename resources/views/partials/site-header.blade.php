@@ -1,4 +1,7 @@
-<div class="bg-[#191c1e] px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-widest text-white">Island-wide Sri Lanka express delivery | Free shipping over LKR 15,000 | Colombo same-day available</div>
+@php($siteAnnouncement = app(\App\Services\SiteAnnouncement::class)->current())
+@if($siteAnnouncement)
+    <div class="bg-[#191c1e] px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-widest text-white sm:text-xs" role="status">{{ $siteAnnouncement['message'] }}</div>
+@endif
 <header class="border-b border-slate-200 bg-white">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-8">
         <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-3" aria-label="Luvora home"><img src="{{ asset('images/logo.png') }}" alt="Luvora" class="h-10 w-auto"></a>

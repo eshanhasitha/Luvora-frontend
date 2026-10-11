@@ -58,9 +58,25 @@ class OrderController extends Controller
             'reason' => ['required', 'string', 'max:500'],
         ]);
 
-        return $this->findOrderPage($api, $id, 'cancel', [
-            'actionUnavailable' => true,
-        ]);
+        if (! filter_var($id, FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^[0-9a-f-]{36}$/i']])) {
+            return back()->withErrors(['order' => 'A valid order ID is required to cancel this order.']);
+        }
+        $context = $this->ordersForCustomer($api);
+        if ($context instanceof RedirectResponse) return $context;
+        $belongsToCustomer = collect($context['orders'])->contains(fn ($order) => (string) (data_get($order, 'id') ?? data_get($order, 'Id')) === $id);
+        if (! $belongsToCustomer) return back()->withErrors(['order' => 'That order could not be verified for your account.']);
+        $token = session('access_token');
+        if (! $token) return redirect()->route('login.show');
+        try {
+            $response = $api->postWithToken($token, '/api/orders/' . rawurlencode($id) . '/cancel');
+        } catch (ConnectionException) {
+            return back()->withErrors(['order' => 'The order service is unavailable. The order was not cancelled.']);
+        }
+        if ($response->failed()) {
+            $message = data_get($response->json(), 'message') ?? 'The order could not be cancelled in its current status.';
+            return back()->withErrors(['order' => $message]);
+        }
+        return redirect()->route('account.orders.index')->with('status', 'Your order has been cancelled.');
     }
 
     public function returnRequest(string $id, LuvoraApiClient $api)
@@ -127,10 +143,62 @@ class OrderController extends Controller
             abort(404, 'Order not found.');
         }
 
+        $extra = array_merge($extra, $this->orderServiceDetails($api, $order));
+
         return view("orders.{$page}", array_merge($context, [
             'order' => $order,
             'orderKey' => $key,
         ], $extra));
+    }
+
+    private function orderServiceDetails(LuvoraApiClient $api, mixed $order): array
+    {
+        $orderId = data_get($order, 'id') ?? data_get($order, 'Id');
+        if (! $orderId || ! preg_match('/^[0-9a-f-]{36}$/i', (string) $orderId)) {
+            return ['delivery' => null, 'payment' => null, 'deliveryUnavailable' => false, 'paymentUnavailable' => false];
+        }
+
+        $details = [
+            'delivery' => null,
+            'payment' => null,
+            'deliveryUnavailable' => false,
+            'paymentUnavailable' => false,
+        ];
+
+        try {
+            $deliveryResponse = $api->get('/api/deliveries/order/' . rawurlencode((string) $orderId));
+            if ($deliveryResponse->successful()) {
+                $payload = $deliveryResponse->json();
+                $details['delivery'] = data_get($payload, 'data.delivery')
+                    ?? data_get($payload, 'delivery')
+                    ?? data_get($payload, 'data')
+                    ?? $payload;
+            } elseif (! $deliveryResponse->notFound()) {
+                $details['deliveryUnavailable'] = true;
+            }
+        } catch (ConnectionException) {
+            $details['deliveryUnavailable'] = true;
+        }
+
+        try {
+            $paymentResponse = $api->get('/api/payments/order/' . rawurlencode((string) $orderId));
+            if ($paymentResponse->successful()) {
+                $payload = $paymentResponse->json();
+                $details['payment'] = data_get($payload, 'data.payment')
+                    ?? data_get($payload, 'payment')
+                    ?? data_get($payload, 'data')
+                    ?? $payload;
+            } elseif (! $paymentResponse->notFound()) {
+                $details['paymentUnavailable'] = true;
+            }
+        } catch (ConnectionException) {
+            $details['paymentUnavailable'] = true;
+        }
+
+        if (! is_array($details['delivery'])) $details['delivery'] = null;
+        if (! is_array($details['payment'])) $details['payment'] = null;
+
+        return $details;
     }
 
     private function ordersForCustomer(LuvoraApiClient $api): array|RedirectResponse
@@ -138,7 +206,7 @@ class OrderController extends Controller
         $token = session('access_token');
 
         if (! $token) {
-            return redirect()->route('login.show');
+            return redirect()->guest(route('login.show'));
         }
 
         $user = session('user', []);

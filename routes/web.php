@@ -12,6 +12,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\InformationPageController;
+use App\Http\Controllers\StaffAnnouncementController;
 
 Route::get('/', function () {
     return view('home');
@@ -53,6 +54,11 @@ Route::put('/account/settings', [AccountController::class, 'updateSettings'])->n
 Route::get('/account/notifications', [AccountController::class, 'notifications'])->name('account.notifications');
 Route::put('/account/notifications', [AccountController::class, 'updateNotifications'])->name('account.notifications.update');
 Route::get('/account/delete', [AccountController::class, 'deleteAccount'])->name('account.delete');
+Route::delete('/account/delete', [AccountController::class, 'submitDeleteAccount'])->name('account.delete.submit');
+Route::post('/account/notifications/{notificationId}/read', [AccountController::class, 'markNotificationRead'])->name('account.notifications.read');
+Route::get('/staff/announcement', [StaffAnnouncementController::class, 'edit'])->name('staff.announcement.edit');
+Route::post('/staff/announcement', [StaffAnnouncementController::class, 'publish'])->name('staff.announcement.publish');
+Route::delete('/staff/announcement', [StaffAnnouncementController::class, 'clear'])->name('staff.announcement.clear');
 
 Route::post(
     '/login',
@@ -193,6 +199,9 @@ Route::get(
     '/cart',
     [CartController::class, 'index']
 )->name('cart.index');
+Route::post('/cart/items', [CartController::class, 'addItem'])->name('cart.items.add');
+Route::put('/cart/items/{itemId}', [CartController::class, 'updateItem'])->name('cart.items.update');
+Route::delete('/cart/items/{itemId}', [CartController::class, 'removeItem'])->name('cart.items.remove');
 
 Route::get(
     '/checkout',

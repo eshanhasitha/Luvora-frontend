@@ -94,7 +94,7 @@ class CheckoutController extends Controller
         $token = session('access_token');
 
         if (! $token) {
-            return redirect()->route('login.show');
+            return redirect()->guest(route('login.show'));
         }
 
         $user = session('user', []);
@@ -103,7 +103,7 @@ class CheckoutController extends Controller
         if (! $userId) {
             session()->flush();
 
-            return redirect()->route('login.show');
+            return redirect()->guest(route('login.show'));
         }
 
         try {

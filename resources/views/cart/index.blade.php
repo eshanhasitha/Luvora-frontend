@@ -11,7 +11,7 @@
 </head>
 <body class="min-h-screen bg-[#f7f8fa] font-['Inter'] text-[#191c1e]">
 @php
-    $items = $cart['items'] ?? [];
+    $items = data_get($cart, 'items', []);
     $subtotal = (float) (data_get($cart, 'totalAmount') ?? data_get($cart, 'total') ?? data_get($cart, 'TotalAmount') ?? collect($items)->sum(fn ($item) => (float) (data_get($item, 'unitPrice') ?? data_get($item, 'UnitPrice') ?? data_get($item, 'price') ?? 0) * (int) (data_get($item, 'quantity') ?? data_get($item, 'Quantity') ?? 1)));
 @endphp
 <header class="border-b border-slate-200 bg-white">
@@ -20,12 +20,14 @@
         <nav class="flex items-center gap-5 text-sm">
             <a href="{{ route('shop.index') }}" class="hidden text-slate-600 hover:text-blue-700 sm:block">Continue shopping</a>
             <a href="{{ route('cart.saved') }}" class="hidden text-slate-600 hover:text-blue-700 sm:block">Saved for later</a>
-            <a href="{{ route('wishlist.index') }}" aria-label="Wishlist" class="text-slate-600 hover:text-blue-700"><span class="material-symbols-outlined">favorite</span></a>
+            <a href="{{ route('wishlist.index') }}" aria-label="Wishlist" class="text-slate-600 hover:text-blue-700"><span class="material-symbols-outlined align-middle">favorite</span></a>
             <button type="button" id="open-cart-drawer" class="font-semibold text-blue-700 hover:text-blue-900">Shopping bag ({{ count($items) }})</button>
         </nav>
     </div>
 </header>
 <main class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+    @if(session('status'))<div role="status" class="mb-5 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">{{ session('status') }}</div>@endif
+    @if($errors->has('cart'))<div role="alert" class="mb-5 rounded-lg bg-rose-50 p-3 text-sm text-rose-800">{{ $errors->first('cart') }}</div>@endif
     <div class="mb-8 text-sm text-slate-500"><a href="{{ route('home') }}" class="hover:text-blue-700">Home</a><span class="mx-2">/</span><span class="text-slate-900">Shopping bag</span><span class="mx-2">·</span><a href="{{ route('cart.saved') }}" class="hover:text-blue-700">Saved for later</a></div>
     <div class="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div><p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Your selections</p><h1 class="font-['Bodoni_Moda'] text-4xl sm:text-5xl">Shopping bag</h1></div>
@@ -53,6 +55,8 @@
                         $quantity = (int) (data_get($item, 'quantity') ?? data_get($item, 'Quantity') ?? 1);
                         $price = (float) (data_get($item, 'unitPrice') ?? data_get($item, 'UnitPrice') ?? data_get($item, 'price') ?? 0);
                         $productId = data_get($item, 'productId') ?? data_get($item, 'ProductId') ?? data_get($item, 'product.id');
+                        $itemId = data_get($item, 'id') ?? data_get($item, 'Id');
+                        $image = $image ?? data_get($item, 'product.imageUrls.0') ?? data_get($item, 'product.ImageUrls.0');
                     @endphp
                     <article class="flex gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:gap-6 sm:p-6">
                         <a href="{{ $productId ? route('products.show', $productId) : route('shop.index') }}" class="flex h-32 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 sm:h-40 sm:w-32">
@@ -60,7 +64,7 @@
                         </a>
                         <div class="flex min-w-0 flex-1 flex-col justify-between py-1">
                             <div><p class="text-xs uppercase tracking-widest text-slate-500">{{ data_get($item, 'product.brand') ?? data_get($item, 'brand') ?? 'Luvora Atelier' }}</p><h2 class="mt-2 font-['Bodoni_Moda'] text-xl sm:text-2xl"><a href="{{ $productId ? route('products.show', $productId) : route('shop.index') }}" class="hover:text-blue-700">{{ $name }}</a></h2><p class="mt-2 line-clamp-2 text-sm text-slate-500">{{ data_get($item, 'product.description') ?? data_get($item, 'description') ?? '' }}</p></div>
-                            <div class="mt-4 flex flex-wrap items-center justify-between gap-3"><span class="text-sm text-slate-500">Quantity: <strong class="text-slate-900">{{ $quantity }}</strong></span><span class="font-semibold">LKR {{ number_format($price * $quantity, 2) }}</span></div>
+                            <div class="mt-4 flex flex-wrap items-center justify-between gap-3"><form method="POST" action="{{ route('cart.items.update', $itemId) }}" class="flex items-center gap-2">@csrf @method('PUT')<label class="text-xs text-slate-500">Qty<input name="quantity" type="number" min="1" max="99" value="{{ $quantity }}" class="ml-2 w-16 rounded border border-slate-300 px-2 py-1 text-sm text-slate-900"></label><button class="text-xs font-semibold text-blue-700 hover:underline">Update</button></form><span class="font-semibold">LKR {{ number_format($price * $quantity, 2) }}</span><form method="POST" action="{{ route('cart.items.remove', $itemId) }}" onsubmit="return confirm('Remove this item from your bag?')">@csrf @method('DELETE')<button class="text-xs font-semibold text-rose-700 hover:underline">Remove</button></form></div>
                         </div>
                     </article>
                 @endforeach
