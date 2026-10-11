@@ -11,7 +11,8 @@
     @foreach($products as $product)
         @php($slug=data_get($product,'slug')??data_get($product,'id')??data_get($product,'Id'))
         @php($name=data_get($product,'name')??data_get($product,'Name')??'Luvora creation')
-        @php($image=data_get($product,'imageUrl')??data_get($product,'ImageUrl')??data_get($product,'image')??data_get($product,'images.0.url'))
+        @php($image=data_get($product,'imageUrl')??data_get($product,'ImageUrl')??data_get($product,'image')??data_get($product,'images.0.url')??data_get($product,'imageUrls.0')??data_get($product,'ImageUrls.0'))
+        @if(is_string($image) && str_starts_with($image, '/api/products/images/')) @php($image=rtrim(config('services.luvora.base_url'), '/') . $image) @endif
         <article class="overflow-hidden rounded-xl border border-slate-200 bg-white"><a href="{{ route('products.show',$slug) }}" class="block">@if($image)<img src="{{ $image }}" alt="{{ $name }}" class="aspect-[4/5] w-full object-cover">@else<div class="flex aspect-[4/5] items-center justify-center bg-slate-100 text-slate-400"><span class="material-symbols-outlined text-4xl">redeem</span></div>@endif<div class="p-4"><h2 class="font-['Bodoni_Moda'] text-lg">{{ $name }}</h2><p class="mt-2 text-sm font-semibold">@if(data_get($product,'price')!==null){{ data_get($product,'currency')??'LKR' }} {{ number_format((float)data_get($product,'price'),2) }}@else Price not listed @endif</p></div></a></article>
     @endforeach
     </div>

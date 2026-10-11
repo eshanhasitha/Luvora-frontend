@@ -13,6 +13,6 @@
         'featured' => 'Featured Products',
         'sale' => 'Sale / Offers',
     ] as $slug => $label)
-        <a class="shrink-0 snap-start font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-colors hover:text-primary {{ request()->route('category') === $slug ? 'border-b-2 border-primary font-semibold text-primary' : '' }}" data-path="{{ $slug }}" href="{{ route('shop.category', $slug) }}">{{ $label }}</a>
+        <a class="shrink-0 snap-start font-label-md text-label-md uppercase tracking-wider text-on-surface-variant transition-colors hover:text-primary {{ request()->route('category') === $slug ? 'border-b-2 border-primary font-semibold text-primary' : '' }}" data-path="{{ $slug }}" href="{{ route('shop.category', ['category' => $slug]) }}">{{ $label }}</a>
     @endforeach
 </nav>

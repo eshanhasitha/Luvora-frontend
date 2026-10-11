@@ -11,7 +11,7 @@ class ProductEngagementController extends Controller
     public function reviews(string $slug, LuvoraApiClient $api)
     {
         try {
-            $response = $api->get("/api/products/{$slug}/reviews");
+            $response = $api->get('/api/products/' . rawurlencode($slug) . '/reviews');
         } catch (ConnectionException) {
             return view('products.reviews', [
                 'slug' => $slug,
@@ -55,7 +55,7 @@ class ProductEngagementController extends Controller
         ]);
 
         try {
-            $response = $api->postWithToken(session('access_token'), "/api/products/{$slug}/reviews", [
+            $response = $api->postWithToken(session('access_token'), '/api/products/' . rawurlencode($slug) . '/reviews', [
                 'rating' => (int) $review['rating'],
                 'title' => $review['title'] ?? '',
                 'comment' => $review['comment'],
@@ -74,7 +74,7 @@ class ProductEngagementController extends Controller
     public function availability(string $slug, LuvoraApiClient $api)
     {
         try {
-            $response = $api->get("/api/products/{$slug}");
+            $response = $api->get('/api/products/' . rawurlencode($slug));
         } catch (ConnectionException) {
             return view('products.availability', [
                 'slug' => $slug,
@@ -93,10 +93,32 @@ class ProductEngagementController extends Controller
             ?? data_get($payload, 'data')
             ?? $payload;
 
+        $inventory = null;
+        $inventoryUnavailable = false;
+        $productId = data_get($product, 'id') ?? data_get($product, 'Id');
+        if ($response->successful() && $productId) {
+            try {
+                $inventoryResponse = $api->get('/api/inventory/' . rawurlencode((string) $productId));
+                if ($inventoryResponse->successful()) {
+                    $inventoryPayload = $inventoryResponse->json();
+                    $inventory = data_get($inventoryPayload, 'data.inventory')
+                        ?? data_get($inventoryPayload, 'inventory')
+                        ?? data_get($inventoryPayload, 'data')
+                        ?? $inventoryPayload;
+                } elseif (! $inventoryResponse->notFound()) {
+                    $inventoryUnavailable = true;
+                }
+            } catch (ConnectionException) {
+                $inventoryUnavailable = true;
+            }
+        }
+
         return view('products.availability', [
             'slug' => $slug,
             'product' => is_array($product) ? $product : null,
+            'inventory' => is_array($inventory) ? $inventory : null,
             'availabilityUnavailable' => $response->failed(),
+            'inventoryUnavailable' => $inventoryUnavailable,
         ]);
     }
 

@@ -25,7 +25,7 @@ class DiscoveryController extends Controller
     public function giftGuide(LuvoraApiClient $api)
     {
         try {
-            $response = $api->get('/api/products');
+            $response = $api->get('/api/products', ['page' => 1, 'pageSize' => 100]);
         } catch (ConnectionException) {
             return view('discovery.gift-guide', ['products' => [], 'productsUnavailable' => true]);
         }
@@ -35,10 +35,24 @@ class DiscoveryController extends Controller
             ?? data_get($payload, 'products')
             ?? data_get($payload, 'data')
             ?? [];
+        $totalPages = (int) (data_get($payload, 'totalPages') ?? data_get($payload, 'data.totalPages') ?? 1);
+        for ($page = 2; $page <= min($totalPages, 100) && $response->successful(); $page++) {
+            try {
+                $next = $api->get('/api/products', ['page' => $page, 'pageSize' => 100]);
+            } catch (ConnectionException) {
+                $response = null;
+                break;
+            }
+            if ($next->failed()) { $response = $next; break; }
+            $nextPayload = $next->json();
+            $nextProducts = data_get($nextPayload, 'data.products') ?? data_get($nextPayload, 'products') ?? data_get($nextPayload, 'data') ?? [];
+            if (! is_array($nextProducts) || $nextProducts === []) break;
+            $products = array_merge(is_array($products) ? $products : [], $nextProducts);
+        }
 
         return view('discovery.gift-guide', [
             'products' => is_array($products) ? $products : [],
-            'productsUnavailable' => $response->failed(),
+            'productsUnavailable' => $response === null || $response->failed(),
         ]);
     }
 
