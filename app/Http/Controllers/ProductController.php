@@ -263,6 +263,17 @@ class ProductController extends Controller
         $query = trim((string) $request->query('q', ''));
         [$products, $productsUnavailable] = $this->fetchAllProducts($api);
 
+        $filters = $request->validate([
+            'page' => ['sometimes', 'integer', 'min:1'],
+            'sort' => ['sometimes', 'nullable', 'in:relevance,price-asc,price-desc,newest,rating'],
+            'department' => ['sometimes', 'array'], 'department.*' => ['string', 'max:80'],
+            'artisan' => ['sometimes', 'array'], 'artisan.*' => ['string', 'max:120'],
+            'material' => ['sometimes', 'array'], 'material.*' => ['string', 'max:120'],
+            'color' => ['sometimes', 'array'], 'color.*' => ['string', 'max:80'],
+            'price_range' => ['sometimes', 'nullable', 'in:under-15000,15000-30000,30000-60000,over-60000'],
+            'same_day' => ['sometimes', 'boolean'], 'custom_fit' => ['sometimes', 'boolean'], 'zero_dye' => ['sometimes', 'boolean'],
+        ]);
+
         if ($query !== '') {
             $terms = preg_split('/\s+/', strtolower($query), -1, PREG_SPLIT_NO_EMPTY);
             $products = array_values(array_filter($products, function ($product) use ($terms) {
@@ -283,10 +294,61 @@ class ProductController extends Controller
             }));
         }
 
+        $products = array_values(array_filter($products, function ($product) use ($filters) {
+            $price = (float) (data_get($product, 'discountPrice') ?? data_get($product, 'price') ?? 0);
+            $text = strtolower($this->searchableProductValue([
+                data_get($product, 'name'), data_get($product, 'description'), data_get($product, 'category'),
+                data_get($product, 'brand'), data_get($product, 'artisan'), data_get($product, 'maker'),
+                data_get($product, 'material'), data_get($product, 'materials'), data_get($product, 'color'), data_get($product, 'colors'),
+            ]));
+            if (!empty($filters['department']) && !collect($filters['department'])->contains(fn ($value) => str_contains($text, strtolower($value)))) return false;
+            foreach (['artisan' => ['artisan', 'maker', 'brand'], 'material' => ['material', 'materials'], 'color' => ['color', 'colors']] as $key => $fields) {
+                if (empty($filters[$key])) continue;
+                $values = strtolower($this->searchableProductValue(array_map(fn ($field) => data_get($product, $field), $fields)));
+                if (!collect($filters[$key])->contains(fn ($value) => str_contains($values, strtolower($value)) || str_contains($text, strtolower($value)))) return false;
+            }
+            if (!empty($filters['price_range'])) {
+                [$min, $max] = match ($filters['price_range']) {
+                    'under-15000' => [0, 14999.99], '15000-30000' => [15000, 30000],
+                    '30000-60000' => [30000, 60000], 'over-60000' => [60000.01, PHP_FLOAT_MAX],
+                };
+                if ($price < $min || $price > $max) return false;
+            }
+            if (!empty($filters['same_day']) && ! $this->isTruthy(data_get($product, 'sameDayDelivery') ?? data_get($product, 'same_day') ?? data_get($product, 'colomboSameDay'))) return false;
+            if (!empty($filters['custom_fit']) && !str_contains($text, 'custom') && !str_contains($text, 'bespoke')) return false;
+            if (!empty($filters['zero_dye']) && !str_contains($text, 'dye')) return false;
+            return true;
+        }));
+
+        $sort = $filters['sort'] ?? 'relevance';
+        if ($sort !== 'relevance') {
+            usort($products, function ($a, $b) use ($sort) {
+                $priceA = (float) (data_get($a, 'discountPrice') ?? data_get($a, 'price') ?? 0);
+                $priceB = (float) (data_get($b, 'discountPrice') ?? data_get($b, 'price') ?? 0);
+                return match ($sort) {
+                    'price-asc' => $priceA <=> $priceB,
+                    'price-desc' => $priceB <=> $priceA,
+                    'newest' => (strtotime((string) data_get($b, 'createdAt')) ?: 0) <=> (strtotime((string) data_get($a, 'createdAt')) ?: 0),
+                    'rating' => ((float) data_get($b, 'rating', 0)) <=> ((float) data_get($a, 'rating', 0)),
+                };
+            });
+        }
+
+        $productsTotalCount = count($products);
+        $productsPerPage = 12;
+        $productsTotalPages = max(1, (int) ceil($productsTotalCount / $productsPerPage));
+        $productsCurrentPage = min((int) ($filters['page'] ?? 1), $productsTotalPages);
+        $products = array_slice($products, ($productsCurrentPage - 1) * $productsPerPage, $productsPerPage);
+
         return view('search.index', [
             'query' => $query,
             'products' => $products,
             'productsUnavailable' => $productsUnavailable,
+            'productsTotalCount' => $productsTotalCount,
+            'productsPerPage' => $productsPerPage,
+            'productsCurrentPage' => $productsCurrentPage,
+            'productsTotalPages' => $productsTotalPages,
+            'filters' => $filters,
         ]);
     }
 

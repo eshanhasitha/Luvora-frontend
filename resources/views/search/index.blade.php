@@ -1,5 +1,8 @@
 @php
     $query = $query ?? request('q', '');
+    $filters = $filters ?? [];
+    $filterUrl = function (array $overrides = []) use ($query) { return route('search', array_merge(request()->query(), ['q' => $query], $overrides)); };
+    $selected = fn ($key, $value) => in_array($value, (array) ($filters[$key] ?? []), true);
 @endphp
 <!DOCTYPE html>
 
@@ -10,11 +13,9 @@
 <div class="max-w-7xl mx-auto px-gutter lg:px-gutter-lg pt-space-md pb-space-lg">
 <!-- Breadcrumbs & Search Metadata Overline -->
 <div class="flex items-center gap-space-xs font-label-sm text-label-sm uppercase tracking-wider text-secondary mb-space-xs">
-<a class="hover:text-primary transition-colors" href="{{ route('shop.index') }}">Atelier Index</a>
+<a class="hover:text-primary transition-colors" href="{{ route('home') }}">Home</a>
 <span>/</span>
-<a class="hover:text-primary transition-colors" href="{{ route('shop.index') }}">Textiles &amp; Silks</a>
-<span>/</span>
-<span class="text-on-surface">Curated Search Results</span>
+<span class="text-on-surface">Search Results</span>
 </div>
 <!-- Main Headline + Search Query Input Box -->
 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md pt-space-xs">
@@ -23,7 +24,7 @@
 <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Search results for</h1>
 <span class="font-headline-lg text-headline-lg text-primary italic font-normal">&ldquo;{{ $query }}&rdquo;</span>
 </div>
-<p class="font-body-sm text-body-sm text-secondary mt-1">Showing {{ count($products) }} matching products</p>
+<p class="font-body-sm text-body-sm text-secondary mt-1">Showing {{ $productsTotalCount ?? count($products) }} matching products</p>
 </div>
 <!-- Editable Active Search Pill Container -->
 <form method="GET" action="{{ route('search') }}" class="flex items-center gap-space-xs bg-surface-container-low p-1.5 rounded-full w-full max-w-md shadow-inner">
@@ -42,21 +43,22 @@
 <!-- Active Refinement Filter Pills Row -->
 <div class="flex items-center gap-space-xs flex-wrap mt-space-md pt-space-xs">
 <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary mr-space-xs">Applied Filters:</span>
-<div class="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-space-sm py-1 rounded-full">
-<span>Fabric: Raw Silk</span>
-<button aria-label="Remove filter" class="hover:text-error transition-colors flex items-center" type="button"><span class="material-symbols-outlined text-xs">close</span></button>
-</div>
-<div class="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-space-sm py-1 rounded-full">
-<span>Origin: Dumbara &amp; Matale</span>
-<button aria-label="Remove filter" class="hover:text-error transition-colors flex items-center" type="button"><span class="material-symbols-outlined text-xs">close</span></button>
-</div>
-<div class="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-space-sm py-1 rounded-full">
-<span>Price: Under LKR 50,000</span>
-<button aria-label="Remove filter" class="hover:text-error transition-colors flex items-center" type="button"><span class="material-symbols-outlined text-xs">close</span></button>
-</div>
-<button class="font-label-sm text-label-sm text-secondary hover:text-error transition-colors uppercase tracking-wider underline underline-offset-4 ml-space-xs" type="button">
+@foreach (['department' => 'Department', 'artisan' => 'Artisan', 'material' => 'Material', 'color' => 'Color'] as $filterKey => $filterLabel)
+@foreach ((array) ($filters[$filterKey] ?? []) as $filterValue)
+<a href="{{ $filterUrl([$filterKey => array_values(array_diff((array) $filters[$filterKey], [$filterValue])), 'page' => 1]) }}" class="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-space-sm py-1 rounded-full"><span>{{ $filterLabel }}: {{ $filterValue }}</span><span aria-hidden="true" class="material-symbols-outlined text-xs">close</span></a>
+@endforeach
+@endforeach
+@if (!empty($filters['price_range']))
+<a href="{{ $filterUrl(['price_range' => null, 'page' => 1]) }}" class="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-space-sm py-1 rounded-full"><span>Price: {{ str_replace('-', '–', $filters['price_range']) }}</span><span aria-hidden="true" class="material-symbols-outlined text-xs">close</span></a>
+@endif
+@foreach (['same_day' => 'Same-day delivery', 'custom_fit' => 'Custom fit', 'zero_dye' => 'Zero chemical dye'] as $flag => $label)
+@if (!empty($filters[$flag])) <a href="{{ $filterUrl([$flag => null, 'page' => 1]) }}" class="inline-flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-space-sm py-1 rounded-full">{{ $label }} <span aria-hidden="true" class="material-symbols-outlined text-xs">close</span></a> @endif
+@endforeach
+@if (collect($filters)->except(['page', 'sort'])->isNotEmpty())
+<a class="font-label-sm text-label-sm text-secondary hover:text-error transition-colors uppercase tracking-wider underline underline-offset-4 ml-space-xs" href="{{ route('search', ['q' => $query]) }}">
           Clear All
-        </button>
+        </a>
+@endif
 </div>
 <!-- Curated Suggestions Pill Carousel -->
 <div class="flex items-center gap-space-xs overflow-x-auto pt-space-sm scrollbar-none">
@@ -78,22 +80,17 @@
 <div class="flex items-center gap-space-sm text-on-surface">
 <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Catalog Order:</span>
 <div class="relative inline-block">
-<select class="appearance-none bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-full pl-space-md pr-space-xl py-1.5 focus:outline-none shadow-sm cursor-pointer">
-<option selected="">Curated Relevance</option>
-<option>Price: Low to High</option>
-<option>Price: High to Low</option>
-<option>Newest Arrivals</option>
-<option>Highest Artisan Rating</option>
+<select aria-label="Sort search results" onchange="const url=new URL(window.location.href);url.searchParams.set('sort',this.value);url.searchParams.delete('page');window.location.href=url.toString();" class="appearance-none bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-full pl-space-md pr-space-xl py-1.5 focus:outline-none shadow-sm cursor-pointer">
+<option value="relevance" @selected(($filters['sort'] ?? 'relevance') === 'relevance')>Curated Relevance</option>
+<option value="price-asc" @selected(($filters['sort'] ?? '') === 'price-asc')>Price: Low to High</option>
+<option value="price-desc" @selected(($filters['sort'] ?? '') === 'price-desc')>Price: High to Low</option>
+<option value="newest" @selected(($filters['sort'] ?? '') === 'newest')>Newest Arrivals</option>
+<option value="rating" @selected(($filters['sort'] ?? '') === 'rating')>Highest Artisan Rating</option>
 </select>
 <span class="material-symbols-outlined text-sm text-secondary absolute right-3 top-2.5 pointer-events-none">expand_more</span>
 </div>
 </div>
 <div class="flex items-center gap-space-md w-full sm:w-auto justify-between sm:justify-end">
-<!-- Zero Results Preview Toggle -->
-<button class="font-label-sm text-label-sm text-primary hover:text-primary-container transition-colors flex items-center gap-1" onclick="document.getElementById('emptyStateModal').classList.toggle('hidden');" type="button">
-<span class="material-symbols-outlined text-sm">visibility</span>
-<span>Inspect Empty Match View</span>
-</button>
 <!-- View Density Toggle -->
 <div class="flex items-center bg-surface-container-lowest p-1 rounded-full shadow-sm">
 <button class="p-1.5 rounded-full text-secondary hover:text-on-surface transition-colors" id="gridDenseBtn" title="4-Column Density" type="button">
@@ -108,10 +105,10 @@
 <!-- Layout Grid: 12 Columns -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
 <!-- LEFT FILTER SIDEBAR (Desktop 3 cols) -->
-<aside class="hidden lg:flex flex-col lg:col-span-3 space-y-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
+<aside class="hidden lg:flex flex-col lg:col-span-3 space-y-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm"><form id="searchFilters" method="GET" action="{{ route('search') }}"><input type="hidden" name="q" value="{{ $query }}">
 <div class="flex items-center justify-between pb-space-xs">
 <span class="font-label-md text-label-md uppercase tracking-wider text-on-surface">Filter Selection</span>
-<button class="font-label-sm text-label-sm text-secondary hover:text-primary uppercase tracking-wider" type="button">Reset</button>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary uppercase tracking-wider" href="{{ route('search', ['q' => $query]) }}">Reset</a>
 </div>
 <!-- Filter Block 1: Departments -->
 <div class="space-y-space-xs pt-space-xs">
@@ -122,28 +119,28 @@
 <div class="space-y-1.5 pt-1">
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input checked="" class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="department[]" value="women" @checked($selected('department', 'women')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Women's Couture</span>
 </div>
 <span class="font-label-sm text-label-sm text-secondary">34</span>
 </label>
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="department[]" value="jewelry" @checked($selected('department', 'jewelry')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Jewelry &amp; Gems</span>
 </div>
 <span class="font-label-sm text-label-sm text-secondary">8</span>
 </label>
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="department[]" value="accessories" @checked($selected('department', 'accessories')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Resort Accessories</span>
 </div>
 <span class="font-label-sm text-label-sm text-secondary">4</span>
 </label>
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="department[]" value="bespoke" @checked($selected('department', 'bespoke')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Bespoke Tailoring</span>
 </div>
 
@@ -159,28 +156,28 @@
 <div class="space-y-1.5 pt-1">
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input checked="" class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="artisan[]" value="Dumbara Heritage Guild" @checked($selected('artisan', 'Dumbara Heritage Guild')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Dumbara Heritage Guild</span>
 </div>
 <span class="font-label-sm text-label-sm text-secondary">18</span>
 </label>
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input checked="" class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="artisan[]" value="Matale Handloom Loom" @checked($selected('artisan', 'Matale Handloom Loom')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Matale Handloom Loom</span>
 </div>
 <span class="font-label-sm text-label-sm text-secondary">4</span>
 </label>
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="artisan[]" value="Kandy Master Weavers" @checked($selected('artisan', 'Kandy Master Weavers')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Kandy Master Weavers</span>
 </div>
 <span class="font-label-sm text-label-sm text-secondary">14</span>
 </label>
 <label class="flex items-center justify-between group cursor-pointer">
 <div class="flex items-center gap-2">
-<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary cursor-pointer" type="checkbox" name="artisan[]" value="Galle Dye Works" @checked($selected('artisan', 'Galle Dye Works')) onchange="this.form.requestSubmit()" form="searchFilters"/>
 <span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Galle Dye Works</span>
 </div>
 <span class="font-label-sm text-label-sm text-secondary">12</span>
@@ -195,19 +192,19 @@
 </div>
 <div class="space-y-1.5 pt-1">
 <label class="flex items-center gap-2 cursor-pointer">
-<input checked="" class="w-4 h-4 rounded text-primary accent-primary" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary" name="material[]" value="Raw Silk" @checked($selected('material', 'Raw Silk')) onchange="this.form.requestSubmit()" form="searchFilters" type="checkbox"/>
 <span class="font-body-sm text-body-sm text-on-surface">100% Pure Raw Silk</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 rounded text-primary accent-primary" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary" name="material[]" value="Ahimsa Peace Silk" @checked($selected('material', 'Ahimsa Peace Silk')) onchange="this.form.requestSubmit()" form="searchFilters" type="checkbox"/>
 <span class="font-body-sm text-body-sm text-on-surface">Ahimsa Peace Silk</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 rounded text-primary accent-primary" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary" name="material[]" value="Organic Lotus Fibre Blend" @checked($selected('material', 'Organic Lotus Fibre Blend')) onchange="this.form.requestSubmit()" form="searchFilters" type="checkbox"/>
 <span class="font-body-sm text-body-sm text-on-surface">Organic Lotus Fibre Blend</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 rounded text-primary accent-primary" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary" name="material[]" value="Handloom Fine Cotton" @checked($selected('material', 'Handloom Fine Cotton')) onchange="this.form.requestSubmit()" form="searchFilters" type="checkbox"/>
 <span class="font-body-sm text-body-sm text-on-surface">Handloom Fine Cotton</span>
 </label>
 </div>
@@ -220,19 +217,19 @@
 </div>
 <div class="space-y-1.5 pt-1">
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 text-primary accent-primary" name="price_range" type="radio"/>
+<input class="w-4 h-4 text-primary accent-primary" name="price_range" value="under-15000" @checked(($filters['price_range'] ?? '') === 'under-15000') onchange="this.form.requestSubmit()" form="searchFilters" type="radio"/>
 <span class="font-body-sm text-body-sm text-on-surface">Under LKR 15,000</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 text-primary accent-primary" name="price_range" type="radio"/>
+<input class="w-4 h-4 text-primary accent-primary" name="price_range" value="15000-30000" @checked(($filters['price_range'] ?? '') === '15000-30000') onchange="this.form.requestSubmit()" form="searchFilters" type="radio"/>
 <span class="font-body-sm text-body-sm text-on-surface">LKR 15,000 – 30,000</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input checked="" class="w-4 h-4 text-primary accent-primary" name="price_range" type="radio"/>
+<input class="w-4 h-4 text-primary accent-primary" name="price_range" value="30000-60000" @checked(($filters['price_range'] ?? '') === '30000-60000') onchange="this.form.requestSubmit()" form="searchFilters" type="radio"/>
 <span class="font-body-sm text-body-sm text-on-surface">LKR 30,000 – 60,000</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 text-primary accent-primary" name="price_range" type="radio"/>
+<input class="w-4 h-4 text-primary accent-primary" name="price_range" value="over-60000" @checked(($filters['price_range'] ?? '') === 'over-60000') onchange="this.form.requestSubmit()" form="searchFilters" type="radio"/>
 <span class="font-body-sm text-body-sm text-on-surface">LKR 60,000+</span>
 </label>
 </div>
@@ -241,11 +238,9 @@
 <div class="space-y-space-xs pt-space-xs">
 <h2 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface">Color Nuance</h2>
 <div class="flex items-center gap-2.5 pt-1 flex-wrap">
-<button class="w-7 h-7 rounded-full bg-primary ring-2 ring-primary ring-offset-2 focus:outline-none" title="Sapphire Blue" type="button"></button>
-<button class="w-7 h-7 rounded-full bg-amber-400 hover:scale-105 transition-transform" title="Lotus Gold" type="button"></button>
-<button class="w-7 h-7 rounded-full bg-[#FAF7F0] shadow-sm hover:scale-105 transition-transform" title="Ivory Raw Silk" type="button"></button>
-<button class="w-7 h-7 rounded-full bg-[#8B4513] hover:scale-105 transition-transform" title="Cinnamon Bark" type="button"></button>
-<button class="w-7 h-7 rounded-full bg-[#006947] hover:scale-105 transition-transform" title="Ceylon Emerald" type="button"></button>
+@foreach (['Sapphire Blue' => 'bg-primary', 'Lotus Gold' => 'bg-amber-400', 'Ivory Raw Silk' => 'bg-[#FAF7F0]', 'Cinnamon Bark' => 'bg-[#8B4513]', 'Ceylon Emerald' => 'bg-[#006947]'] as $color => $colorClass)
+<label title="{{ $color }}" class="relative"><input aria-label="{{ $color }}" class="peer sr-only" type="checkbox" name="color[]" value="{{ $color }}" @checked($selected('color', $color)) onchange="this.form.requestSubmit()" form="searchFilters"/><span class="block w-7 h-7 rounded-full {{ $colorClass }} shadow-sm cursor-pointer peer-checked:ring-2 peer-checked:ring-primary peer-checked:ring-offset-2"></span></label>
+@endforeach
 </div>
 </div>
 <!-- Filter Block 6: Island Logistics & Ethical Standard -->
@@ -253,15 +248,15 @@
 <h2 class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface">Heritage &amp; Courier</h2>
 <div class="space-y-1.5 pt-1">
 <label class="flex items-center gap-2 cursor-pointer">
-<input checked="" class="w-4 h-4 rounded text-primary accent-primary" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary" name="same_day" value="1" @checked(!empty($filters['same_day'])) onchange="this.form.requestSubmit()" form="searchFilters" type="checkbox"/>
 <span class="font-body-sm text-body-sm text-on-surface">Colombo Same-Day Hub</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 rounded text-primary accent-primary" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary" name="custom_fit" value="1" @checked(!empty($filters['custom_fit'])) onchange="this.form.requestSubmit()" form="searchFilters" type="checkbox"/>
 <span class="font-body-sm text-body-sm text-on-surface">Made-to-Order Custom Fit</span>
 </label>
 <label class="flex items-center gap-2 cursor-pointer">
-<input class="w-4 h-4 rounded text-primary accent-primary" type="checkbox"/>
+<input class="w-4 h-4 rounded text-primary accent-primary" name="zero_dye" value="1" @checked(!empty($filters['zero_dye'])) onchange="this.form.requestSubmit()" form="searchFilters" type="checkbox"/>
 <span class="font-body-sm text-body-sm text-on-surface">Zero Chemical Dye</span>
 </label>
 </div>
@@ -274,14 +269,14 @@
 </div>
 <p class="font-body-sm text-body-sm text-secondary">Every piece carries a registered QR verification token from the Crafts Council of Sri Lanka.</p>
 </div>
-</aside>
+</form></aside>
 <!-- RIGHT PRODUCT GRID & BENTO TILES (Desktop 9 cols) -->
 <div class="lg:col-span-9 flex flex-col gap-space-lg">
 <!-- Product Grid (Dynamic 3 col gallery) -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter" id="productGrid">@if (!empty($productsUnavailable))
 <div class="col-span-full rounded-xl bg-error-container p-space-lg text-on-error-container">Search is temporarily unavailable. Please try again shortly.</div>
 @elseif (empty($products))
-<div class="col-span-full rounded-xl bg-surface-container-lowest p-space-xl text-center">No products matched &ldquo;{{ $query }}&rdquo;. Try another search.</div>
+<div class="col-span-full rounded-xl bg-surface-container-lowest p-space-xl text-center"><span class="material-symbols-outlined text-4xl text-primary">search_off</span><h2 class="mt-3 font-headline-md text-headline-md">No products matched “{{ $query }}”</h2><p class="mt-2 text-secondary">Try a different search or clear your filters to see all available products.</p><a href="{{ route('search', ['q' => $query]) }}" class="inline-flex mt-4 rounded-full bg-primary px-5 py-2 text-white">Clear filters</a></div>
 @else
 @foreach ($products as $product)
 @php
@@ -300,20 +295,18 @@
 @endif<!-- Pagination Controls -->
 <div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-lg bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
 <span class="font-body-sm text-body-sm text-secondary">
-            Displaying <strong class="text-on-surface font-semibold">1 – 6</strong> of 48 handcrafted sarees
+            Displaying <strong class="text-on-surface font-semibold">{{ $productsTotalCount ? (($productsCurrentPage - 1) * $productsPerPage + 1) . '�' . (($productsCurrentPage - 1) * $productsPerPage + count($products)) : 0 }}</strong> of {{ $productsTotalCount }} products
           </span>
 <div class="flex items-center gap-1">
-<button class="w-9 h-9 rounded-full flex items-center justify-center text-outline-variant cursor-not-allowed" disabled="" type="button">
+@if ($productsCurrentPage > 1)<a aria-label="Previous page" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high" href="{{ $filterUrl(['page' => $productsCurrentPage - 1]) }}">
 <span class="material-symbols-outlined text-sm">arrow_back</span>
-</button>
-<button class="w-9 h-9 rounded-full bg-primary text-on-primary font-label-sm text-label-sm flex items-center justify-center font-bold" type="button">1</button>
-<button class="w-9 h-9 rounded-full hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center transition-colors" type="button">2</button>
-<button class="w-9 h-9 rounded-full hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center transition-colors" type="button">3</button>
-<span class="w-8 text-center text-secondary font-body-sm text-body-sm">...</span>
-<button class="w-9 h-9 rounded-full hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm flex items-center justify-center transition-colors" type="button">8</button>
-<button class="w-9 h-9 rounded-full hover:bg-surface-container-high text-on-surface flex items-center justify-center transition-colors" type="button">
+</a>@else<button aria-label="Previous page" class="w-9 h-9 rounded-full flex items-center justify-center text-outline-variant cursor-not-allowed" disabled type="button"><span class="material-symbols-outlined text-sm">arrow_back</span></button>@endif
+@for ($page = 1; $page <= $productsTotalPages; $page++)
+<a aria-current="{{ $page === $productsCurrentPage ? 'page' : 'false' }}" class="w-9 h-9 rounded-full {{ $page === $productsCurrentPage ? 'bg-primary text-on-primary font-bold' : 'hover:bg-surface-container-high text-on-surface' }} font-label-sm text-label-sm flex items-center justify-center transition-colors" href="{{ $filterUrl(['page' => $page]) }}">{{ $page }}</a>
+@endfor
+@if ($productsCurrentPage < $productsTotalPages)<a aria-label="Next page" class="w-9 h-9 rounded-full hover:bg-surface-container-high text-on-surface flex items-center justify-center transition-colors" href="{{ $filterUrl(['page' => $productsCurrentPage + 1]) }}">
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
+</a>@else<button aria-label="Next page" class="w-9 h-9 rounded-full text-outline-variant cursor-not-allowed" disabled type="button"><span class="material-symbols-outlined text-sm">arrow_forward</span></button>@endif
 </div>
 </div>
 </div>
@@ -353,50 +346,6 @@
 </div>
 </div>
 </section>
-<!-- SOPHISTICATED NO MATCHES / ZERO STATE PREVIEW (Interactive Modal) -->
-<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-on-background/50 backdrop-blur-sm p-space-md" id="emptyStateModal">
-<div class="bg-surface-container-lowest max-w-2xl w-full rounded-2xl p-space-xl shadow-2xl relative overflow-hidden">
-<!-- Close Button -->
-<button aria-label="Close dialog" class="absolute top-4 right-4 text-secondary hover:text-on-surface p-1 rounded-full transition-colors" onclick="document.getElementById('emptyStateModal').classList.add('hidden');" type="button">
-<span class="material-symbols-outlined text-xl">close</span>
-</button>
-<div class="flex flex-col items-center text-center space-y-space-md">
-<!-- Botanical Vector Minimal Illustration -->
-<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-primary">
-<svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
-<path d="M12 21a9 9 0 100-18 9 9 0 000 18z" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M12 3v18" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M12 12c-4 0-7-2-7-5s3-5 7-5 7 2 7 5-3 5-7 5z" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-</div>
-<div class="space-y-space-xs max-w-lg">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary">No Exact Matches Found</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">No sanctuary silhouettes match this search</h3>
-<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
-            Luvora curates only pure natural island fibers, Dumbara handlooms, and ethical Ceylon sapphires. We do not stock synthetic mass-market textiles or nylon outerwear.
-          </p>
-</div>
-<!-- Curated Discovery Path -->
-<div class="w-full bg-surface-container-low p-space-md rounded-xl text-left space-y-2">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Alternative artisanal collections to explore:</span>
-<div class="flex flex-wrap gap-2 pt-1">
-<a class="bg-surface-container-lowest text-on-surface hover:text-primary font-body-sm text-body-sm px-space-sm py-1 rounded-full shadow-sm transition-colors" href="{{ route('shop.index') }}">Handloom Cotton Kimono</a>
-<a class="bg-surface-container-lowest text-on-surface hover:text-primary font-body-sm text-body-sm px-space-sm py-1 rounded-full shadow-sm transition-colors" href="{{ route('shop.index') }}">Dumbara Pure Linen Kaftan</a>
-<a class="bg-surface-container-lowest text-on-surface hover:text-primary font-body-sm text-body-sm px-space-sm py-1 rounded-full shadow-sm transition-colors" href="{{ route('shop.index') }}">Ratnapura Sapphire Solitaire</a>
-</div>
-</div>
-<!-- Dual Action Buttons -->
-<div class="flex flex-col sm:flex-row items-center gap-space-sm w-full pt-space-xs">
-<a class="w-full sm:w-1/2 bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider py-3 rounded-full hover:bg-primary-container text-center transition-colors shadow-sm" href="{{ route('shop.index') }}">
-            Explore All Handlooms &amp; Silks
-          </a>
-<button class="w-full sm:w-1/2 bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase tracking-wider py-3 rounded-full hover:bg-surface-container-highest transition-colors" onclick="document.getElementById('emptyStateModal').classList.add('hidden');" type="button">
-            Speak with VIP Concierge
-          </button>
-</div>
-</div>
-</div>
-</div>
 <!-- Interactive Grid View Switching Script -->
 <script>
     const gridDenseBtn = document.getElementById('gridDenseBtn');
