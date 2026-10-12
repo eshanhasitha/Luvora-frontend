@@ -6,3 +6,32 @@
 @theme {
     --font-sans: ui-sans-serif, system-ui, sans-serif;
 }
+
+/* Keep page and nested scroll areas visible, with a subtle Luvora blue thumb. */
+html {
+    scrollbar-color: #8aa9cb #edf1f5;
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #edf1f5;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #8aa9cb;
+    border: 2px solid #edf1f5;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5b7fa8;
+}
+
+::-webkit-scrollbar-corner {
+    background: #edf1f5;
+}
