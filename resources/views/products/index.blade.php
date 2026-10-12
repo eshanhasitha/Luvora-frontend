@@ -196,9 +196,11 @@
 <!-- Size Filter Pills -->
 <div class="space-y-space-xs pt-space-xs">
 <span class="font-label-md text-label-md uppercase tracking-wider font-semibold text-on-surface block">Size</span>
-<div class="grid grid-cols-4 gap-1.5">
+<div class="grid w-full grid-cols-4 gap-1.5">
 @foreach(array_unique(array_merge(['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Free Size'], array_keys($filterCounts['sizes'] ?? []))) as $size)
-<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high peer-checked:bg-primary peer-checked:text-on-primary transition-colors relative cursor-pointer" title="{{ $filterCounts['sizes'][$size] ?? 0 }} products"><input class="peer sr-only" type="checkbox" name="size[]" value="{{ $size }}" @checked(in_array($size, (array) ($filters['size'] ?? [])))><span>{{ $size }}</span></label>
+<label class="relative flex min-h-11 w-full items-center justify-center rounded-lg bg-surface-container px-2 text-center font-label-sm text-label-sm text-on-surface transition-colors hover:bg-surface-container-high has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary {{ $size === 'Free Size' ? 'col-span-3' : '' }}" title="{{ $filterCounts['sizes'][$size] ?? 0 }} products">
+<input class="absolute inset-0 h-full w-full cursor-pointer opacity-0" aria-label="Size {{ $size }}" type="radio" name="size[]" value="{{ $size }}" @checked(in_array($size, (array) ($filters['size'] ?? [])))>
+<span class="whitespace-nowrap">{{ $size }}</span></label>
 @endforeach
 </div>
 </div>
@@ -363,6 +365,38 @@
 <!-- Interactive JavaScript for Grid Density & Micro-interactions -->
 <script>
     (function() {
+      const minRange = document.querySelector('[data-price-min]');
+      const maxRange = document.querySelector('[data-price-max]');
+      const minValue = document.querySelector('[data-price-min-value]');
+      const maxValue = document.querySelector('[data-price-max-value]');
+      const rangeLabel = document.querySelector('[data-price-range-label]');
+      const rangeFill = document.querySelector('[data-price-range-fill]');
+      const priceForm = minRange?.closest('form');
+      if (minRange && maxRange && minValue && maxValue && rangeLabel && rangeFill) {
+        const boundsMin = Number(minRange.min);
+        const boundsMax = Number(minRange.max);
+        const formatPrice = value => `LKR ${new Intl.NumberFormat().format(value)}`;
+        const updateRange = changed => {
+          let min = Number(minRange.value);
+          let max = Number(maxRange.value);
+          if (min > max) {
+            if (changed === minRange) min = max;
+            else max = min;
+          }
+          minRange.value = min;
+          maxRange.value = max;
+          minValue.value = min > boundsMin ? min : '';
+          maxValue.value = max < boundsMax ? max : '';
+          rangeLabel.textContent = `${formatPrice(min)} – ${new Intl.NumberFormat().format(max)}`;
+          const span = Math.max(1, boundsMax - boundsMin);
+          rangeFill.style.left = `${((min - boundsMin) / span) * 100}%`;
+          rangeFill.style.width = `${((max - min) / span) * 100}%`;
+        };
+        updateRange();
+        minRange.addEventListener('input', () => updateRange(minRange));
+        maxRange.addEventListener('input', () => updateRange(maxRange));
+        priceForm?.addEventListener('submit', () => updateRange());
+      }
       const btn4 = document.getElementById('viewGrid4Btn');
       const btn3 = document.getElementById('viewGrid3Btn');
       const grid = document.getElementById('productCatalogGrid');

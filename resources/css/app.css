@@ -43,6 +43,13 @@ html {
     appearance: none;
     background: transparent;
     pointer-events: none;
+    z-index: 2;
+}
+
+[data-price-range-fill] {
+    left: 0;
+    width: 100%;
+    z-index: 1;
 }
 
 .price-range-thumb::-webkit-slider-thumb {

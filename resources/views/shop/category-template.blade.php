@@ -250,13 +250,15 @@
 <h3 class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Atelier Sizing</h3>
 <a class="font-label-sm text-label-sm text-primary hover:underline" href="{{ route('customer-care.size-guide') }}">Size Chart</a>
 </div>
-<div class="grid grid-cols-4 gap-space-xs">
-<label class="py-2 text-center rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface hover:bg-surface-container-high transition-colors relative cursor-pointer peer-checked:bg-primary peer-checked:text-on-primary"><input class="peer sr-only" name="size[]" value="XS" type="checkbox" @checked(in_array('XS', (array) ($filters['size'] ?? [])))><span>XS</span></label>
-<label class="py-2 text-center rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md shadow-sm relative cursor-pointer peer-checked:bg-primary peer-checked:text-on-primary"><input class="peer sr-only" name="size[]" value="S" type="checkbox" @checked(in_array('S', (array) ($filters['size'] ?? [])))><span>S</span></label>
-<label class="py-2 text-center rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface hover:bg-surface-container-high transition-colors relative cursor-pointer peer-checked:bg-primary peer-checked:text-on-primary"><input class="peer sr-only" name="size[]" value="M" type="checkbox" @checked(in_array('M', (array) ($filters['size'] ?? [])))><span>M</span></label>
-<label class="py-2 text-center rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface hover:bg-surface-container-high transition-colors relative cursor-pointer peer-checked:bg-primary peer-checked:text-on-primary"><input class="peer sr-only" name="size[]" value="L" type="checkbox" @checked(in_array('L', (array) ($filters['size'] ?? [])))><span>L</span></label>
-<label class="py-2 text-center rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface hover:bg-surface-container-high transition-colors relative cursor-pointer peer-checked:bg-primary peer-checked:text-on-primary"><input class="peer sr-only" name="size[]" value="XL" type="checkbox" @checked(in_array('XL', (array) ($filters['size'] ?? [])))><span>XL</span></label>
-<label class="col-span-3 py-2 text-center rounded-lg bg-surface-container-low font-label-sm text-label-sm text-on-surface uppercase tracking-wider hover:bg-surface-container-high transition-colors relative cursor-pointer peer-checked:bg-primary peer-checked:text-on-primary"><input class="peer sr-only" name="size[]" value="custom" type="checkbox" @checked(in_array('custom', (array) ($filters['size'] ?? [])))><span>Custom Bespoke</span></label>
+<div class="grid w-full grid-cols-4 gap-space-xs">
+@foreach (['XS', 'S', 'M', 'L', 'XL'] as $size)
+<label class="relative flex min-h-10 w-full items-center justify-center cursor-pointer rounded-lg bg-surface-container-low text-center font-label-md text-label-md text-on-surface transition-colors hover:bg-surface-container-high has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary">
+<input class="absolute inset-0 h-full w-full cursor-pointer opacity-0" aria-label="Size {{ $size }}" name="size[]" value="{{ $size }}" type="radio" @checked(in_array($size, (array) ($filters['size'] ?? [])))>
+<span>{{ $size }}</span></label>
+@endforeach
+<label class="relative col-span-3 flex min-h-10 w-full items-center justify-center cursor-pointer rounded-lg bg-surface-container-low text-center font-label-sm text-label-sm uppercase tracking-wider text-on-surface transition-colors hover:bg-surface-container-high has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary">
+<input class="absolute inset-0 h-full w-full cursor-pointer opacity-0" aria-label="Custom bespoke size" name="size[]" value="custom" type="radio" @checked(in_array('custom', (array) ($filters['size'] ?? [])))>
+<span>Custom Bespoke</span></label>
 </div>
 </div>
 <!-- Color Palette Palette Swatches -->
