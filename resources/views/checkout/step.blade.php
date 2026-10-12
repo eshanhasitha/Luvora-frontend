@@ -21,7 +21,7 @@
     $paymentMethod = $checkout['payment'] ?? 'card';
 @endphp
 <div class="bg-ink px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-wider text-white">Island-wide Sri Lanka Express Delivery · Free shipping over LKR 15,000</div>
-<header class="border-b border-slate-200 bg-white"><div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8"><a href="{{ route('home') }}" class="flex items-center gap-3"><img src="{{ asset('images/logo.png') }}" alt="Luvora" class="h-10 w-auto"></a><a href="{{ route('cart.index') }}" class="text-xs font-semibold uppercase tracking-wider text-slate-600 hover:text-primary">← Sanctuary bag ({{ count($items) }})</a><span class="hidden items-center gap-2 text-xs font-semibold uppercase tracking-wider text-tertiary sm:flex"><span class="material-symbols-outlined text-base">lock</span> Secure checkout</span></div></header>
+<header class="border-b border-slate-200 bg-white"><div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8"><a href="{{ route('home') }}" class="flex items-center gap-3"><span class="font-serif text-3xl font-medium tracking-tight text-[#191c1e]" style="font-family: 'Bodoni Moda', Georgia, serif">Luvora</span></a><a href="{{ route('cart.index') }}" class="text-xs font-semibold uppercase tracking-wider text-slate-600 hover:text-primary">← Sanctuary bag ({{ count($items) }})</a><span class="hidden items-center gap-2 text-xs font-semibold uppercase tracking-wider text-tertiary sm:flex"><span class="material-symbols-outlined text-base">lock</span> Secure checkout</span></div></header>
 <main class="mx-auto max-w-7xl px-5 py-8 lg:px-8">
     <div class="mb-7"><p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Checkout · Step {{ sprintf('%02d', $stepNumber) }}</p><h1 class="mt-2 font-display text-4xl sm:text-5xl">{{ $stepNames[$step] }}</h1><p class="mt-2 text-sm text-slate-500">Review your details and continue through checkout.</p></div>
     @if ($errors->any())<div class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">Please check the highlighted details and try again.</div>@endif
@@ -73,5 +73,6 @@
         </aside>
     </div>
 </main>
-@include('partials.site-footer')</body>
+@include('partials.site-footer')@include('partials.scroll-reveal-script')</body>
 </html>
+

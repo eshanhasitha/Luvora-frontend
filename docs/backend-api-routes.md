@@ -26,7 +26,7 @@ API origin: `LUVORA_API_URL`. Authenticated calls use `Authorization: Bearer <ac
 
 | Method | Endpoint | Frontend status |
 |---|---|---|
-| `GET` | `/api/products` | Connected for catalog, categories, search, collections, and gift guide. The client requests 100 records per page and collects all returned pages so existing filters can run on the full catalog. Backend query filters supported: `search`, `categoryId`, `minPrice`, `maxPrice`, `page`, `pageSize`. |
+| `GET` | `/api/products` | Connected for catalog, categories, search, collections, and gift guide. The storefront requests 100 records per API page, collects the API-reported pages for catalog filtering, then paginates filtered catalog results at 12 products per storefront page. It accepts common `products`/`items` response envelopes and displays counts from the loaded, filtered results. Backend query filters supported: `search`, `categoryId`, `minPrice`, `maxPrice`, `page`, `pageSize`. |
 | `GET` | `/api/products/{product-guid}` | Connected for product detail, cart item metadata, availability, compare, and recently viewed. |
 | `GET` | `/api/products/{slug}` or `/api/products/slug/{slug}` | Connected for product detail and review lookup by slug. |
 | `POST` / `PUT` / `DELETE` | `/api/products` and `/api/products/{product-guid}` | Staff/admin product management endpoints; the storefront currently has no staff product editor calling these routes. |

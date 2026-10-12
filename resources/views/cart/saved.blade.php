@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-[#f7f8fa] font-['Inter'] text-[#191c1e]">
-<header class="border-b border-slate-200 bg-white"><div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8"><a href="{{ route('home') }}" class="flex items-center gap-3"><img src="{{ asset('images/logo.png') }}" alt="Luvora" class="h-10 w-auto"></a><nav class="flex items-center gap-5 text-sm"><a href="{{ route('shop.index') }}" class="text-slate-600 hover:text-blue-700">Continue shopping</a><a href="{{ route('cart.index') }}" class="font-semibold text-blue-700">Shopping bag</a></nav></div></header>
+<header class="border-b border-slate-200 bg-white"><div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8"><a href="{{ route('home') }}" class="flex items-center gap-3"><span class="font-serif text-3xl font-medium tracking-tight text-[#191c1e]" style="font-family: 'Bodoni Moda', Georgia, serif">Luvora</span></a><nav class="flex items-center gap-5 text-sm"><a href="{{ route('shop.index') }}" class="text-slate-600 hover:text-blue-700">Continue shopping</a><a href="{{ route('cart.index') }}" class="font-semibold text-blue-700">Shopping bag</a></nav></div></header>
 <main class="mx-auto max-w-7xl px-5 py-10 lg:px-8">
 <div class="mb-8 text-sm text-slate-500"><a href="{{ route('cart.index') }}" class="hover:text-blue-700">Shopping bag</a><span class="mx-2">/</span><span class="text-slate-900">Saved for later</span></div>
 <div class="mb-8"><p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">Your selections</p><h1 class="font-['Bodoni_Moda'] text-4xl sm:text-5xl">Saved for later</h1><p class="mt-3 text-sm text-slate-500">Items you save in this browser will appear here.</p></div>
@@ -24,5 +24,5 @@ function renderSaved(){const items=readSaved();document.getElementById('saved-em
 document.addEventListener('click',event=>{const button=event.target.closest('[data-remove-saved]');if(!button)return;const items=readSaved();items.splice(Number(button.dataset.removeSaved),1);localStorage.setItem(savedKey,JSON.stringify(items));renderSaved()});
 renderSaved();
 </script>
-</body>
+@include('partials.scroll-reveal-script')</body>
 </html>

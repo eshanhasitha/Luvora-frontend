@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Product Availability | Luvora</title><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script></head>
 <body class="min-h-screen bg-[#f7f9fb] font-['Plus_Jakarta_Sans'] text-[#191c1e]">
 @php
@@ -14,4 +14,4 @@
 @else<div class="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700">No inventory record is available for this product yet. Availability cannot be confirmed.</div>@endif
 <p class="mt-5 text-xs leading-5 text-slate-500">Availability can change. This status reflects the latest inventory record returned by the service.</p><a href="{{ route('customer-care.contact') }}" class="mt-6 inline-flex rounded-full border border-blue-700 px-5 py-3 text-sm font-semibold text-blue-700">Ask customer care</a></section></main>
 @include('partials.site-footer')
-</body></html>
+@include('partials.scroll-reveal-script')</body></html>

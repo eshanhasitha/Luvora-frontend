@@ -26,4 +26,4 @@
     @else
         <div class="mt-7 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center"><span class="material-symbols-outlined text-4xl text-slate-400">compare_arrows</span><h2 class="mt-3 font-['Bodoni_Moda'] text-2xl">Nothing to compare yet</h2><p class="mx-auto mt-2 max-w-md text-sm text-slate-500">Add products from their detail pages and compare their available price, category, and stock information here.</p><a href="{{ route('shop.index') }}" class="mt-6 inline-flex rounded-full bg-[#005baf] px-6 py-3 text-sm font-semibold text-white">Explore the shop</a></div>
     @endif
-</main>@include('partials.site-footer')</body></html>
+</main>@include('partials.site-footer')@include('partials.scroll-reveal-script')</body></html>

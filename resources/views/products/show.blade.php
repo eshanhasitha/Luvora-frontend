@@ -59,5 +59,5 @@
         </section>
     </div>
 </main>
-@include('partials.site-footer')</body>
+@include('partials.site-footer')@include('partials.scroll-reveal-script')</body>
 </html>

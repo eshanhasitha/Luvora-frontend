@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 
 <html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>@vite('resources/css/app.css')<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-fixed":"#6ffbbe","surface":"#f7f9fb","secondary-fixed":"#dae2fd","surface-container-high":"#e6e8ea","on-background":"#191c1e","secondary-container":"#dae2fd","tertiary":"#006947","inverse-on-surface":"#eff1f3","surface-container-low":"#f2f4f6","on-tertiary-container":"#f5fff6","surface-tint":"#005eb3","surface-container-lowest":"#ffffff","outline":"#717785","on-tertiary":"#ffffff","on-tertiary-fixed":"#002113","on-secondary-fixed":"#131b2e","surface-bright":"#f7f9fb","surface-dim":"#d8dadc","primary":"#005baf","outline-variant":"#c0c6d6","primary-fixed":"#d5e3ff","primary-fixed-dim":"#a8c8ff","error-container":"#ffdad6","on-primary-fixed":"#001b3c","on-error":"#ffffff","secondary":"#565e74","primary-container":"#0074db","on-error-container":"#93000a","on-primary-container":"#fefcff","on-surface-variant":"#404754","surface-container-highest":"#e0e3e5","on-surface":"#191c1e","tertiary-container":"#00855b","on-tertiary-fixed-variant":"#005236","secondary-fixed-dim":"#bec6e0","surface-container":"#eceef0","on-secondary-fixed-variant":"#3f465c","error":"#ba1a1a","on-secondary-container":"#5c647a","inverse-surface":"#2d3133","surface-variant":"#e0e3e5","background":"#f7f9fb","on-primary":"#ffffff","tertiary-fixed-dim":"#4edea3","on-secondary":"#ffffff","on-primary-fixed-variant":"#004689","inverse-primary":"#a8c8ff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-lg":"1.5rem","gutter":"1.5rem","space-sm":"0.5rem","margin-lg":"4rem","space-xs":"0.25rem","gutter-sm":"1rem","margin":"1.5rem","space-xl":"2.5rem","gutter-lg":"2rem","space-md":"1rem","margin-sm":"1rem"},"fontFamily":{"label-sm":["Inter"],"display-hero":["Bodoni Moda"],"body-sm":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Bodoni Moda"],"label-lg":["Inter"],"body-md":["Plus Jakarta Sans"],"headline-md":["Bodoni Moda"],"label-md":["Inter"],"display-hero-mobile":["Bodoni Moda"],"headline-lg-mobile":["Bodoni Moda"]},"fontSize":{"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"600"}],"display-hero":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"headline-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.01em","fontWeight":"500"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.02em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"22px","fontWeight":"400"}],"headline-md":["28px",{"lineHeight":"34px","fontWeight":"500"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"500"}],"display-hero-mobile":["38px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["30px",{"lineHeight":"36px","letterSpacing":"0em","fontWeight":"500"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-on-background text-surface-container-lowest py-space-xs px-gutter-sm text-center"><div class="max-w-7xl mx-auto flex items-center justify-center gap-space-sm"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">local_shipping</span><p class="font-label-sm text-label-sm tracking-wider uppercase">Island-wide Sri Lanka Express Delivery | Free shipping over LKR 15,000 | Colombo Same-Day Available</p></div></div><div class="h-28 max-w-7xl mx-auto px-gutter lg:px-gutter-lg flex flex-col justify-between pt-space-sm pb-space-xs"><div class="flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="home" href="{{ route('home') }}"><img alt="Luvora Brand Logo" class="h-10 w-auto object-contain" src="{{ asset('images/logo.png') }}"/></a></div><div class="hidden md:flex flex-1 max-w-xl mx-space-lg"><div class="relative w-full flex items-center bg-surface-container-low rounded-full px-space-md py-space-xs focus-within:ring-2 focus-within:ring-primary focus-within:bg-surface-container-lowest transition-all"><span class="material-symbols-outlined text-secondary mr-space-sm text-lg">search</span><input class="w-full bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-secondary" placeholder="Search Ceylon sapphire jewelry, handloom silks, bespoke couture..." type="text"/><span class="font-label-sm text-label-sm text-secondary bg-surface-container-high px-space-xs py-0.5 rounded uppercase">Auto</span></div></div><div class="flex items-center gap-space-md"><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="wishlist" href="{{ route('wishlist.index') }}"><span class="material-symbols-outlined">favorite</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]" data-wishlist-count>0</span></a><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="cart" href="{{ route('cart.index') }}"><span class="material-symbols-outlined">shopping_bag</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]">{{ count(session("cart_items", [])) }}</span></a><div class="flex items-center gap-space-xs pl-space-xs">@include('partials.profile-link')</div></div></div>@include('partials.category-nav')</div></header><main class="w-full bg-surface min-h-screen"><div class="flex flex-col w-full">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>@vite('resources/css/app.css')<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary-fixed":"#6ffbbe","surface":"#f7f9fb","secondary-fixed":"#dae2fd","surface-container-high":"#e6e8ea","on-background":"#191c1e","secondary-container":"#dae2fd","tertiary":"#006947","inverse-on-surface":"#eff1f3","surface-container-low":"#f2f4f6","on-tertiary-container":"#f5fff6","surface-tint":"#005eb3","surface-container-lowest":"#ffffff","outline":"#717785","on-tertiary":"#ffffff","on-tertiary-fixed":"#002113","on-secondary-fixed":"#131b2e","surface-bright":"#f7f9fb","surface-dim":"#d8dadc","primary":"#005baf","outline-variant":"#c0c6d6","primary-fixed":"#d5e3ff","primary-fixed-dim":"#a8c8ff","error-container":"#ffdad6","on-primary-fixed":"#001b3c","on-error":"#ffffff","secondary":"#565e74","primary-container":"#0074db","on-error-container":"#93000a","on-primary-container":"#fefcff","on-surface-variant":"#404754","surface-container-highest":"#e0e3e5","on-surface":"#191c1e","tertiary-container":"#00855b","on-tertiary-fixed-variant":"#005236","secondary-fixed-dim":"#bec6e0","surface-container":"#eceef0","on-secondary-fixed-variant":"#3f465c","error":"#ba1a1a","on-secondary-container":"#5c647a","inverse-surface":"#2d3133","surface-variant":"#e0e3e5","background":"#f7f9fb","on-primary":"#ffffff","tertiary-fixed-dim":"#4edea3","on-secondary":"#ffffff","on-primary-fixed-variant":"#004689","inverse-primary":"#a8c8ff"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-lg":"1.5rem","gutter":"1.5rem","space-sm":"0.5rem","margin-lg":"4rem","space-xs":"0.25rem","gutter-sm":"1rem","margin":"1.5rem","space-xl":"2.5rem","gutter-lg":"2rem","space-md":"1rem","margin-sm":"1rem"},"fontFamily":{"label-sm":["Inter"],"display-hero":["Bodoni Moda"],"body-sm":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Bodoni Moda"],"label-lg":["Inter"],"body-md":["Plus Jakarta Sans"],"headline-md":["Bodoni Moda"],"label-md":["Inter"],"display-hero-mobile":["Bodoni Moda"],"headline-lg-mobile":["Bodoni Moda"]},"fontSize":{"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"600"}],"display-hero":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"headline-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.01em","fontWeight":"500"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.02em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"22px","fontWeight":"400"}],"headline-md":["28px",{"lineHeight":"34px","fontWeight":"500"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"500"}],"display-hero-mobile":["38px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-lg-mobile":["30px",{"lineHeight":"36px","letterSpacing":"0em","fontWeight":"500"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-on-background text-surface-container-lowest py-space-xs px-gutter-sm text-center"><div class="max-w-7xl mx-auto flex items-center justify-center gap-space-sm"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">local_shipping</span><p class="font-label-sm text-label-sm tracking-wider uppercase">Island-wide Sri Lanka Express Delivery | Free shipping over LKR 15,000 | Colombo Same-Day Available</p></div></div><div class="h-28 max-w-7xl mx-auto px-gutter lg:px-gutter-lg flex flex-col justify-between pt-space-sm pb-space-xs"><div class="flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="home" href="{{ route('home') }}"><span class="font-serif text-3xl font-medium tracking-tight text-[#191c1e]" style="font-family: 'Bodoni Moda', Georgia, serif">Luvora</span></a></div><div class="hidden md:flex flex-1 max-w-xl mx-space-lg"><div class="relative w-full flex items-center bg-surface-container-low rounded-full px-space-md py-space-xs focus-within:ring-2 focus-within:ring-primary focus-within:bg-surface-container-lowest transition-all"><span class="material-symbols-outlined text-secondary mr-space-sm text-lg">search</span><input class="w-full bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-secondary" placeholder="Search Ceylon sapphire jewelry, handloom silks, bespoke couture..." type="text"/><span class="font-label-sm text-label-sm text-secondary bg-surface-container-high px-space-xs py-0.5 rounded uppercase">Auto</span></div></div><div class="flex items-center gap-space-md"><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="wishlist" href="{{ route('wishlist.index') }}"><span class="material-symbols-outlined">favorite</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]" data-wishlist-count>0</span></a><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="cart" href="{{ route('cart.index') }}"><span class="material-symbols-outlined">shopping_bag</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]">{{ count(session("cart_items", [])) }}</span></a><div class="flex items-center gap-space-xs pl-space-xs">@include('partials.profile-link')</div></div></div>@include('partials.category-nav')</div></header><main class="w-full bg-surface min-h-screen"><div class="flex flex-col w-full">
 <!-- Top Collection Header & Breadcrumbs -->
 <section class="w-full bg-surface-container-lowest shadow-sm">
 <div class="max-w-7xl mx-auto px-gutter lg:px-gutter-lg pt-space-md pb-space-lg">
@@ -27,14 +27,14 @@
 <!-- Live Quick Stats pill -->
 <div class="flex items-center gap-space-sm self-start lg:self-end bg-surface-container-low px-space-md py-space-xs rounded-full">
 <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
-<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">{{ count($products) }} Artisan Pieces Available</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">{{ $productsTotalCount ?? count($products) }} Artisan Pieces Available</span>
 </div>
 </div>
 <!-- Sticky Utility Control Bar -->
 <section class="relative w-full bg-surface-container-low shadow-[0_1px_4px_rgba(0,0,0,0.03)]">
 <div class="max-w-7xl mx-auto px-gutter lg:px-gutter-lg py-space-xs flex flex-wrap items-center justify-between gap-space-md">
 <!-- Item Counter -->
-<div class="flex items-center gap-space-sm"><span class="font-body-sm text-body-sm text-secondary">Showing <span class="font-semibold text-on-surface">{{ count($products) }}</span> products</span></div>
+<div class="flex items-center gap-space-sm"><span class="font-body-sm text-body-sm text-secondary">Showing <span class="font-semibold text-on-surface">{{ count($products) ? (($productsCurrentPage - 1) * $productsPerPage + 1) . '–' . (($productsCurrentPage - 1) * $productsPerPage + count($products)) : 0 }}</span> of <span class="font-semibold text-on-surface">{{ $productsTotalCount ?? count($products) }}</span> products</span></div>
 <!-- Controls: Grid Density & Sorting -->
 <div class="flex items-center gap-space-md">
 <!-- View Toggle (Desktop) -->
@@ -76,7 +76,7 @@
 <span class="material-symbols-outlined text-primary text-lg">tune</span>
 <h2 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface font-bold">Filters</h2>
 </div>
-<span class="font-label-sm text-label-sm text-secondary">4 Active</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ collect($filters ?? [])->except(["page", "sort"])->filter(fn ($value) => is_array($value) ? count($value) > 0 : $value !== null && $value !== "" && $value !== false)->count() }} Active</span>
 </div>
 <!-- Category Accordion -->
 <div class="space-y-space-xs">
@@ -90,48 +90,42 @@
 <input name="categories[]" value="women" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('women', (array) ($filters['categories'] ?? [])))>
 <span>Women's Couture</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">64</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['categories']['women'] ?? 0 }}</span>
 </label>
-<div class="pl-5 space-y-1 text-secondary text-xs">
-<div class="hover:text-on-surface cursor-pointer">• Handloom Sarees (28)</div>
-<div class="hover:text-on-surface cursor-pointer">• Linen Wrap Dresses (18)</div>
-<div class="hover:text-on-surface cursor-pointer">• Silk Blouses (12)</div>
-<div class="hover:text-on-surface cursor-pointer">• Resort Kaftans (6)</div>
-</div>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer py-0.5">
 <span class="flex items-center gap-2">
 <input name="categories[]" value="men" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('men', (array) ($filters['categories'] ?? [])))>
 <span>Men's Tailoring</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">42</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['categories']['men'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer py-0.5">
 <span class="flex items-center gap-2">
 <input name="categories[]" value="jewelry" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('jewelry', (array) ($filters['categories'] ?? [])))>
 <span>Ceylon Fine Jewelry</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">35</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['categories']['jewelry'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer py-0.5">
 <span class="flex items-center gap-2">
 <input name="categories[]" value="bags" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('bags', (array) ($filters['categories'] ?? [])))>
 <span>Artisan Leather &amp; Bags</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">19</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['categories']['bags'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer py-0.5">
 <span class="flex items-center gap-2">
 <input name="categories[]" value="kids" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('kids', (array) ($filters['categories'] ?? [])))>
 <span>Kids &amp; Festive Wear</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">28</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['categories']['kids'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer py-0.5">
 <span class="flex items-center gap-2">
 <input name="categories[]" value="shoes" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('shoes', (array) ($filters['categories'] ?? [])))>
 <span>Minimal Footwear</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">18</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['categories']['shoes'] ?? 0 }}</span>
 </label>
 </div>
 </div>
@@ -139,15 +133,18 @@
 <div class="space-y-space-xs pt-space-xs">
 <div class="flex items-center justify-between text-on-surface">
 <span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Price (LKR)</span>
-<span class="font-label-sm text-label-sm text-primary font-bold">LKR 2,500 - 85,000</span>
+<span class="font-label-sm text-label-sm text-primary font-bold" data-price-range-label>LKR {{ number_format((float) ($filters['min_price'] ?? $priceBounds['min'] ?? 0)) }} - {{ number_format((float) ($filters['max_price'] ?? $priceBounds['max'] ?? 85000)) }}</span>
 </div>
 <!-- Dual Visual Range Bar -->
-<div class="py-2">
-<div class="w-full bg-surface-container h-1.5 rounded-full relative">
-<div class="absolute left-[5%] right-[25%] bg-primary h-1.5 rounded-full"></div>
-<div class="absolute left-[5%] top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-surface-container-lowest rounded-full shadow border-2 border-primary cursor-pointer"></div>
-<div class="absolute right-[25%] top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-surface-container-lowest rounded-full shadow border-2 border-primary cursor-pointer"></div>
+<div class="py-2 px-1">
+<div class="relative h-6 flex items-center">
+<div class="absolute inset-x-0 h-1.5 bg-surface-container rounded-full"></div>
+<div class="absolute h-1.5 bg-primary rounded-full" data-price-range-fill></div>
+<input aria-label="Minimum price" class="price-range-thumb absolute inset-x-0 w-full" type="range" min="{{ $priceBounds['min'] ?? 0 }}" max="{{ $priceBounds['max'] ?? 85000 }}" step="500" value="{{ $filters['min_price'] ?? $priceBounds['min'] ?? 0 }}" data-price-min>
+<input aria-label="Maximum price" class="price-range-thumb absolute inset-x-0 w-full" type="range" min="{{ $priceBounds['min'] ?? 0 }}" max="{{ $priceBounds['max'] ?? 85000 }}" step="500" value="{{ $filters['max_price'] ?? $priceBounds['max'] ?? 85000 }}" data-price-max>
 </div>
+<input type="hidden" name="min_price" value="{{ $filters['min_price'] ?? '' }}" data-price-min-value>
+<input type="hidden" name="max_price" value="{{ $filters['max_price'] ?? '' }}" data-price-max-value>
 </div>
 <!-- Price quick bracket selector -->
 <div class="space-y-1 pt-1 text-body-sm text-body-sm">
@@ -156,28 +153,28 @@
 <input name="price_bracket" value="under-10000" class="accent-primary" type="radio" @checked(($filters['price_bracket'] ?? '') === 'under-10000')/>
 <span>Under LKR 10,000</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">34</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['price_brackets']['under-10000'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
 <span class="flex items-center gap-2">
 <input name="price_bracket" value="10000-25000" class="accent-primary" type="radio" @checked(($filters['price_bracket'] ?? '') === '10000-25000')/>
 <span>LKR 10,000 – 25,000</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">68</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['price_brackets']['10000-25000'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
 <span class="flex items-center gap-2">
 <input name="price_bracket" value="25000-50000" class="accent-primary" type="radio" @checked(($filters['price_bracket'] ?? '') === '25000-50000')/>
 <span>LKR 25,000 – 50,000</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">32</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['price_brackets']['25000-50000'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
 <span class="flex items-center gap-2">
 <input name="price_bracket" value="over-50000" class="accent-primary" type="radio" @checked(($filters['price_bracket'] ?? '') === 'over-50000')/>
 <span>Above LKR 50,000</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">14</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['price_brackets']['over-50000'] ?? 0 }}</span>
 </label>
 </div>
 </div>
@@ -185,93 +182,45 @@
 <div class="space-y-space-xs pt-space-xs">
 <span class="font-label-md text-label-md uppercase tracking-wider font-semibold text-on-surface block">Artisan Guild</span>
 <div class="space-y-1.5 text-body-sm text-body-sm">
+@foreach(array_unique(array_merge(['Luvora Signature', 'Galle Fort Artisans', 'Dumbara Weaves', 'Ceylon Gem Lab', 'Colombo Resort Co.'], array_keys($filterCounts['brands'] ?? []))) as $brand)
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
 <span class="flex items-center gap-2">
-<input name="brand[]" value="Luvora Signature" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Luvora Signature', (array) ($filters['brand'] ?? [])))>
-<span>Luvora Signature</span>
+<input name="brand[]" value="{{ $brand }}" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array($brand, (array) ($filters['brand'] ?? [])))>
+<span>{{ $brand }}</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">48</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['brands'][$brand] ?? 0 }}</span>
 </label>
-<label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
-<span class="flex items-center gap-2">
-<input name="brand[]" value="Galle Fort Artisans" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Galle Fort Artisans', (array) ($filters['brand'] ?? [])))>
-<span>Galle Fort Artisans</span>
-</span>
-<span class="font-label-sm text-label-sm text-secondary">26</span>
-</label>
-<label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
-<span class="flex items-center gap-2">
-<input name="brand[]" value="Dumbara Weaves" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Dumbara Weaves', (array) ($filters['brand'] ?? [])))>
-<span>Dumbara Weaves</span>
-</span>
-<span class="font-label-sm text-label-sm text-secondary">19</span>
-</label>
-<label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
-<span class="flex items-center gap-2">
-<input name="brand[]" value="Ceylon Gem Lab" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Ceylon Gem Lab', (array) ($filters['brand'] ?? [])))>
-<span>Ceylon Gem Lab</span>
-</span>
-<span class="font-label-sm text-label-sm text-secondary">22</span>
-</label>
-<label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
-<span class="flex items-center gap-2">
-<input name="brand[]" value="Colombo Resort Co." class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Colombo Resort Co.', (array) ($filters['brand'] ?? [])))>
-<span>Colombo Resort Co.</span>
-</span>
-<span class="font-label-sm text-label-sm text-secondary">33</span>
-</label>
+@endforeach
 </div>
 </div>
 <!-- Size Filter Pills -->
 <div class="space-y-space-xs pt-space-xs">
 <span class="font-label-md text-label-md uppercase tracking-wider font-semibold text-on-surface block">Size</span>
 <div class="grid grid-cols-4 gap-1.5">
-<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high peer-checked:bg-primary peer-checked:text-on-primary transition-colors relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="size[]" value="XS" @checked(in_array('XS', (array) ($filters['size'] ?? [])))><span>XS</span></label>
-<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="size[]" value="S" @checked(in_array('S', (array) ($filters['size'] ?? [])))><span>S</span></label>
-<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high peer-checked:bg-primary peer-checked:text-on-primary transition-colors relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="size[]" value="M" @checked(in_array('M', (array) ($filters['size'] ?? [])))><span>M</span></label>
-<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="size[]" value="L" @checked(in_array('L', (array) ($filters['size'] ?? [])))><span>L</span></label>
-<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high peer-checked:bg-primary peer-checked:text-on-primary transition-colors relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="size[]" value="XL" @checked(in_array('XL', (array) ($filters['size'] ?? [])))><span>XL</span></label>
-<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high peer-checked:bg-primary peer-checked:text-on-primary transition-colors relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="size[]" value="XXL" @checked(in_array('XXL', (array) ($filters['size'] ?? [])))><span>XXL</span></label>
-<label class="col-span-2 py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high transition-colors relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="size[]" value="Free Size" @checked(in_array('Free Size', (array) ($filters['size'] ?? [])))><span>Free Size</span></label>
+@foreach(array_unique(array_merge(['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Free Size'], array_keys($filterCounts['sizes'] ?? []))) as $size)
+<label class="py-1 text-center font-label-sm text-label-sm rounded bg-surface-container hover:bg-surface-container-high peer-checked:bg-primary peer-checked:text-on-primary transition-colors relative cursor-pointer" title="{{ $filterCounts['sizes'][$size] ?? 0 }} products"><input class="peer sr-only" type="checkbox" name="size[]" value="{{ $size }}" @checked(in_array($size, (array) ($filters['size'] ?? [])))><span>{{ $size }}</span></label>
+@endforeach
 </div>
 </div>
 <!-- Color Swatches -->
 <div class="space-y-space-xs pt-space-xs">
 <span class="font-label-md text-label-md uppercase tracking-wider font-semibold text-on-surface block">Island Color Palette</span>
 <div class="flex flex-wrap gap-2 pt-1">
-<label class="relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="color[]" value="Cinnamon Sand" @checked(in_array('Cinnamon Sand', (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color:#D9B99B"></span></label>
-<label class="relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="color[]" value="Deep Ocean Blue" @checked(in_array('Deep Ocean Blue', (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color:#0A2540"></span></label>
-<label class="relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="color[]" value="Ceylon Sapphire" @checked(in_array('Ceylon Sapphire', (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color:#0088FF"></span></label>
-<label class="relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="color[]" value="Palm Green" @checked(in_array('Palm Green', (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color:#2E6B4F"></span></label>
-<label class="relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="color[]" value="Off-White Ivory" @checked(in_array('Off-White Ivory', (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color:#F9F8F5"></span></label>
-<label class="relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="color[]" value="Sunset Terracotta" @checked(in_array('Sunset Terracotta', (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color:#D86B4D"></span></label>
-<label class="relative cursor-pointer"><input class="peer sr-only" type="checkbox" name="color[]" value="Raven Black" @checked(in_array('Raven Black', (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color:#111827"></span></label>
+@php
+    $catalogColorSwatches = ['Cinnamon Sand' => '#D9B99B', 'Deep Ocean Blue' => '#0A2540', 'Ceylon Sapphire' => '#0088FF', 'Palm Green' => '#2E6B4F', 'Off-White Ivory' => '#F9F8F5', 'Sunset Terracotta' => '#D86B4D', 'Raven Black' => '#111827'];
+@endphp
+@foreach(array_unique(array_merge(array_keys($catalogColorSwatches), array_keys($filterCounts['colors'] ?? []))) as $color)
+<label class="relative cursor-pointer" title="{{ $color }} ({{ $filterCounts['colors'][$color] ?? 0 }})"><input class="peer sr-only" type="checkbox" name="color[]" value="{{ $color }}" @checked(in_array($color, (array) ($filters['color'] ?? [])))><span class="block w-6 h-6 rounded-full border border-outline-variant shadow-sm ring-offset-2 peer-checked:ring-2 peer-checked:ring-primary" style="background-color: {{ $catalogColorSwatches[$color] ?? '#e6e8ea' }}"></span><span class="sr-only">{{ $color }}</span></label>
+@endforeach
 </div>
 </div>
 <!-- Material & Craftsmanship -->
 <div class="space-y-space-xs pt-space-xs">
 <span class="font-label-md text-label-md uppercase tracking-wider font-semibold text-on-surface block">Material Craft</span>
 <div class="space-y-1 text-body-sm text-body-sm">
-<label class="flex items-center gap-2 text-on-surface-variant hover:text-primary cursor-pointer">
-<input name="material[]" value="Ceylon Handloom Cotton" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Ceylon Handloom Cotton', (array) ($filters['material'] ?? [])))>
-<span>Ceylon Handloom Cotton</span>
-</label>
-<label class="flex items-center gap-2 text-on-surface-variant hover:text-primary cursor-pointer">
-<input name="material[]" value="Pure Mulberry Silk" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Pure Mulberry Silk', (array) ($filters['material'] ?? [])))>
-<span>Pure Mulberry Silk</span>
-</label>
-<label class="flex items-center gap-2 text-on-surface-variant hover:text-primary cursor-pointer">
-<input name="material[]" value="Natural Organic Linen" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Natural Organic Linen', (array) ($filters['material'] ?? [])))>
-<span>Natural Organic Linen</span>
-</label>
-<label class="flex items-center gap-2 text-on-surface-variant hover:text-primary cursor-pointer">
-<input name="material[]" value="Recycled 925 Silver" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Recycled 925 Silver', (array) ($filters['material'] ?? [])))>
-<span>Recycled 925 Silver</span>
-</label>
-<label class="flex items-center gap-2 text-on-surface-variant hover:text-primary cursor-pointer">
-<input name="material[]" value="Vegetable-Tanned Leather" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array('Vegetable-Tanned Leather', (array) ($filters['material'] ?? [])))>
-<span>Vegetable-Tanned Leather</span>
-</label>
+@foreach(array_unique(array_merge(['Ceylon Handloom Cotton', 'Pure Mulberry Silk', 'Natural Organic Linen', 'Recycled 925 Silver', 'Vegetable-Tanned Leather'], array_keys($filterCounts['materials'] ?? []))) as $material)
+<label class="flex items-center justify-between gap-2 text-on-surface-variant hover:text-primary cursor-pointer"><span class="flex items-center gap-2"><input name="material[]" value="{{ $material }}" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(in_array($material, (array) ($filters['material'] ?? [])))><span>{{ $material }}</span></span><span class="font-label-sm text-secondary">{{ $filterCounts['materials'][$material] ?? 0 }}</span></label>
+@endforeach
 </div>
 </div>
 <!-- Availability & Logistics -->
@@ -283,21 +232,21 @@
 <input name="in_stock" value="1" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(!empty($filters['in_stock']))>
 <span>In Stock Islandwide</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">122</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['in_stock'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
 <span class="flex items-center gap-2">
 <input name="same_day" value="1" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(!empty($filters['same_day']))>
 <span>Colombo Same-Day</span>
 </span>
-<span class="font-label-sm text-label-sm text-tertiary font-bold">45</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold">{{ $filterCounts['same_day'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
 <span class="flex items-center gap-2">
 <input name="koko" value="1" class="accent-primary w-4 h-4 rounded" type="checkbox" @checked(!empty($filters['koko']))>
 <span>Koko 3-Split Eligible</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">148</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['koko'] ?? 0 }}</span>
 </label>
 </div>
 </div>
@@ -311,7 +260,7 @@
 <span class="text-amber-500 font-bold flex items-center">★★★★★</span>
 <span class="text-xs">4.5 &amp; above</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">74</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['rating_45'] ?? 0 }}</span>
 </label>
 <label class="flex items-center justify-between text-on-surface-variant hover:text-primary cursor-pointer">
 <span class="flex items-center gap-1.5">
@@ -319,7 +268,7 @@
 <span class="text-amber-500 font-bold flex items-center">★★★★☆</span>
 <span class="text-xs">4.0 &amp; above</span>
 </span>
-<span class="font-label-sm text-label-sm text-secondary">118</span>
+<span class="font-label-sm text-label-sm text-secondary">{{ $filterCounts['rating_4'] ?? 0 }}</span>
 </label>
 </div>
 </div>
@@ -328,13 +277,14 @@
 <!-- 3. Main Product Grid Section -->
 <main class="flex-1 w-full min-w-0">
 <!-- Products Grid (Dynamic grid column class toggled via JS) -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-sm lg:gap-gutter" id="productCatalogGrid">@if (!empty($productsUnavailable))
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-sm lg:gap-gutter" id="productCatalogGrid">
+<?php if (!empty($productsUnavailable)): ?>
 <div class="col-span-full mb-space-md rounded-lg bg-error-container p-space-md text-on-error-container">The catalog is temporarily unavailable. Please try again shortly.</div>
-@endif
-@if (empty($products))
+<?php endif; ?>
+<?php if (empty($products)): ?>
 <div class="col-span-full rounded-lg bg-surface-container-lowest p-space-xl text-center">No products found.</div>
-@else
-@foreach ($products as $product)
+<?php else: ?>
+<?php foreach ($products as $product): ?>
 @php
     $productId = data_get($product, 'id');
     $productSlug = data_get($product, 'slug') ?? data_get($product, 'Slug') ?? data_get($product, 'productSlug') ?? data_get($product, 'ProductSlug') ?? $productId;
@@ -342,8 +292,9 @@
     $image = data_get($product, 'imageUrl') ?? data_get($product, 'image') ?? data_get($product, 'images.0.url') ?? data_get($product, 'imageUrls.0') ?? data_get($product, 'ImageUrls.0');
     if (is_string($image) && str_starts_with($image, '/api/products/images/')) $image = rtrim(config('services.luvora.base_url'), '/') . $image;
     $price = (float) (data_get($product, 'discountPrice') ?? data_get($product, 'price') ?? 0);
+    $filterText = fn ($value) => is_array($value) ? implode(' ', array_filter(array_map(fn ($item) => is_scalar($item) ? (string) $item : (string) (data_get($item, 'name') ?? ''), $value))) : (is_scalar($value) ? (string) $value : (string) (data_get($value, 'name') ?? ''));
 @endphp
-<article class="product-card group relative flex flex-col bg-surface-container-lowest rounded-lg p-space-sm shadow-sm hover:shadow-md transition-all duration-300" data-price="{{ $price }}" data-name="{{ strtolower($productName) }}" data-product-id="{{ $productId }}" data-product-name="{{ $productName }}" data-product-price="{{ $price }}" data-product-image="{{ $image ?? '' }}" data-product-url="{{ $productSlug ? route('products.show', $productSlug) : route('shop.index') }}">
+<article class="product-card group relative flex flex-col bg-surface-container-lowest rounded-lg p-space-sm shadow-sm hover:shadow-md transition-all duration-300" data-price="{{ $price }}" data-name="{{ strtolower($productName) }}" data-brand="{{ strtolower($filterText(data_get($product, 'brand') ?? data_get($product, 'artisan') ?? data_get($product, 'maker'))) }}" data-category="{{ strtolower($filterText(data_get($product, 'category') ?? data_get($product, 'categoryName'))) }}" data-size="{{ strtolower($filterText(data_get($product, 'size') ?? data_get($product, 'sizes') ?? data_get($product, 'variants'))) }}" data-color="{{ strtolower($filterText(data_get($product, 'color') ?? data_get($product, 'colors'))) }}" data-material="{{ strtolower($filterText(data_get($product, 'material') ?? data_get($product, 'materials'))) }}" data-sustainability="{{ strtolower($filterText(data_get($product, 'sustainability') ?? data_get($product, 'certifications') ?? data_get($product, 'tags'))) }}" data-stock="{{ (float) (data_get($product, 'stock') ?? data_get($product, 'stockQuantity') ?? data_get($product, 'quantity') ?? data_get($product, 'inventory') ?? data_get($product, 'Stock') ?? 0) }}" data-rating="{{ (float) (data_get($product, 'rating') ?? data_get($product, 'averageRating') ?? data_get($product, 'Rating') ?? 0) }}" data-same-day="{{ (data_get($product, 'sameDayDelivery') ?? data_get($product, 'same_day') ?? data_get($product, 'colomboSameDay')) ? '1' : '0' }}" data-koko="{{ (data_get($product, 'kokoEligible') ?? data_get($product, 'koko')) ? '1' : '0' }}" data-product-id="{{ $productId }}" data-product-name="{{ $productName }}" data-product-price="{{ $price }}" data-product-image="{{ $image ?? '' }}" data-product-url="{{ $productSlug ? route('products.show', $productSlug) : route('shop.index') }}">
 <div class="relative aspect-[3/4] w-full overflow-hidden rounded-md bg-surface-container-low mb-space-sm">
 <a class="block h-full w-full" href="{{ $productSlug ? route('products.show', $productSlug) : route('shop.index') }}">
 @if ($image)
@@ -360,8 +311,10 @@
 <div class="mt-auto pt-2"><span class="font-headline-sm text-headline-sm text-on-surface font-bold">LKR {{ number_format($price, 2) }}</span></div>
 </div>
 </article>
-@endforeach
-@endif</main>
+<?php endforeach; ?>
+<?php endif; ?>
+</div>
+</main>
 </div>
 </section>
 <!-- 6. Quick Trust & Island Logistics Ribbon -->
@@ -450,4 +403,18 @@
  });
  document.querySelectorAll('[data-wishlist-count]').forEach(el=>el.textContent=read().length);
 })();
-</script></body></html>
+</script>
+
+@include('partials.scroll-reveal-script')</body></html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -26,6 +26,7 @@ class ProductController extends Controller
         LuvoraApiClient $api
     ) {
         $filters = request()->validate([
+            'page' => ['sometimes', 'integer', 'min:1'],
             'min_price' => ['sometimes', 'nullable', 'numeric', 'min:0'],
             'max_price' => ['sometimes', 'nullable', 'numeric', 'min:0'],
             'category' => ['sometimes', 'nullable', 'string', 'max:100'],
@@ -107,29 +108,26 @@ class ProductController extends Controller
         }
 
         $payload = $response->json();
-        $products = data_get($payload, 'data.products')
-            ?? data_get($payload, 'products')
-            ?? data_get($payload, 'data')
-            ?? $payload
-            ?? [];
-
-        if (! is_array($products)) {
-            $products = [];
-        }
+        $apiTotalCount = (int) (data_get($payload, 'totalCount') ?? data_get($payload, 'total') ?? data_get($payload, 'totalItems') ?? data_get($payload, 'data.totalCount') ?? data_get($payload, 'data.total') ?? data_get($payload, 'data.totalItems') ?? 0);
+        $products = $this->extractProducts($payload);
 
         // The product service paginates at 100 items. Fetch the remaining pages
         // so all frontend filters work across the complete active catalog.
-        $totalPages = (int) (data_get($payload, 'totalPages') ?? data_get($payload, 'data.totalPages') ?? 1);
+        $totalPages = (int) ($this->findApiValue($payload, ['totalPages', 'total_pages', 'pageCount']) ?? 1);
         for ($page = 2; $page <= min($totalPages, 100); $page++) {
             $pageResponse = $api->get('/api/products', [
                 'page' => $page, 'pageSize' => 100,
             ]);
             if ($pageResponse->failed()) break;
             $pagePayload = $pageResponse->json();
-            $pageProducts = data_get($pagePayload, 'data.products') ?? data_get($pagePayload, 'products') ?? data_get($pagePayload, 'data') ?? [];
+            $pageProducts = $this->extractProducts($pagePayload);
             if (! is_array($pageProducts) || $pageProducts === []) break;
             $products = array_merge($products, $pageProducts);
         }
+
+        $filterCounts = $this->catalogFilterCounts($products);
+        $catalogPrices = array_values(array_filter(array_map(fn ($product) => (float) (data_get($product, 'discountPrice') ?? data_get($product, 'DiscountPrice') ?? data_get($product, 'price') ?? data_get($product, 'Price') ?? 0), $products), fn ($price) => $price > 0));
+        $priceBounds = $catalogPrices ? ['min' => (int) floor(min($catalogPrices)), 'max' => (int) ceil(max($catalogPrices))] : ['min' => 0, 'max' => 85000];
 
         $selectedCategory = $category ?? ($filters['category'] ?? null);
         if ($category) {
@@ -205,7 +203,24 @@ class ProductController extends Controller
             });
         }
 
-        return view($viewName, $viewData + ['products' => $products, 'filters' => $filters, 'selectedCategory' => $selectedCategory]);
+        $productsTotalCount = count($products);
+        $perPage = 12;
+        $currentPage = (int) ($filters['page'] ?? 1);
+        $totalPages = max(1, (int) ceil($productsTotalCount / $perPage));
+        $currentPage = min($currentPage, $totalPages);
+        $products = array_slice($products, ($currentPage - 1) * $perPage, $perPage);
+
+        return view($viewName, $viewData + [
+            'products' => $products,
+            'productsTotalCount' => $productsTotalCount,
+            'productsCurrentPage' => $currentPage,
+            'productsPerPage' => $perPage,
+            'productsTotalPages' => $totalPages,
+            'filterCounts' => $filterCounts,
+            'priceBounds' => $priceBounds,
+            'filters' => $filters,
+            'selectedCategory' => $selectedCategory,
+        ]);
     }
 
     public function collections(LuvoraApiClient $api)
@@ -277,13 +292,117 @@ class ProductController extends Controller
 
     private function extractProducts(mixed $payload): array
     {
-        $products = data_get($payload, 'data.products')
-            ?? data_get($payload, 'products')
-            ?? data_get($payload, 'data')
-            ?? $payload
-            ?? [];
+        if (is_object($payload)) $payload = get_object_vars($payload);
+        if (! is_array($payload)) return [];
 
-        return is_array($products) ? $products : [];
+        if (array_is_list($payload) && $payload !== []) {
+            return array_map(fn ($product) => $this->normalizeApiKeys($product), $payload);
+        }
+
+        foreach (['products', 'items', 'results', 'records', '$values', 'data', 'value'] as $key) {
+            foreach ($payload as $actualKey => $value) {
+                if (strcasecmp((string) $actualKey, $key) !== 0) continue;
+                if (is_object($value)) $value = get_object_vars($value);
+                if (! is_array($value)) continue;
+                if (array_is_list($value)) return array_map(fn ($product) => $this->normalizeApiKeys($product), $value);
+
+                if (array_key_exists('$values', $value)) {
+                    $nested = $this->extractProducts($value);
+                    if ($nested) return $nested;
+                }
+
+                // Some APIs serialize a collection as a dictionary keyed by ID.
+                $records = array_values($value);
+                if ($records && collect($records)->every(fn ($record) => is_array($record) || is_object($record))) return array_map(fn ($product) => $this->normalizeApiKeys($product), $records);
+
+                $nested = $this->extractProducts($value);
+                if ($nested) return $nested;
+            }
+        }
+
+        return [];
+    }
+
+    private function catalogFilterCounts(array $products): array
+    {
+        $categories = ['women', 'men', 'jewelry', 'bags', 'kids', 'shoes'];
+        $counts = [
+            'categories' => [], 'brands' => [], 'price_brackets' => [], 'sizes' => [], 'colors' => [], 'materials' => [],
+            'in_stock' => 0, 'same_day' => 0, 'koko' => 0,
+            'rating_45' => 0, 'rating_4' => 0,
+        ];
+        foreach ($categories as $category) $counts['categories'][$category] = 0;
+        foreach (['under-10000', '10000-25000', '25000-50000', 'over-50000'] as $bracket) $counts['price_brackets'][$bracket] = 0;
+
+        foreach ($products as $product) {
+            $price = (float) (data_get($product, 'discountPrice') ?? data_get($product, 'DiscountPrice') ?? data_get($product, 'price') ?? data_get($product, 'Price') ?? 0);
+            $stock = data_get($product, 'stock') ?? data_get($product, 'stockQuantity') ?? data_get($product, 'quantity') ?? data_get($product, 'inventory') ?? data_get($product, 'Stock');
+            $rating = (float) (data_get($product, 'rating') ?? data_get($product, 'averageRating') ?? data_get($product, 'Rating') ?? 0);
+            $brand = strtolower($this->searchableProductValue([data_get($product, 'brand'), data_get($product, 'artisan'), data_get($product, 'maker')]));
+            foreach ($categories as $category) if ($this->matchesCategory($product, $category)) $counts['categories'][$category]++;
+            $brandName = data_get($product, 'brand') ?? data_get($product, 'artisan') ?? data_get($product, 'maker');
+            if (is_scalar($brandName) && trim((string) $brandName) !== '') {
+                $brandName = trim((string) $brandName);
+                $counts['brands'][$brandName] = ($counts['brands'][$brandName] ?? 0) + 1;
+            }
+            foreach ($this->catalogValues([data_get($product, 'size'), data_get($product, 'sizes'), data_get($product, 'variants')]) as $value) $counts['sizes'][$value] = ($counts['sizes'][$value] ?? 0) + 1;
+            foreach ($this->catalogValues([data_get($product, 'color'), data_get($product, 'colors')]) as $value) $counts['colors'][$value] = ($counts['colors'][$value] ?? 0) + 1;
+            foreach ($this->catalogValues([data_get($product, 'material'), data_get($product, 'materials')]) as $value) $counts['materials'][$value] = ($counts['materials'][$value] ?? 0) + 1;
+            $counts['price_brackets'][$price < 10000 ? 'under-10000' : ($price < 25000 ? '10000-25000' : ($price < 50000 ? '25000-50000' : 'over-50000'))]++;
+            if (! $this->isOutOfStock($stock)) $counts['in_stock']++;
+            if ($this->isTruthy(data_get($product, 'sameDayDelivery') ?? data_get($product, 'same_day') ?? data_get($product, 'colomboSameDay'))) $counts['same_day']++;
+            if ($this->isTruthy(data_get($product, 'kokoEligible') ?? data_get($product, 'koko'))) $counts['koko']++;
+            if ($rating >= 4.5) $counts['rating_45']++;
+            if ($rating >= 4.0) $counts['rating_4']++;
+        }
+
+        ksort($counts['brands'], SORT_NATURAL | SORT_FLAG_CASE);
+        foreach (['sizes', 'colors', 'materials'] as $facet) ksort($counts[$facet], SORT_NATURAL | SORT_FLAG_CASE);
+
+        return $counts;
+    }
+
+    private function normalizeApiKeys(mixed $value): mixed
+    {
+        if (is_object($value)) $value = get_object_vars($value);
+        if (! is_array($value)) return $value;
+
+        $normalized = [];
+        foreach ($value as $key => $item) {
+            if (is_string($key)) {
+                $key = preg_replace_callback('/^[A-Z]+(?=[A-Z][a-z]|$)|^[A-Z]/', fn ($match) => strtolower($match[0]), $key);
+            }
+            $normalized[$key] = $this->normalizeApiKeys($item);
+        }
+
+        return $normalized;
+    }
+
+    private function findApiValue(mixed $value, array $keys): mixed
+    {
+        if (is_object($value)) $value = get_object_vars($value);
+        if (! is_array($value)) return null;
+        foreach ($value as $key => $item) {
+            if (in_array(strtolower((string) $key), array_map('strtolower', $keys), true)) return $item;
+        }
+        foreach ($value as $item) {
+            $found = $this->findApiValue($item, $keys);
+            if ($found !== null) return $found;
+        }
+        return null;
+    }
+
+    private function catalogValues(array $values): array
+    {
+        $flatten = function ($value) use (&$flatten): array {
+            if (is_array($value)) return array_merge([], ...array_map($flatten, $value));
+            if (is_object($value)) return $flatten(data_get($value, 'name') ?? data_get($value, 'value') ?? '');
+            if (! is_scalar($value)) return [];
+            $value = trim((string) $value);
+            return $value === '' ? [] : [$value];
+        };
+
+        return array_values(array_unique(array_merge([], ...array_map($flatten, $values))));
     }
 
     private function fetchAllProducts(LuvoraApiClient $api, array $query = []): array

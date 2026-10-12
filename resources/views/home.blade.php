@@ -7,7 +7,7 @@
     $cartCount = $cartCount ?? 0;
 @endphp
 
-<body class="bg-surface font-body-md text-on-surface antialiased"><header class="bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-on-background text-surface-container-lowest py-space-xs px-gutter-sm text-center"><div class="max-w-7xl mx-auto flex items-center justify-center gap-space-sm"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">local_shipping</span><p class="font-label-sm text-label-sm tracking-wider uppercase">Island-wide Sri Lanka Express Delivery | Free shipping over LKR 15,000 | Colombo Same-Day Available</p></div></div><div class="h-28 max-w-7xl mx-auto px-gutter lg:px-gutter-lg flex flex-col justify-between pt-space-sm pb-space-xs"><div class="flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="home" href="{{ route('home') }}"><img alt="Luvora" class="h-10 w-auto object-contain" src="{{ asset('images/logo.png') }}"/></a></div><div class="hidden md:flex flex-1 max-w-xl mx-space-lg"><form method="GET" action="{{ route('search') }}" class="relative w-full flex items-center bg-surface-container-low rounded-full px-space-md py-space-xs focus-within:ring-2 focus-within:ring-primary focus-within:bg-surface-container-lowest transition-all"><span class="material-symbols-outlined text-secondary mr-space-sm text-lg">search</span><input class="w-full bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-secondary" name="q" placeholder="Search Ceylon sapphire jewelry, handloom silks, bespoke couture..." type="search"/><button class="font-label-sm text-label-sm text-secondary bg-surface-container-high px-space-xs py-0.5 rounded uppercase" type="submit">Search</button></form></div><div class="flex items-center gap-space-md"><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="wishlist" href="{{ route('wishlist.index') }}"><span class="material-symbols-outlined">favorite</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]" data-wishlist-count>0</span></a><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="cart" href="{{ url('/cart') }}"><span class="material-symbols-outlined">shopping_bag</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]">{{ $cartCount }}</span></a><div class="flex items-center gap-space-xs pl-space-xs">@include('partials.profile-link')</div></div></div>@include('partials.category-nav')</div></header><main class="w-full bg-surface min-h-screen"><div class="flex flex-col w-full">
+<body class="bg-surface font-body-md text-on-surface antialiased"><header class="bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-on-background text-surface-container-lowest py-space-xs px-gutter-sm text-center"><div class="max-w-7xl mx-auto flex items-center justify-center gap-space-sm"><span class="material-symbols-outlined text-primary-fixed-dim text-sm">local_shipping</span><p class="font-label-sm text-label-sm tracking-wider uppercase">Island-wide Sri Lanka Express Delivery | Free shipping over LKR 15,000 | Colombo Same-Day Available</p></div></div><div class="h-28 max-w-7xl mx-auto px-gutter lg:px-gutter-lg flex flex-col justify-between pt-space-sm pb-space-xs"><div class="flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-md"><a class="flex items-center gap-space-sm" data-path="home" href="{{ route('home') }}"><span class="font-serif text-3xl font-medium tracking-tight text-[#191c1e]" style="font-family: 'Bodoni Moda', Georgia, serif">Luvora</span></a></div><div class="hidden md:flex flex-1 max-w-xl mx-space-lg"><form method="GET" action="{{ route('search') }}" class="relative w-full flex items-center bg-surface-container-low rounded-full px-space-md py-space-xs focus-within:ring-2 focus-within:ring-primary focus-within:bg-surface-container-lowest transition-all"><span class="material-symbols-outlined text-secondary mr-space-sm text-lg">search</span><input class="w-full bg-transparent border-none outline-none font-body-sm text-body-sm text-on-surface placeholder:text-secondary" name="q" placeholder="Search Ceylon sapphire jewelry, handloom silks, bespoke couture..." type="search"/><button class="font-label-sm text-label-sm text-secondary bg-surface-container-high px-space-xs py-0.5 rounded uppercase" type="submit">Search</button></form></div><div class="flex items-center gap-space-md"><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="wishlist" href="{{ route('wishlist.index') }}"><span class="material-symbols-outlined">favorite</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]" data-wishlist-count>0</span></a><a class="relative p-space-xs text-on-surface-variant hover:text-primary transition-colors" data-path="cart" href="{{ url('/cart') }}"><span class="material-symbols-outlined">shopping_bag</span><span class="absolute -top-0.5 -right-0.5 bg-primary text-on-primary font-label-sm text-label-sm w-4 h-4 rounded-full flex items-center justify-center text-[10px]">{{ $cartCount }}</span></a><div class="flex items-center gap-space-xs pl-space-xs">@include('partials.profile-link')</div></div></div>@include('partials.category-nav')</div></header><main class="w-full bg-surface min-h-screen"><div class="flex flex-col w-full">
 <!-- SECTION 1: HERO FASHION SPLIT BANNER -->
 <section class="relative w-full overflow-hidden bg-surface-container-lowest pb-space-xl">
 <div class="max-w-7xl mx-auto px-gutter lg:px-gutter-lg pt-space-lg lg:pt-space-xl">
@@ -453,41 +453,42 @@
 </div>
 </section>
 <!-- SECTION 5: PROMOTIONAL SHOWCASE BANNER (KOKO & MINTPAY) -->
-<section class="w-full py-space-md bg-surface">
-<div class="max-w-7xl mx-auto px-gutter lg:px-gutter-lg">
-<div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-on-background via-inverse-surface to-on-background p-space-lg lg:p-space-xl text-surface-container-lowest shadow-xl">
-<div class="absolute -right-16 -top-16 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
-<div class="absolute -left-16 -bottom-16 w-80 h-80 bg-tertiary/20 rounded-full blur-3xl pointer-events-none"></div>
-<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
-<div class="lg:col-span-8 space-y-space-xs">
-<div class="inline-flex items-center gap-2 bg-surface-container-lowest/15 backdrop-blur-md px-space-sm py-0.5 rounded-full text-primary-fixed">
-<span class="material-symbols-outlined text-sm">payments</span>
-<span class="font-label-sm text-label-sm uppercase tracking-wider">Island Smart Shopping</span>
-</div>
-<h2 class="font-headline-lg text-headline-lg font-medium text-surface-container-lowest leading-tight">
-              Buy Now, Pay Later with Koko &amp; Mintpay.
-            </h2>
-<p class="font-body-lg text-body-lg text-surface-container-high max-w-xl">
-              Split any purchase above LKR 3,000 into 3 interest-free monthly installments. No extra hidden charges, instant approval with your Sri Lankan debit or credit card.
-            </p>
-</div>
-<div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-space-md justify-center">
-<div class="flex items-center gap-space-sm bg-surface-container-lowest/10 backdrop-blur-lg px-space-md py-space-sm rounded-xl">
-<span class="font-label-md text-label-md uppercase tracking-wider text-surface-container-lowest font-bold">Supported By:</span>
-<div class="flex items-center gap-2">
-<span class="px-2.5 py-1 bg-surface-container-lowest text-on-surface font-label-sm text-label-sm rounded font-bold">KOKO</span>
-<span class="px-2.5 py-1 bg-surface-container-lowest text-on-surface font-label-sm text-label-sm rounded font-bold">Mintpay</span>
-</div>
-</div>
-<a class="px-space-lg py-space-sm rounded-full bg-surface-container-lowest text-on-background font-label-md text-label-md uppercase tracking-wider hover:bg-primary hover:text-on-primary transition-colors duration-200" href="{{ route('shop.index') }}">
-              Learn How It Works
+<section class="w-full bg-surface py-space-lg" aria-labelledby="pay-later-title">
+  <div class="mx-auto max-w-7xl px-gutter lg:px-gutter-lg">
+    <div class="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-[#e5efec] via-[#f0f2f4] to-[#e5edf4] px-space-md py-space-lg text-on-surface shadow-sm sm:px-space-lg lg:px-space-xl lg:py-12">
+      <div aria-hidden="true" class="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-emerald-300/15 blur-3xl"></div>
+      <div aria-hidden="true" class="pointer-events-none absolute -bottom-28 right-1/4 h-80 w-80 rounded-full bg-sky-300/15 blur-3xl"></div>
+      <div class="relative grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 rounded-full border border-tertiary/15 bg-white/70 px-3 py-1.5 text-tertiary">
+            <span class="material-symbols-outlined text-base" aria-hidden="true">payments</span>
+            <span class="font-label-sm text-label-sm uppercase tracking-wider">Flexible ways to pay</span>
+          </div>
+          <h2 id="pay-later-title" class="max-w-[17ch] font-headline-lg text-headline-lg font-medium leading-tight text-on-surface">
+            Explore instalment options with Koko and Mintpay.
+          </h2>
+          <p class="max-w-2xl font-body-lg text-body-lg leading-relaxed text-secondary">
+            Split eligible purchases into interest-free instalments with participating providers. Terms and approval are set by each provider.
+          </p>
+        </div>
+        <div class="flex flex-col items-start gap-5 lg:min-w-[290px] lg:items-end">
+          <div class="flex flex-wrap items-center gap-3 rounded-2xl border border-white/80 bg-white/75 p-3 shadow-sm backdrop-blur-sm">
+            <span class="w-full font-label-sm text-label-sm uppercase tracking-wider text-secondary lg:w-auto">Provider information</span>
+            <a href="https://paykoko.com/customer-education" target="_blank" rel="noopener noreferrer" aria-label="Learn about Koko (opens in a new tab)" class="flex h-11 min-w-24 items-center justify-center rounded-lg bg-white px-3">
+              <img src="{{ asset('images/partners/koko-logo.png') }}" alt="Koko" class="h-7 max-w-20 object-contain">
             </a>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- SECTION 6: CUSTOMER BENEFITS TRUST BAR (4 Feature Columns) -->
+            <a href="https://mintpay.lk/" target="_blank" rel="noopener noreferrer" aria-label="Learn about Mintpay (opens in a new tab)" class="flex h-11 min-w-28 items-center justify-center rounded-lg bg-slate-900/60 px-3">
+              <img src="{{ asset('images/partners/mintpay-logo.webp') }}" alt="Mintpay" class="h-7 max-w-24 object-contain">
+            </a>
+          </div>
+          <a class="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-6 py-2.5 font-label-md text-label-md font-semibold uppercase tracking-wider text-white transition hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-white" href="https://paykoko.com/customer-education" target="_blank" rel="noopener noreferrer">
+            Learn about instalments <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- SECTION 6: CUSTOMER BENEFITS TRUST BAR (4 Feature Columns) -->
 <section class="w-full py-space-xl bg-surface-container-low mt-space-lg">
 <div class="max-w-7xl mx-auto px-gutter lg:px-gutter-lg">
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-lg">
@@ -706,4 +707,5 @@
  });
  document.querySelectorAll('[data-wishlist-count]').forEach(el=>el.textContent=read().length);
 })();
-</script></body></html>
+</script>@include('partials.scroll-reveal-script')</body></html>
+

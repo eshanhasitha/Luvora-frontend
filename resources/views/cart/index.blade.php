@@ -16,7 +16,7 @@
 @endphp
 <header class="border-b border-slate-200 bg-white">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8">
-        <a href="{{ route('home') }}" class="flex items-center gap-3"><img src="{{ asset('images/logo.png') }}" alt="Luvora" class="h-10 w-auto"></a>
+        <a href="{{ route('home') }}" class="flex items-center gap-3"><span class="font-serif text-3xl font-medium tracking-tight text-[#191c1e]" style="font-family: 'Bodoni Moda', Georgia, serif">Luvora</span></a>
         <nav class="flex items-center gap-5 text-sm">
             <a href="{{ route('shop.index') }}" class="hidden text-slate-600 hover:text-blue-700 sm:block">Continue shopping</a>
             <a href="{{ route('cart.saved') }}" class="hidden text-slate-600 hover:text-blue-700 sm:block">Saved for later</a>
@@ -75,7 +75,7 @@
                 <div class="mt-5 flex justify-between font-semibold"><span>Total</span><span>LKR {{ number_format($subtotal, 2) }}</span></div>
                 <a href="{{ route('checkout.index') }}" class="mt-6 block w-full rounded-full bg-[#005baf] px-6 py-3 text-center text-sm font-semibold text-white hover:bg-blue-800">Continue to checkout</a>
                 <a href="{{ route('shop.index') }}" class="mt-4 block text-center text-sm font-medium text-blue-700 hover:underline">Continue shopping</a>
-                <p class="mt-6 flex items-center justify-center gap-2 border-t border-slate-100 pt-5 text-center text-xs text-slate-500"><span class="material-symbols-outlined text-base">lock</span>Secure checkout � Island-wide delivery</p>
+                <p class="mt-6 flex items-center justify-center gap-2 border-t border-slate-100 pt-5 text-center text-xs text-slate-500"><span class="material-symbols-outlined text-base">lock</span>Secure checkout &bull; Island-wide delivery</p>
             </aside>
         </div>
     @endif
@@ -123,5 +123,6 @@
         document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') setOpen(false); });
     })();
 </script>
-@include('partials.site-footer')</body>
+@include('partials.site-footer')@include('partials.scroll-reveal-script')</body>
 </html>
+

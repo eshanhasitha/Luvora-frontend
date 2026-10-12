@@ -55,4 +55,4 @@
     @if(in_array($page['type'],['loyalty','rewards','referrals']))<div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-5 text-amber-900">Programme features are not connected. No points, member status, referral code, or rewards are being created or estimated.</div>@endif
 @endif
 <section class="mt-8 flex flex-col justify-between gap-4 rounded-2xl bg-slate-100 p-6 sm:flex-row sm:items-center"><div><h2 class="font-['Bodoni_Moda'] text-2xl">Continue exploring Luvora</h2><p class="mt-1 text-sm text-slate-600">Browse the catalogue or get help with an order.</p></div><div class="flex flex-wrap gap-3"><a href="{{ route('shop.index') }}" class="rounded-full bg-[#005baf] px-5 py-2.5 text-sm font-semibold text-white">Shop</a><a href="{{ route('customer-care.orders') }}" class="rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold">Order help</a></div></section>
-</main>@include('partials.site-footer')</body></html>
+</main>@include('partials.site-footer')@include('partials.scroll-reveal-script')</body></html>
