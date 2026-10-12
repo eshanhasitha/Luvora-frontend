@@ -4,7 +4,7 @@
 @endif
 <header class="border-b border-slate-200 bg-white">
     <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-8">
-        <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-3" aria-label="Luvora home"><img src="{{ asset('images/logo.png') }}" alt="Luvora" class="h-10 w-auto"></a>
+        <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-3" aria-label="Luvora home"><span class="font-serif text-3xl font-medium tracking-tight text-[#191c1e]" style="font-family: 'Bodoni Moda', Georgia, serif">Luvora</span></a>
         <form action="{{ route('search') }}" method="GET" class="hidden min-w-40 max-w-md flex-1 md:block"><label class="sr-only" for="site-search">Search the shop</label><div class="flex items-center rounded-full border border-slate-200 bg-slate-50 px-4"><span class="material-symbols-outlined text-slate-400">search</span><input id="site-search" name="q" value="{{ request('q') }}" placeholder="Search products" class="w-full border-0 bg-transparent px-3 py-2.5 text-sm outline-none focus:ring-0"></div></form>
         <nav aria-label="Shop and account" class="flex shrink-0 items-center gap-3 text-xs font-medium text-slate-600 sm:gap-5 sm:text-sm">
             @include('partials.profile-link')
@@ -20,3 +20,4 @@
     </nav>
     <form action="{{ route('search') }}" method="GET" class="px-5 pb-3 md:hidden"><label class="sr-only" for="site-search-mobile">Search the shop</label><input id="site-search-mobile" name="q" value="{{ request('q') }}" placeholder="Search products" class="w-full rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm"></form>
 </header>
+
