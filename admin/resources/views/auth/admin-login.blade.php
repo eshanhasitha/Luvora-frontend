@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin sign in · Luvora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
 </head>
 <body class="min-h-screen bg-[#f7f9fb] text-[#191c1e]">
 <main class="grid min-h-screen lg:grid-cols-2">
     <section class="hidden flex-col justify-between bg-[#101b2e] p-12 text-white lg:flex">
-        <a href="{{ route('login') }}" class="text-2xl font-semibold tracking-[.25em]">LUVORA</a>
+        <a href="{{ route('login') }}" class="font-serif text-3xl font-medium tracking-tight text-white" style="font-family:'Bodoni Moda',Georgia,serif" aria-label="Luvora admin sign in">Luvora</a>
         <div class="max-w-lg"><p class="text-xs uppercase tracking-[.3em] text-blue-200">Executive portal</p><h1 class="mt-5 text-5xl font-semibold leading-tight">A considered view of the house.</h1><p class="mt-5 text-lg text-slate-300">Secure access for the Luvora owner and authorized administrators.</p></div>
         <p class="text-sm text-slate-400">Private administration workspace</p>
     </section>
     <section class="flex items-center justify-center p-6 sm:p-12">
         <div class="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-            <div class="mb-8 lg:hidden"><span class="text-xl font-semibold tracking-[.2em]">LUVORA</span><p class="mt-1 text-xs uppercase tracking-widest text-slate-500">Admin portal</p></div>
+            <div class="mb-8 lg:hidden"><span class="font-serif text-3xl font-medium tracking-tight" style="font-family:'Bodoni Moda',Georgia,serif">Luvora</span><p class="mt-1 text-xs uppercase tracking-widest text-slate-500">Admin portal</p></div>
             <p class="text-xs font-semibold uppercase tracking-[.2em] text-blue-700">Administrator access</p><h2 class="mt-2 text-3xl font-semibold">Sign in</h2><p class="mt-2 text-sm text-slate-500">Use your authorized admin account.</p>
             @if ($errors->any())<div class="mt-5 rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ $errors->first() }}</div>@endif
             <form method="POST" action="{{ route('login.store') }}" class="mt-7 space-y-5">@csrf

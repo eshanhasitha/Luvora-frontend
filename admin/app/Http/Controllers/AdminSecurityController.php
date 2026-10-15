@@ -47,10 +47,16 @@ class AdminSecurityController extends Controller
 
         RateLimiter::clear($key);
         $request->session()->regenerate();
+        $adminUser = (array) (data_get($payload, 'user') ?? data_get($payload, 'admin') ?? data_get($payload, 'staff') ?? data_get($payload, 'data.user') ?? data_get($payload, 'data.admin') ?? []);
+        $adminUser['name'] = $adminUser['name'] ?? $adminUser['Name'] ?? (trim(implode(' ', array_filter([
+            $adminUser['firstName'] ?? $adminUser['FirstName'] ?? $adminUser['first_name'] ?? null,
+            $adminUser['lastName'] ?? $adminUser['LastName'] ?? $adminUser['last_name'] ?? null,
+        ]))) ?: 'Admin user');
+        $adminUser['role'] = $adminUser['role'] ?? $adminUser['Role'] ?? $adminUser['title'] ?? $adminUser['Title'] ?? 'Administrator';
         session([
             'admin_access_token' => $accessToken,
             'admin_refresh_token' => data_get($payload, 'refreshToken') ?? data_get($payload, 'refresh_token') ?? data_get($payload, 'data.refreshToken') ?? data_get($payload, 'data.refresh_token'),
-            'admin_user' => data_get($payload, 'user') ?? data_get($payload, 'data.user') ?? [],
+            'admin_user' => $adminUser,
         ]);
         return redirect()->intended(route('dashboard'));
     }
