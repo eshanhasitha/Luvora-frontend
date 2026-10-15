@@ -68,7 +68,7 @@ class OrderController extends Controller
         $token = session('access_token');
         if (! $token) return redirect()->route('login.show');
         try {
-            $response = $api->postWithToken($token, '/api/orders/' . rawurlencode($id) . '/cancel');
+            $response = $api->postWithToken($token, '/api/users/me/orders/' . rawurlencode($id) . '/cancel');
         } catch (ConnectionException) {
             return back()->withErrors(['order' => 'The order service is unavailable. The order was not cancelled.']);
         }
@@ -143,11 +143,29 @@ class OrderController extends Controller
             abort(404, 'Order not found.');
         }
 
+        $orderItems = [];
+        $orderDetailsUnavailable = false;
+        $verifiedOrderId = data_get($order, 'id') ?? data_get($order, 'Id');
+        if ($verifiedOrderId && preg_match('/^[0-9a-f-]{36}$/i', (string) $verifiedOrderId)) {
+            try {
+                $detailResponse = $api->getWithToken(session('access_token'), '/api/users/me/orders/'.rawurlencode((string) $verifiedOrderId));
+                if ($detailResponse->successful()) $order = data_get($detailResponse->json(), 'data.order') ?? data_get($detailResponse->json(), 'order') ?? data_get($detailResponse->json(), 'data') ?? $detailResponse->json();
+                else $orderDetailsUnavailable = true;
+                $itemsResponse = $api->getWithToken(session('access_token'), '/api/users/me/orders/'.rawurlencode((string) $verifiedOrderId).'/items');
+                if ($itemsResponse->successful()) $orderItems = data_get($itemsResponse->json(), 'data.items') ?? data_get($itemsResponse->json(), 'items') ?? data_get($itemsResponse->json(), 'data') ?? [];
+                else $orderDetailsUnavailable = true;
+            } catch (ConnectionException) {
+                $orderDetailsUnavailable = true;
+            }
+        }
+
         $extra = array_merge($extra, $this->orderServiceDetails($api, $order));
 
         return view("orders.{$page}", array_merge($context, [
             'order' => $order,
             'orderKey' => $key,
+            'orderItems' => is_array($orderItems) ? $orderItems : [],
+            'orderDetailsUnavailable' => $orderDetailsUnavailable,
         ], $extra));
     }
 
@@ -166,7 +184,7 @@ class OrderController extends Controller
         ];
 
         try {
-            $deliveryResponse = $api->get('/api/deliveries/order/' . rawurlencode((string) $orderId));
+            $deliveryResponse = $api->getWithToken(session('access_token'), '/api/users/me/orders/' . rawurlencode((string) $orderId) . '/shipment');
             if ($deliveryResponse->successful()) {
                 $payload = $deliveryResponse->json();
                 $details['delivery'] = data_get($payload, 'data.delivery')
@@ -181,7 +199,7 @@ class OrderController extends Controller
         }
 
         try {
-            $paymentResponse = $api->get('/api/payments/order/' . rawurlencode((string) $orderId));
+            $paymentResponse = $api->getWithToken(session('access_token'), '/api/payments/orders/' . rawurlencode((string) $orderId) . '/transactions');
             if ($paymentResponse->successful()) {
                 $payload = $paymentResponse->json();
                 $details['payment'] = data_get($payload, 'data.payment')
@@ -219,7 +237,7 @@ class OrderController extends Controller
         }
 
         try {
-            $response = $api->getWithToken($token, "/api/orders/user/{$userId}");
+            $response = $api->getWithToken($token, '/api/users/me/orders');
         } catch (ConnectionException) {
             return [
                 'orders' => [],

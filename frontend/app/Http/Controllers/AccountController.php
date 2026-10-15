@@ -61,7 +61,7 @@ class AccountController extends Controller
         ]);
 
         try {
-            $response = $api->putWithToken(session('access_token'), '/api/account/profile', [
+            $response = $api->patchWithToken(session('access_token'), '/api/users/me', [
                 'firstName' => $profile['first_name'],
                 'lastName' => $profile['last_name'],
                 'phoneNumber' => $profile['phone'] ?? null,
@@ -145,7 +145,7 @@ class AccountController extends Controller
 
         $data = $this->validateAddress($request);
         try {
-            $response = $api->postWithToken(session('access_token'), '/api/account/addresses', $this->addressPayload($data, $request));
+            $response = $api->postWithToken(session('access_token'), '/api/users/me/addresses', $this->addressPayload($data, $request));
         } catch (ConnectionException) {
             return back()->withInput()->withErrors(['address' => 'The account service is unavailable. Your address was not saved.']);
         }
@@ -170,7 +170,7 @@ class AccountController extends Controller
 
         $data = $this->validateAddress($request);
         try {
-            $response = $api->putWithToken(session('access_token'), '/api/account/addresses/' . rawurlencode($id), $this->addressPayload($data, $request));
+            $response = $api->putWithToken(session('access_token'), '/api/users/me/addresses/' . rawurlencode($id), $this->addressPayload($data, $request));
         } catch (ConnectionException) {
             return back()->withInput()->withErrors(['address' => 'The account service is unavailable. Your address was not updated.']);
         }
@@ -190,7 +190,7 @@ class AccountController extends Controller
         }
 
         try {
-            $response = $api->deleteWithToken(session('access_token'), '/api/account/addresses/' . rawurlencode($id));
+            $response = $api->deleteWithToken(session('access_token'), '/api/users/me/addresses/' . rawurlencode($id));
         } catch (ConnectionException) {
             return back()->withErrors(['address' => 'The account service is unavailable. The address was not removed.']);
         }
@@ -201,6 +201,19 @@ class AccountController extends Controller
         session()->put('account.address_extras', $extras);
 
         return redirect()->route('account.addresses.index')->with('status', 'Address removed from your account.');
+    }
+
+    public function setDefaultAddress(string $id, LuvoraApiClient $api)
+    {
+        $context = $this->accountContext();
+        if ($context instanceof RedirectResponse) return $context;
+        try {
+            $response = $api->patchWithToken(session('access_token'), '/api/users/me/addresses/'.rawurlencode($id).'/default');
+        } catch (ConnectionException) {
+            return back()->withErrors(['address' => 'The account service is unavailable. The default address was not changed.']);
+        }
+        if ($response->failed()) return back()->withErrors(['address' => 'The default address could not be updated.']);
+        return redirect()->route('account.addresses.index')->with('status', 'Default delivery address updated.');
     }
 
     public function settings(LuvoraApiClient $api)
@@ -227,7 +240,7 @@ class AccountController extends Controller
 
         $current = $this->fetchPreferences($api)[0];
         try {
-            $response = $api->putWithToken(session('access_token'), '/api/account/preferences', [
+            $response = $api->putWithToken(session('access_token'), '/api/users/me/preferences', [
                 'language' => $settings['language'], 'currency' => $settings['currency'], 'theme' => $settings['theme'],
                 'emailNotifications' => $current['email_notifications'], 'smsNotifications' => $current['sms_notifications'], 'marketingEmails' => $current['marketing_emails'],
             ]);
@@ -246,16 +259,15 @@ class AccountController extends Controller
         [$apiPreferences, $preferencesUnavailable] = $this->fetchPreferences($api);
         $notifications = [];
         $notificationsUnavailable = false;
-        $userId = data_get($context['user'], 'id') ?? data_get($context['user'], 'Id');
         $unreadCount = 0;
         try {
-            $response = $api->getWithToken(session('access_token'), '/api/notifications/user/' . rawurlencode((string) $userId));
+            $response = $api->getWithToken(session('access_token'), '/api/users/me/notifications');
             if ($response->successful()) {
                 $body = $response->json();
                 $notifications = data_get($body, 'data.notifications') ?? data_get($body, 'notifications') ?? data_get($body, 'data') ?? $body ?? [];
                 if (! is_array($notifications)) $notifications = [];
             } else $notificationsUnavailable = true;
-            $countResponse = $api->getWithToken(session('access_token'), '/api/notifications/user/' . rawurlencode((string) $userId) . '/unread-count');
+            $countResponse = $api->getWithToken(session('access_token'), '/api/users/me/notifications/unread-count');
             if ($countResponse->successful()) $unreadCount = (int) (data_get($countResponse->json(), 'unreadCount') ?? 0);
         } catch (ConnectionException) { $notificationsUnavailable = true; }
         return view('account.notifications', $context + [
@@ -275,7 +287,7 @@ class AccountController extends Controller
 
         $current = $this->fetchPreferences($api)[0];
         try {
-            $response = $api->putWithToken(session('access_token'), '/api/account/preferences', [
+            $response = $api->putWithToken(session('access_token'), '/api/users/me/preferences', [
                 'language' => $current['language'], 'currency' => $current['currency'], 'theme' => $current['theme'],
                 'emailNotifications' => $request->boolean('order_updates'), 'smsNotifications' => $request->boolean('delivery_updates'), 'marketingEmails' => $request->boolean('new_collections'),
             ]);
@@ -293,19 +305,31 @@ class AccountController extends Controller
         if ($context instanceof RedirectResponse) return $context;
         abort_unless((bool) preg_match('/^[0-9a-f-]{36}$/i', $notificationId), 404);
         try {
-            $userId = data_get($context['user'], 'id') ?? data_get($context['user'], 'Id');
-            $list = $api->getWithToken(session('access_token'), '/api/notifications/user/' . rawurlencode((string) $userId));
+            $list = $api->getWithToken(session('access_token'), '/api/users/me/notifications');
             if ($list->failed()) return back()->withErrors(['notifications' => 'Your notifications could not be verified.']);
             $body = $list->json();
             $notifications = data_get($body, 'data.notifications') ?? data_get($body, 'notifications') ?? data_get($body, 'data') ?? $body ?? [];
             $owned = is_array($notifications) && collect($notifications)->contains(fn ($notification) => (string) (data_get($notification, 'id') ?? data_get($notification, 'Id')) === $notificationId);
             if (! $owned) abort(404, 'Notification not found.');
-            $response = $api->putWithToken(session('access_token'), '/api/notifications/' . rawurlencode($notificationId) . '/read');
+            $response = $api->patchWithToken(session('access_token'), '/api/users/me/notifications/' . rawurlencode($notificationId) . '/read');
         } catch (ConnectionException) {
             return back()->withErrors(['notifications' => 'The notification service is unavailable.']);
         }
         if ($response->failed()) return back()->withErrors(['notifications' => 'This notification could not be marked as read.']);
         return back()->with('status', 'Notification marked as read.');
+    }
+
+    public function markAllNotificationsRead(LuvoraApiClient $api)
+    {
+        $context = $this->accountContext();
+        if ($context instanceof RedirectResponse) return $context;
+        try {
+            $response = $api->postWithToken(session('access_token'), '/api/users/me/notifications/read-all');
+        } catch (ConnectionException) {
+            return back()->withErrors(['notifications' => 'The notification service is unavailable.']);
+        }
+        if ($response->failed()) return back()->withErrors(['notifications' => 'Notifications could not be marked as read.']);
+        return back()->with('status', 'All notifications marked as read.');
     }
 
     public function deleteAccount()
@@ -319,7 +343,7 @@ class AccountController extends Controller
         if ($context instanceof RedirectResponse) return $context;
         $data = $request->validate(['password' => ['required', 'string'], 'confirm' => ['accepted']]);
         try {
-            $response = $api->deleteWithToken(session('access_token'), '/api/account', ['password' => $data['password'], 'confirm' => true]);
+            $response = $api->postWithToken(session('access_token'), '/api/users/me/account-deletion', ['password' => $data['password'], 'confirm' => true]);
         } catch (ConnectionException) {
             return back()->withErrors(['password' => 'The account service is unavailable. Your account was not deleted.']);
         }
@@ -426,7 +450,7 @@ class AccountController extends Controller
 
         $profile = session('account.profile', []);
         try {
-            $response = app(LuvoraApiClient::class)->getWithToken(session('access_token'), '/api/account/profile');
+            $response = app(LuvoraApiClient::class)->getWithToken(session('access_token'), '/api/users/me');
             if ($response->successful() && is_array($response->json())) {
                 $user = array_merge((array) $user, $response->json());
                 session()->put('user', $user);
@@ -443,7 +467,7 @@ class AccountController extends Controller
     private function fetchAddresses(LuvoraApiClient $api): array
     {
         try {
-            $response = $api->getWithToken(session('access_token'), '/api/account/addresses');
+            $response = $api->getWithToken(session('access_token'), '/api/users/me/addresses');
             if ($response->failed()) return [[], true];
             $body = $response->json();
             $addresses = data_get($body, 'data.addresses') ?? data_get($body, 'addresses') ?? data_get($body, 'data') ?? $body ?? [];
@@ -489,7 +513,7 @@ class AccountController extends Controller
     {
         $defaults = ['language' => 'en', 'currency' => 'LKR', 'theme' => 'system', 'email_notifications' => true, 'sms_notifications' => true, 'marketing_emails' => false];
         try {
-            $response = $api->getWithToken(session('access_token'), '/api/account/preferences');
+            $response = $api->getWithToken(session('access_token'), '/api/users/me/preferences');
             if ($response->failed() || ! is_array($response->json())) return [$defaults, true];
             $body = $response->json();
             $prefs = data_get($body, 'data.preferences') ?? data_get($body, 'preferences') ?? data_get($body, 'data') ?? $body;

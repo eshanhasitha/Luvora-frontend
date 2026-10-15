@@ -13,10 +13,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\InformationPageController;
 use App\Http\Controllers\StaffAnnouncementController;
+use App\Http\Controllers\StorefrontController;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [StorefrontController::class, 'home'])->name('home');
 
 Route::get(
     '/api-test',
@@ -49,6 +48,7 @@ Route::post('/account/addresses', [AccountController::class, 'storeAddress'])->n
 Route::get('/account/addresses/{id}/edit', [AccountController::class, 'editAddress'])->name('account.addresses.edit');
 Route::put('/account/addresses/{id}', [AccountController::class, 'updateAddress'])->name('account.addresses.update');
 Route::delete('/account/addresses/{id}', [AccountController::class, 'deleteAddress'])->name('account.addresses.delete');
+Route::patch('/account/addresses/{id}/default', [AccountController::class, 'setDefaultAddress'])->name('account.addresses.default');
 Route::get('/account/settings', [AccountController::class, 'settings'])->name('account.settings');
 Route::put('/account/settings', [AccountController::class, 'updateSettings'])->name('account.settings.update');
 Route::get('/account/notifications', [AccountController::class, 'notifications'])->name('account.notifications');
@@ -56,6 +56,7 @@ Route::put('/account/notifications', [AccountController::class, 'updateNotificat
 Route::get('/account/delete', [AccountController::class, 'deleteAccount'])->name('account.delete');
 Route::delete('/account/delete', [AccountController::class, 'submitDeleteAccount'])->name('account.delete.submit');
 Route::post('/account/notifications/{notificationId}/read', [AccountController::class, 'markNotificationRead'])->name('account.notifications.read');
+Route::post('/account/notifications/read-all', [AccountController::class, 'markAllNotificationsRead'])->name('account.notifications.read-all');
 Route::get('/staff/announcement', [StaffAnnouncementController::class, 'edit'])->name('staff.announcement.edit');
 Route::post('/staff/announcement', [StaffAnnouncementController::class, 'publish'])->name('staff.announcement.publish');
 Route::delete('/staff/announcement', [StaffAnnouncementController::class, 'clear'])->name('staff.announcement.clear');

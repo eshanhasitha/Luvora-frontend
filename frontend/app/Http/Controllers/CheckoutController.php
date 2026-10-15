@@ -98,16 +98,18 @@ class CheckoutController extends Controller
         }
 
         $user = session('user', []);
-        $userId = data_get($user, 'id') ?? data_get($user, 'Id');
-
-        if (! $userId) {
-            session()->flush();
-
-            return redirect()->guest(route('login.show'));
+        if (in_array($view, ['index', 'step'], true)) {
+            try {
+                $validation = $api->postWithToken($token, '/api/cart/validate', []);
+                $extra['cartValidation'] = $validation->successful() ? $validation->json() : null;
+                $extra['cartValidationUnavailable'] = $validation->failed();
+            } catch (ConnectionException) {
+                $extra['cartValidation'] = null;
+                $extra['cartValidationUnavailable'] = true;
+            }
         }
-
         try {
-            $response = $api->getWithToken($token, "/api/cart/{$userId}");
+            $response = $api->getWithToken($token, '/api/cart');
         } catch (ConnectionException) {
             return view("checkout.{$view}", array_merge([
                 'cart' => ['items' => []],

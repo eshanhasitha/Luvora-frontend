@@ -19,16 +19,8 @@ class CartController extends Controller
 
         $user = session('user');
 
-        $userId = data_get($user, 'id') ?? data_get($user, 'Id');
-
-        if (!$userId) {
-            session()->flush();
-
-            return redirect()->guest(route('login.show'));
-        }
-
         try {
-            $response = $api->getWithToken($token, "/api/cart/{$userId}");
+            $response = $api->getWithToken($token, '/api/cart');
         } catch (ConnectionException) {
             return view('cart.index', [
                 'cart' => ['items' => []],
@@ -106,7 +98,7 @@ class CartController extends Controller
             $product = $productResponse->json();
             $price = data_get($product, 'discountPrice') ?? data_get($product, 'price') ?? data_get($product, 'Price');
             if (! is_numeric($price) || (float) $price <= 0) return back()->withErrors(['cart' => 'This product does not have a valid price and cannot be added yet.']);
-            $response = $api->postWithToken($token, "/api/cart/{$userId}/items", [
+            $response = $api->postWithToken($token, '/api/cart/items', [
                 'productId' => $data['product_id'], 'quantity' => (int) $data['quantity'], 'unitPrice' => (float) $price,
             ]);
         } catch (ConnectionException) {
@@ -124,7 +116,7 @@ class CartController extends Controller
         if ($identity instanceof \Illuminate\Http\RedirectResponse) return $identity;
         [$token, $userId] = $identity;
         try {
-            $response = $api->putWithToken($token, "/api/cart/{$userId}/items/" . rawurlencode($itemId), ['quantity' => (int) $data['quantity']]);
+            $response = $api->putWithToken($token, '/api/cart/items/' . rawurlencode($itemId), ['quantity' => (int) $data['quantity']]);
         } catch (ConnectionException) { return back()->withErrors(['cart' => 'The cart service is unavailable.']); }
         if ($response->failed()) return back()->withErrors(['cart' => 'The cart quantity could not be updated.']);
         return redirect()->route('cart.index')->with('status', 'Shopping bag updated.');
@@ -136,7 +128,7 @@ class CartController extends Controller
         if ($identity instanceof \Illuminate\Http\RedirectResponse) return $identity;
         [$token, $userId] = $identity;
         try {
-            $response = $api->deleteWithToken($token, "/api/cart/{$userId}/items/" . rawurlencode($itemId));
+            $response = $api->deleteWithToken($token, '/api/cart/items/' . rawurlencode($itemId));
         } catch (ConnectionException) { return back()->withErrors(['cart' => 'The cart service is unavailable.']); }
         if ($response->failed()) return back()->withErrors(['cart' => 'The item could not be removed from your bag.']);
         return redirect()->route('cart.index')->with('status', 'Item removed from your shopping bag.');
@@ -145,8 +137,7 @@ class CartController extends Controller
     private function authenticatedIdentity(): array|\Illuminate\Http\RedirectResponse
     {
         $token = session('access_token');
-        $userId = data_get(session('user', []), 'id') ?? data_get(session('user', []), 'Id');
-        if (! $token || ! $userId) return redirect()->guest(route('login.show'));
-        return [$token, $userId];
+        if (! $token || ! session('user')) return redirect()->guest(route('login.show'));
+        return [$token, null];
     }
 }
