@@ -21,6 +21,7 @@ Route::middleware('admin.api.session')->group(function (): void {
     Route::get('/admin/roles', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'roles')->name('admin.roles');
     Route::get('/admin/audit-logs', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'audit-logs')->name('admin.audit-logs');
     Route::get('/admin/security-activity', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'security-activity')->name('admin.security-activity');
+    Route::get('/admin/notifications', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'notifications')->name('admin.notifications');
     Route::patch('/admin/profile', [App\Http\Controllers\AdminSecurityController::class, 'updateProfile'])->name('admin.profile.update');
     Route::get('/products', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'products')->name('products.index');
     Route::get('/inventory', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'inventory')->name('inventory.index');
@@ -29,16 +30,16 @@ Route::middleware('admin.api.session')->group(function (): void {
     Route::get('/reviews', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'reviews')->name('reviews.index');
     Route::get('/reviews/reported', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'reported-reviews')->name('reviews.reported');
     Route::get('/support/tickets', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'support-tickets')->name('support.tickets');
-    Route::view('/support/tickets/details', 'support.ticket-details')->name('support.ticket-details');
+    Route::get('/support/tickets/details', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'support-ticket-detail')->name('support.ticket-details');
     Route::get('/support/complaints', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'support-complaints')->name('support.complaints');
     Route::get('/categories', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'categories')->name('categories.index');
     Route::get('/brands', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'categories')->name('brands.index');
-    Route::view('/payments/details', 'finance.payment-details')->name('payments.details');
+    Route::get('/payments/details', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'payment-details')->name('payments.details');
     Route::view('/payments/refunds', 'finance.refunds')->name('payments.refunds');
     Route::view('/payments/failed', 'finance.failed')->name('payments.failed');
-    Route::view('/payments/reports', 'finance.reports')->name('payments.reports');
+    Route::get('/payments/reports', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'finance-reports')->name('payments.reports');
     Route::get('/payments', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'payments')->name('payments.index');
-    Route::view('/delivery/assignments', 'delivery.assignments')->name('delivery.assignments');
+    Route::get('/delivery/assignments', [App\Http\Controllers\AdminApiPageController::class, 'show'])->defaults('page', 'delivery-assignments')->name('delivery.assignments');
     Route::view('/delivery/personnel', 'delivery.personnel')->name('delivery.personnel');
     Route::view('/delivery/zones', 'delivery.zones')->name('delivery.zones');
     Route::view('/delivery/failed', 'delivery.failed')->name('delivery.failed');

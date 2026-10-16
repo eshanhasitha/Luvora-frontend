@@ -216,8 +216,8 @@
           Executive Overview &amp; Atelier Telemetry
         </span>
 </div>
-<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none mb-2">
-        Executive Dashboard &amp; Atelier Intelligence
+<h1 class="dashboard-title font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none mb-2">
+        <span class="dashboard-title-initial">E</span>xecutive Dashboard &amp; Atelier Intelligence
       </h1>
 <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
         Real-time financial telemetry, artisan consignment velocity, sapphire escrow settlement, and islandwide white-glove dispatch telemetry.

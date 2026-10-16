@@ -231,6 +231,5 @@
 <nav class="mb-space-md flex flex-wrap gap-2 rounded-xl bg-surface-container-lowest p-2 shadow-sm" aria-label="Promotions and marketing"><a class="rounded-full px-4 py-2 text-xs hover:bg-surface-container" href="{{ route('marketing.coupons') }}">Coupons</a><a class="rounded-full px-4 py-2 text-xs hover:bg-surface-container" href="{{ route('marketing.promotions') }}">Create promotion</a><a class="rounded-full px-4 py-2 text-xs hover:bg-surface-container" href="{{ route('marketing.campaigns') }}">Campaigns</a><a class="rounded-full px-4 py-2 text-xs hover:bg-surface-container" href="{{ route('marketing.banners') }}">Homepage banners</a><a class="rounded-full px-4 py-2 text-xs hover:bg-surface-container" href="{{ route('marketing.featured') }}">Featured products</a></nav>
 <header class="mb-space-md"><p class="font-label-sm text-label-sm uppercase tracking-widest text-primary">Promotions &amp; marketing</p><h1 class="mt-1 font-headline-lg text-headline-lg text-on-surface">@yield('heading')</h1><p class="mt-1 font-body-sm text-body-sm text-secondary">@yield('description')</p></header>
 @yield('page_content')
-<footer class="mt-space-md rounded-xl bg-surface-container-lowest p-space-md shadow-sm text-sm text-secondary">Marketing data is illustrative. Changes are preview-only and are not saved to the storefront.</footer>
 </div></main></div></body></html>
 

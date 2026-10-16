@@ -346,12 +346,12 @@
 <div class="flex flex-col lg:flex-row items-center justify-between gap-space-sm">
 <div class="relative w-full lg:w-96">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-base">search</span>
-<input class="w-full bg-surface-container-low pl-9 pr-4 py-2 rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search by Order ID, Chauffeur Agent, Patron, Sanctuary, License..." type="text"/>
+<input id="delivery-search" class="w-full bg-surface-container-low pl-9 pr-4 py-2 rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Search by Order ID, Chauffeur Agent, Patron, Sanctuary, License..." type="search"/>
 </div>
 <div class="flex items-center gap-space-xs flex-wrap w-full lg:w-auto justify-start lg:justify-end">
 <div class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-lg text-on-surface-variant font-label-sm text-label-sm">
 <span>Agent:</span>
-<select class="bg-transparent font-semibold text-on-surface focus:outline-none">
+<select class="bg-transparent font-semibold text-on-surface focus:outline-none" data-delivery-filter="agent">
 <option>All Chauffeur Agents</option>
 <option>Agent Sunil Bandara</option>
 <option>Agent Kanishka Perera</option>
@@ -360,7 +360,7 @@
 </div>
 <div class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-lg text-on-surface-variant font-label-sm text-label-sm">
 <span>Fleet:</span>
-<select class="bg-transparent font-semibold text-on-surface focus:outline-none">
+<select class="bg-transparent font-semibold text-on-surface focus:outline-none" data-delivery-filter="fleet">
 <option>All Vehicles (EQV / Armored / Aero)</option>
 <option>Mercedes EQV Electric</option>
 <option>Armored Vault Transport</option>
@@ -369,7 +369,7 @@
 </div>
 <div class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-lg text-on-surface-variant font-label-sm text-label-sm">
 <span>Sanctuary Zone:</span>
-<select class="bg-transparent font-semibold text-on-surface focus:outline-none">
+<select class="bg-transparent font-semibold text-on-surface focus:outline-none" data-delivery-filter="zone">
 <option>All Zones (Colombo 07 / Galle Face / Outstation)</option>
 <option>Cinnamon Gardens (07)</option>
 <option>Kollupitiya (03)</option>
@@ -380,27 +380,27 @@
 </div>
 <!-- Status Tabs -->
 <div class="flex items-center gap-space-xs overflow-x-auto pb-1 text-label-sm font-label-sm">
-<button class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-semibold flex items-center gap-1.5 whitespace-nowrap">
+<button type="button" data-delivery-status="all" class="px-3 py-1.5 rounded-full bg-primary text-on-primary font-semibold flex items-center gap-1.5 whitespace-nowrap">
 <span>All Deliveries</span>
 <span class="bg-primary-container text-on-primary text-[10px] px-1.5 py-0.5 rounded-full font-bold">38</span>
 </button>
-<button class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
+<button type="button" data-delivery-status="en route" class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
 <span>En Route</span>
 <span class="bg-secondary-fixed text-on-secondary-fixed text-[10px] px-1.5 py-0.5 rounded-full font-bold">14</span>
 </button>
-<button class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
+<button type="button" data-delivery-status="at sanctuary" class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
 <span>At Patron Sanctuary</span>
 <span class="bg-tertiary-fixed text-on-tertiary-fixed text-[10px] px-1.5 py-0.5 rounded-full font-bold">8</span>
 </button>
-<button class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
+<button type="button" data-delivery-status="awaiting gate" class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
 <span>Awaiting Gate Clearance</span>
 <span class="bg-secondary-container text-on-secondary-container text-[10px] px-1.5 py-0.5 rounded-full font-bold">4</span>
 </button>
-<button class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
+<button type="button" data-delivery-status="completed" class="px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap">
 <span>Completed Today</span>
 <span class="bg-surface-container-high text-on-surface text-[10px] px-1.5 py-0.5 rounded-full font-bold">82</span>
 </button>
-<button class="px-3 py-1.5 rounded-full bg-error-container text-on-error-container flex items-center gap-1.5 whitespace-nowrap font-semibold">
+<button type="button" data-delivery-status="delayed" class="px-3 py-1.5 rounded-full bg-error-container text-on-error-container flex items-center gap-1.5 whitespace-nowrap font-semibold">
 <span class="material-symbols-outlined text-xs">warning</span>
 <span>Delayed / Alert</span>
 <span class="bg-error text-on-error text-[10px] px-1.5 py-0.5 rounded-full font-bold">1</span>
@@ -1095,6 +1095,52 @@
 </div>
 </div>
 </div>
-</div></main></div></body></html>
+</div><script>
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.querySelector('main table');
+    const rows = [...(table?.tBodies[0]?.rows || [])];
+    const search = document.getElementById('delivery-search');
+    const statusButtons = [...document.querySelectorAll('[data-delivery-status]')];
+    const filters = [...document.querySelectorAll('[data-delivery-filter]')];
+    let statusFilter = 'all';
+
+    const updateRows = () => {
+        const query = search?.value.trim().toLocaleLowerCase() || '';
+        const selected = Object.fromEntries(filters.map(filter => [filter.dataset.deliveryFilter, filter.selectedIndex]));
+        rows.forEach(row => {
+            const text = row.innerText.toLocaleLowerCase();
+            const matchesSearch = !query || text.includes(query);
+            const statusTerms = {
+                'en route': ['in-transit', 'en route', ' en route'],
+                'at sanctuary': ['at sanctuary'],
+                'awaiting gate': ['awaiting gate'],
+                completed: ['completed'],
+                delayed: ['delayed', 'alert']
+            };
+            const matchesStatus = statusFilter === 'all' || (statusTerms[statusFilter] || [statusFilter]).some(term => text.includes(term));
+            const agent = filters.find(filter => filter.dataset.deliveryFilter === 'agent');
+            const fleet = filters.find(filter => filter.dataset.deliveryFilter === 'fleet');
+            const zone = filters.find(filter => filter.dataset.deliveryFilter === 'zone');
+            const matchesAgent = !selected.agent || text.includes(agent.selectedOptions[0].textContent.toLocaleLowerCase().replace('agent ', ''));
+            const matchesFleet = !selected.fleet || text.includes(fleet.selectedOptions[0].textContent.toLocaleLowerCase().replace(' electric', ''));
+            const matchesZone = !selected.zone || text.includes(zone.selectedOptions[0].textContent.toLocaleLowerCase().split(' (')[0]);
+            row.hidden = !(matchesSearch && matchesStatus && matchesAgent && matchesFleet && matchesZone);
+        });
+    };
+
+    search?.addEventListener('input', updateRows);
+    filters.forEach(filter => filter.addEventListener('change', updateRows));
+    statusButtons.forEach(button => button.addEventListener('click', () => {
+        statusFilter = button.dataset.deliveryStatus;
+        statusButtons.forEach(item => {
+            item.setAttribute('aria-pressed', String(item === button));
+            item.classList.toggle('bg-primary', item === button);
+            item.classList.toggle('text-on-primary', item === button);
+            item.classList.toggle('bg-surface-container-low', item !== button);
+        });
+        updateRows();
+    }));
+});
+</script></div></main></div></body></html>
 
 
