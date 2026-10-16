@@ -106,3 +106,5 @@ frontend/
 ## API integration notes
 
 The API client is in `app/Services/LuvoraApiClient.php`. Keep API behavior and route coverage documentation up to date in [`frontend/docs/backend-api-routes.md`](frontend/docs/backend-api-routes.md) when integrations change. Backend authorization is required for customer-scoped operations; the integration notes call out endpoints that still need backend access checks before production use.
+
+See [`frontend/docs/backend-api-fields.md`](frontend/docs/backend-api-fields.md) for the frontend persistence gap audit: profile fields such as birthday that currently stay in session, checkout/order data, wishlist, newsletter, support, and admin UI data that still need backend persistence. It is inferred from frontend code; confirm the fields against backend DTOs/schema before implementation.
