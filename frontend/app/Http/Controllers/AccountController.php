@@ -372,10 +372,50 @@ class AccountController extends Controller
         }
 
         if ($response->failed()) {
-            return back()->withErrors(['email' => 'We could not send a verification message. The email verification endpoint may not be enabled yet.']);
+            return back()->withErrors(['email' => data_get($response->json(), 'message') ?? 'We could not send a verification message. Please check your account email and try again.']);
         }
 
         return back()->with('status', data_get($response->json(), 'message') ?? 'If verification is available, a message will be sent to your email address.');
+    }
+
+    public function verifyEmail(Request $request, LuvoraApiClient $api)
+    {
+        $context = $this->accountContext();
+
+        if ($context instanceof RedirectResponse) {
+            return $context;
+        }
+
+        $data = $request->validate([
+            'token' => ['required', 'string', 'max:2048'],
+        ]);
+
+        try {
+            $response = $api->postWithToken(session('access_token'), '/api/auth/verify-email', [
+                'token' => $data['token'],
+            ]);
+        } catch (ConnectionException) {
+            return back()->withInput()->withErrors(['token' => 'The account service is unavailable. Your email was not verified.']);
+        }
+
+        if ($response->failed()) {
+            return back()->withInput()->withErrors([
+                'token' => data_get($response->json(), 'message') ?? 'That verification token is invalid or has expired. Request a new verification email and try again.',
+            ]);
+        }
+
+        $user = (array) session('user', []);
+        $user['emailVerified'] = true;
+        $user['isEmailVerified'] = true;
+        $user['email_verified_at'] = data_get($response->json(), 'emailVerifiedAt')
+            ?? data_get($response->json(), 'data.emailVerifiedAt')
+            ?? now()->toIso8601String();
+        session()->put('user', $user);
+
+        return redirect()->route('verification.notice')->with(
+            'status',
+            data_get($response->json(), 'message') ?? 'Your email address has been verified.'
+        );
     }
 
     private function accountView(string $view)

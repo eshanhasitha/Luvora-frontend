@@ -36,6 +36,7 @@ Route::post('/reset-password/{token}', [AuthController::class, 'resetPassword'])
 
 Route::get('/email/verify', [AccountController::class, 'verification'])->name('verification.notice');
 Route::post('/email/verify', [AccountController::class, 'resendVerification'])->name('verification.send');
+Route::post('/email/verify/confirm', [AccountController::class, 'verifyEmail'])->name('verification.confirm');
 Route::get('/account', [AccountController::class, 'dashboard'])->name('account.dashboard');
 Route::get('/account/profile', [AccountController::class, 'profile'])->name('account.profile');
 Route::get('/account/profile/edit', [AccountController::class, 'editProfile'])->name('account.profile.edit');
