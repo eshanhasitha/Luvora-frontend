@@ -7,6 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body{font-family:'Plus Jakarta Sans',Inter,sans-serif;-webkit-font-smoothing:antialiased}
+        main>section:first-child{background:radial-gradient(ellipse at 18% 18%,rgba(59,130,246,.32),transparent 42%),linear-gradient(145deg,#0b1930,#12345b 72%,#005baf)}
+        main>section:last-child>div{border:1px solid #e8edf2;border-radius:1.25rem;box-shadow:0 20px 60px rgba(15,23,42,.10)}
+        input:not([type=checkbox]){border-radius:.75rem!important}input:focus{box-shadow:0 0 0 3px rgba(0,91,175,.1)}
+        button{transition:background-color .16s ease,transform .16s ease,box-shadow .16s ease}button:hover{box-shadow:0 8px 20px rgba(0,91,175,.18)}button:active{transform:translateY(1px)}
+    </style>
 </head>
 <body class="min-h-screen bg-[#f7f9fb] text-[#191c1e]">
 <main class="grid min-h-screen lg:grid-cols-2">

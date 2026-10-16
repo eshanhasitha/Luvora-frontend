@@ -85,6 +85,13 @@ class AdminSecurityController extends Controller
         }
 
         if ($response->failed()) {
+            if ($response->status() === 401) {
+                session()->forget(['admin_access_token', 'admin_refresh_token', 'admin_user']);
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Your admin session was rejected by the API. Please sign in again. If this continues, contact your API administrator.',
+                ]);
+            }
+
             return back()->withErrors(['profile' => data_get($response->json(), 'message', 'Profile update failed.')])->withInput();
         }
 
