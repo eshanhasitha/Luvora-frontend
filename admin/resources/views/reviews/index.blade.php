@@ -213,7 +213,7 @@
 <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md py-space-md">
 <div class="flex flex-col space-y-space-xs max-w-4xl">
 <div class="flex items-center gap-2 font-label-sm text-label-sm text-outline">
-<span class="hover:text-on-surface cursor-pointer transition-colors">Executive Portal</span>
+<a class="hover:text-primary transition-colors" href="{{ route('dashboard') }}">Executive Portal</a>
 <span>/</span>
 <span class="hover:text-on-surface cursor-pointer transition-colors">Customers &amp; VIP Patrons</span>
 <span>/</span>
@@ -338,7 +338,7 @@
 </div>
 </div>
 <div class="mt-space-sm pt-space-xs border-t border-surface-container flex items-center justify-between text-secondary font-label-sm text-label-sm">
-<span>Integrity Node Verified</span>
+
 <span class="text-on-surface font-medium">CBSL Compliant</span>
 </div>
 </div>
@@ -871,10 +871,7 @@
 <div class="text-secondary font-label-md text-label-md">
         <span id="reviews-list-count" data-list-count></span>
       </div>
-<div class="flex items-center gap-1.5 font-label-sm text-label-sm text-outline">
-<span class="material-symbols-outlined text-xs text-tertiary">shield_lock</span>
-<span>Cryptographically signed review integrity node: 0x48A...D19C (Sri Lanka PDPA &amp; CBSL Verified)</span>
-</div>
+
 </div>
 <!-- Numbered Pagination -->
 
@@ -887,6 +884,6 @@
  document.querySelectorAll('button').forEach(button=>{const t=button.innerText.trim().toLowerCase();if(['all reviews','pending moderation','approved & live','flagged / hidden'].includes(t)){button.addEventListener('click',()=>{filter=t==='all reviews'?'all':t==='pending moderation'?'pending':t==='approved & live'?'approved':'flagged';refresh();});}if(t.includes('approve'))button.addEventListener('click',()=>{const card=button.closest('.bg-surface-container-lowest');const badge=card?.querySelector('.bg-error-container');if(badge)badge.textContent='Approved & Live';button.textContent='Approved';button.disabled=true;refresh();});if(t==='archive / flag'||button.title==='Flag')button.addEventListener('click',()=>{const card=button.closest('.bg-surface-container-lowest');if(card){const badge=card.querySelector('.bg-tertiary-fixed, .bg-error-container');if(badge)badge.textContent='Flagged / Hidden';refresh();}});});
 })();
 </script><script>
-(() => {const container=document.querySelector('.mt-space-sm.space-y-space-md');const summary=document.getElementById('reviews-list-count');if(!container||!summary)return;const cards=[...container.children];const update=()=>{const n=cards.filter(card=>!card.hidden&&card.style.display!=='none').length;const selected=container.querySelectorAll('input[type="checkbox"]:checked').length;summary.textContent=n?`Showing 1–${n} of ${n} reviews · Page 1 of 1`:'Showing 0 reviews · Page 1 of 1';document.getElementById('review-total-count').textContent=cards.length;document.getElementById('review-patron-count').textContent='Reviewers in view: '+cards.length;const batch=[...document.querySelectorAll('*')].find(element=>element.children.length===0&&element.textContent.includes('Batch Selection ('));if(batch)batch.textContent='Batch Selection ('+selected+' Selected of '+cards.length+')';};new MutationObserver(update).observe(container,{subtree:true,attributes:true,attributeFilter:['style','hidden']});document.getElementById('review-search')?.addEventListener('input',update);container.addEventListener('change',update);document.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>setTimeout(update,0)));update();})();
+(() => {const container=document.querySelector('.mt-space-sm.space-y-space-md');const summary=document.getElementById('reviews-list-count');if(!container||!summary)return;const cards=[...container.children];const update=()=>{const n=cards.filter(card=>!card.hidden&&card.style.display!=='none').length;const selected=container.querySelectorAll('input[type="checkbox"]:checked').length;summary.textContent=n?`Showing 1–${n} of ${n} reviews`:'Showing 0 reviews';document.getElementById('review-total-count').textContent=cards.length;document.getElementById('review-patron-count').textContent='Reviewers in view: '+cards.length;const batch=[...document.querySelectorAll('*')].find(element=>element.children.length===0&&element.textContent.includes('Batch Selection ('));if(batch)batch.textContent='Batch Selection ('+selected+' Selected of '+cards.length+')';};new MutationObserver(update).observe(container,{subtree:true,attributes:true,attributeFilter:['style','hidden']});document.getElementById('review-search')?.addEventListener('input',update);container.addEventListener('change',update);document.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>setTimeout(update,0)));update();})();
 </script></body></html>
 

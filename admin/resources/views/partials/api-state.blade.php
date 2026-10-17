@@ -16,7 +16,9 @@
 @endif
 
 @php($pageableSources = ['notifications', 'staff', 'roles', 'logs', 'events', 'tickets', 'complaints', 'promotions', 'coupons', 'campaigns', 'banners', 'products', 'stock', 'orders', 'orderTransactions', 'customers', 'categories', 'payments', 'transactions', 'shipments', 'reviews', 'reports', 'recentOrders', 'topProducts', 'lowStock', 'pendingTasks'])
-<div id="admin-live-api-results">
+@if(in_array(($apiPage ?? ''), ['products', 'categories', 'inventory', 'customers', 'orders', 'payments'], true))
+    <style>#admin-live-api-results { display: none !important; }</style>
+@endif<div id="admin-live-api-results">
 @foreach(($apiRecords ?? []) as $source => $records)
     @if(isset($apiPagination[$source]) && in_array($source, $pageableSources, true))
         @php($paging = $apiPagination[$source])
@@ -94,31 +96,3 @@
     @endif
 @endforeach
 </div>
-@php($apiManagedPages = ['dashboard', 'products', 'inventory', 'customers', 'orders', 'delivery', 'delivery-assignments', 'payments', 'payment-details', 'finance-reports', 'reviews', 'categories', 'staff', 'audit-logs', 'security-activity', 'support-tickets', 'support-complaints', 'promotions', 'coupons', 'campaigns', 'banners', 'reports', 'settings', 'roles', 'support-ticket-detail'])
-@if(in_array($apiPage ?? '', $apiManagedPages, true))
-    <style>
-        #admin-live-api-results ~ * { display: none !important; }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (@json($apiPage ?? '') === 'notifications') return;
-            const liveResults = document.getElementById('admin-live-api-results');
-            const main = liveResults?.closest('main');
-            if (!liveResults || !main) return;
-
-            const hideSampleBranches = (container) => {
-                [...container.children].forEach((element) => {
-                    if (element === liveResults || element.matches('[role="alert"], [role="status"]')) return;
-                    if (element.contains(liveResults)) {
-                        hideSampleBranches(element);
-                        return;
-                    }
-                    element.hidden = true;
-                    element.style.setProperty('display', 'none', 'important');
-                });
-            };
-
-            hideSampleBranches(main);
-        });
-    </script>
-@endif

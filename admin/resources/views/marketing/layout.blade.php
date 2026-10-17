@@ -213,9 +213,9 @@
 <div class="flex items-center gap-space-xs text-secondary font-label-md text-label-md">
 <span>Executive Portal</span>
 <span class="material-symbols-outlined text-xs">chevron_right</span>
-<span>Artisans &amp; Logistics</span>
+<span>Marketing</span>
 <span class="material-symbols-outlined text-xs">chevron_right</span>
-<span class="text-on-surface font-semibold">Deliveries &amp; Fleet Telemetry</span>
+<span class="text-on-surface font-semibold">@yield('heading')</span>
 </div>
 <div class="flex items-center gap-space-md">
 <div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-sm py-1 rounded-full shadow-sm">

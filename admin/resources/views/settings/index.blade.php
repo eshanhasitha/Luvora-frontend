@@ -679,7 +679,7 @@
 <span class="material-symbols-outlined text-xl">verified</span>
 </div>
 <p class="font-body-sm text-body-sm text-secondary">
-          All modifications are cryptographically signed and stored in the <span class="font-semibold text-on-surface">admin audit log</span> with SHA-256 integrity hashing.
+          Review your changes before saving.
         </p>
 </div>
 <div class="flex flex-wrap items-center gap-space-sm w-full md:w-auto justify-end">

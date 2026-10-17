@@ -614,7 +614,7 @@
 <th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider text-right">Actions</th>
 </tr>
 </thead>
-<tbody class="font-body-sm text-body-sm">
+<tbody id="dashboard-orders-body" class="font-body-sm text-body-sm">
 <!-- Row 1 -->
 <tr class="hover:bg-surface-container-low/30 transition-colors">
 <td class="py-4 px-4">

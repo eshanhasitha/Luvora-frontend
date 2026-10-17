@@ -883,10 +883,7 @@
 <div class="bg-surface-container-low px-space-md py-3 flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
 <div class="flex items-center gap-space-sm">
 <span><span id="delivery-list-count" data-list-count></span></span>
-<span class="text-outline">•</span>
-<span class="text-tertiary font-semibold flex items-center gap-1">
-<span class="h-2 w-2 rounded-full bg-tertiary"></span> All 14 vans reporting GPS heartbeat
-        </span>
+
 </div>
 
 </div>
@@ -1008,7 +1005,7 @@
 </div>
 </div>
 <div class="mt-space-md pt-space-xs flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
-<span>Verified Patron Feedback Cycle • 100% Cryptographically Signed</span>
+
 <button class="text-primary font-semibold hover:underline flex items-center gap-1">
 <span>View All 840 Delivery Dossiers</span>
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -1136,7 +1133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
 });
 </script></div></main></div><script>
-(() => {const tbody=document.querySelector('main table tbody');const summary=document.getElementById('delivery-list-count');if(!tbody||!summary)return;const rows=[...tbody.rows];const update=()=>{const n=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=`Showing ${n} of ${n} deliveries · Page 1 of 1`;};new MutationObserver(update).observe(tbody,{subtree:true,attributes:true,attributeFilter:['style','hidden']});document.getElementById('delivery-search')?.addEventListener('input',update);document.querySelectorAll('[data-delivery-filter],[data-delivery-status]').forEach(control=>control.addEventListener('change',update));document.querySelectorAll('[data-delivery-status]').forEach(control=>control.addEventListener('click',update));update();})();
+(() => {const tbody=document.querySelector('main table tbody');const summary=document.getElementById('delivery-list-count');if(!tbody||!summary)return;const rows=[...tbody.rows];const update=()=>{const n=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=`Showing ${n} of ${n} deliveries`;};new MutationObserver(update).observe(tbody,{subtree:true,attributes:true,attributeFilter:['style','hidden']});document.getElementById('delivery-search')?.addEventListener('input',update);document.querySelectorAll('[data-delivery-filter],[data-delivery-status]').forEach(control=>control.addEventListener('change',update));document.querySelectorAll('[data-delivery-status]').forEach(control=>control.addEventListener('click',update));update();})();
 </script></body></html>
 
 

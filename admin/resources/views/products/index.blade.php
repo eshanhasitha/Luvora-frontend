@@ -211,9 +211,9 @@
 <!-- Dynamic Breadcrumb & Context Header Bar -->
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-md">
 <div class="flex items-center gap-space-xs font-label-md text-label-md text-secondary">
-<span class="hover:text-primary transition-colors cursor-pointer">Executive Portal</span>
+<a class="hover:text-primary transition-colors" href="{{ route('dashboard') }}">Executive Portal</a>
 <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
-<span class="hover:text-primary transition-colors cursor-pointer">Catalog &amp; Products</span>
+<a class="hover:text-primary transition-colors" href="{{ route('products.index') }}">Catalog &amp; Products</a>
 <span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
 <span class="text-on-surface font-semibold">All Products</span>
 </div>
@@ -255,7 +255,7 @@
 <span class="material-symbols-outlined text-lg">barcode_scanner</span>
 <span>Barcode Mode</span>
 </button>
-<button class="inline-flex items-center gap-space-xs px-space-lg py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md font-semibold transition-all shadow-md active:scale-95">
+<button id="add-product-button" disabled class="inline-flex items-center gap-space-xs px-space-lg py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md font-semibold transition-all shadow-md active:scale-95">
 <span class="material-symbols-outlined text-lg">add_circle</span>
 <span>+ Add New Product</span>
 </button>
@@ -279,7 +279,7 @@
           </span>
 </div>
 <p class="font-body-sm text-body-sm text-secondary pt-1">
-          34 Handlooms â€¢ 112 Gems â€¢ 340 RTW
+          <span id="catalog-status-summary">6 active products - 1 archived</span>
         </p>
 </div>
 <div class="absolute -right-6 -bottom-6 w-20 h-20 bg-primary/5 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
@@ -294,32 +294,14 @@
 </div>
 <div class="pt-space-sm">
 <div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md font-semibold text-error">08</span>
+<span id="catalog-low-stock-count" class="font-headline-md text-headline-md font-semibold text-error">0</span>
 <span class="font-label-sm text-label-sm text-error font-semibold">Critical (&lt; 3 units)</span>
 </div>
 <p class="font-body-sm text-body-sm text-secondary pt-1">
-          6 Dumbara Handlooms, 2 Solitaires
+          <span id="catalog-low-stock-summary">0 products with low stock</span>
         </p>
 </div>
 <div class="absolute -right-6 -bottom-6 w-20 h-20 bg-error/5 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
-</div>
-<!-- Metric 3 -->
-<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">In-Vault Escrow Reserve</span>
-<span class="p-2 rounded-lg bg-secondary-container/50 text-primary">
-<span class="material-symbols-outlined text-lg">shield_with_heart</span>
-</span>
-</div>
-<div class="pt-space-sm">
-<div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md font-semibold text-on-surface">LKR 64.85M</span>
-</div>
-<p class="font-body-sm text-body-sm text-tertiary pt-1 flex items-center gap-1 font-medium">
-<span class="material-symbols-outlined text-xs">verified</span> CBSL Escrow Ledger Compliant
-        </p>
-</div>
-<div class="absolute -right-6 -bottom-6 w-20 h-20 bg-tertiary/5 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
 </div>
 <!-- Metric 4 -->
 <div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
@@ -331,30 +313,15 @@
 </div>
 <div class="pt-space-sm">
 <div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md font-semibold text-on-surface">14 Guilds</span>
+<span id="catalog-guild-count" class="font-headline-md text-headline-md font-semibold text-on-surface">0 guilds</span>
 <span class="font-label-sm text-label-sm text-secondary font-medium">100% Provenance</span>
 </div>
 <p class="font-body-sm text-body-sm text-secondary pt-1 truncate">
-          Dumbara â€¢ Ratnapura â€¢ Galle â€¢ Jaffna
+          <span id="catalog-guild-summary">0 distinct product guilds</span>
         </p>
 </div>
 <div class="absolute -right-6 -bottom-6 w-20 h-20 bg-primary/5 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
 </div>
-</div>
-<!-- Non-intrusive Vault Policy Notice -->
-<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm mb-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-sm">
-<div class="flex items-center gap-space-sm">
-<span class="p-2 rounded-full bg-secondary-container text-on-secondary-fixed">
-<span class="material-symbols-outlined text-base">lock</span>
-</span>
-<p class="font-body-sm text-body-sm text-on-surface">
-<span class="font-semibold text-primary">Deactivation &amp; Vault Policy:</span>
-        Items backed by CBSL escrow deposits or linked to scheduled tailor fittings cannot be permanently removed. They transition to the <em>Vault Provenance Archive</em> to protect the sovereign collector ledger.
-      </p>
-</div>
-<a class="font-label-sm text-label-sm text-primary font-semibold hover:underline shrink-0 flex items-center gap-1" href="#">
-      Read Charter <span class="material-symbols-outlined text-xs">arrow_forward</span>
-</a>
 </div>
 <!-- Search, Filter Suite, & View Matrix -->
 <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm mb-space-md space-y-space-md">
@@ -367,21 +334,11 @@
 </div>
 <!-- Quick Segment Tabs -->
 <div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg overflow-x-auto">
-<button data-segment="all" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm font-semibold bg-surface-container-lowest text-on-surface shadow-xs">
-          All (0)
-        </button>
-<button data-segment="active" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">
-          Active (0)
-        </button>
-<button data-segment="low" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-error hover:bg-error-container/20 transition-colors flex items-center gap-1">
-          Low Stock <span class="px-1.5 py-0.5 rounded-full bg-error text-on-error text-[10px]">8</span>
-</button>
-<button data-segment="archived" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">
-          Archived (24)
-        </button>
-<button data-segment="drafts" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">
-          Drafts (12)
-        </button>
+<button data-segment="all" data-label="All" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm font-semibold bg-surface-container-lowest text-on-surface shadow-xs">All</button>
+<button data-segment="active" data-label="Active" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">Active</button>
+<button data-segment="low" data-label="Low Stock" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-error hover:bg-error-container/20 transition-colors flex items-center gap-1">Low Stock</button>
+<button data-segment="archived" data-label="Archived" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">Archived</button>
+<button data-segment="drafts" data-label="Drafts" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">Drafts</button>
 </div>
 <!-- Layout View Toggle -->
 <div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg self-end lg:self-auto">
@@ -399,13 +356,13 @@
 <div class="flex flex-col space-y-1">
 <label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Category</label>
 <div class="relative">
-<select class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option>All Categories</option>
-<option>Handloom Sarees &amp; Silks</option>
-<option>Haute Couture Kaftans</option>
-<option>Bespoke Menswear</option>
-<option>Fine Jewelry &amp; Sapphires</option>
-<option>Palm &amp; Beeralu Accessories</option>
+<select data-filter="category" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
+<option value="all">All Categories</option>
+<option value="handloom">Handloom Sarees &amp; Silks</option>
+<option value="couture">Haute Couture Kaftans</option>
+<option value="menswear">Bespoke Menswear</option>
+<option value="jewelry">Fine Jewelry &amp; Sapphires</option>
+<option value="accessories">Palm &amp; Beeralu Accessories</option>
 </select>
 <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
 </div>
@@ -414,13 +371,13 @@
 <div class="flex flex-col space-y-1">
 <label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Stock Status</label>
 <div class="relative">
-<select class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option>All Statuses</option>
-<option>In Vault Stock</option>
-<option>Critical Stock (&lt;3)</option>
-<option>Made-to-Order</option>
-<option>Out of Stock / Restock</option>
-<option>Vault Sealed</option>
+<select data-filter="status" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
+<option value="all">All Statuses</option>
+<option value="stocked">In Vault Stock</option>
+<option value="low">Critical Stock (&lt;3)</option>
+<option value="made-to-order">Made-to-Order</option>
+<option value="out">Out of Stock / Restock</option>
+<option value="sealed">Vault Sealed</option>
 </select>
 <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
 </div>
@@ -429,8 +386,8 @@
 <div class="flex flex-col space-y-1">
 <label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Guild / Provenance</label>
 <div class="relative">
-<select class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option>All Guilds (14)</option>
+<select data-filter="guild" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
+<option value="all">All Guilds</option>
 <option>Dumbara Valley Weavers</option>
 <option>Ratnapura Alluvial Basin</option>
 <option>Galle Fort Beeralu &amp; Tailors</option>
@@ -444,12 +401,12 @@
 <div class="flex flex-col space-y-1">
 <label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Price Tier (LKR)</label>
 <div class="relative">
-<select class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option>All Price Tiers</option>
-<option>Under LKR 25,000</option>
-<option>LKR 25,000 - 75,000</option>
-<option>LKR 75,000 - 200,000</option>
-<option>High Jewelry &gt; LKR 200,000</option>
+<select data-filter="price" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
+<option value="all">All Price Tiers</option>
+<option value="under25">Under LKR 25,000</option>
+<option value="25to75">LKR 25,000 - 75,000</option>
+<option value="75to200">LKR 75,000 - 200,000</option>
+<option value="over200">High Jewelry &gt; LKR 200,000</option>
 </select>
 <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
 </div>
@@ -458,8 +415,8 @@
 <div class="flex flex-col space-y-1">
 <label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Heritage Assay</label>
 <div class="relative">
-<select class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option>All Heritage Certs</option>
+<select data-filter="certificate" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
+<option value="all">All Heritage Certs</option>
 <option>UNESCO Pit-Loom Certified</option>
 <option>NGJA Gemological Certified</option>
 <option>Certified Natural Organic Dye</option>
@@ -474,7 +431,7 @@
 <div class="bg-primary/5 px-space-md py-2.5 rounded-lg mb-space-sm flex flex-wrap items-center justify-between gap-space-sm">
 <div class="flex items-center gap-space-sm">
 <input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" id="bulk-select-all" type="checkbox"/>
-<span class="font-label-sm text-label-sm font-semibold text-on-surface"><span id="selected-label">Selected 0 of 7 items</span></span>
+<span class="font-label-sm text-label-sm font-semibold text-on-surface"><span id="selected-label">Selected 0 items</span></span>
 <span class="font-label-sm text-label-sm text-secondary">|</span>
 <div class="flex items-center gap-1.5">
 <button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container font-label-sm text-label-sm text-on-surface font-medium transition-colors shadow-xs">
@@ -511,553 +468,28 @@
 <th class="py-3.5 pr-space-md pl-space-sm text-right min-w-[140px]">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-surface-container text-on-surface font-body-sm text-body-sm">
-<!-- Row 1: Emerald Handloom Saree -->
-<tr data-product-row data-name="Handloom Emerald Raw Silk Saree" data-sku="LUV-HL-8821" data-status="published" data-stock="2" data-category="handloom" data-guild="Dumbara Valley Guild" data-cert="UNESCO Pit-Loom" class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="py-4 pl-space-md pr-2 text-center">
-<input class="row-check w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
-</td>
-<td class="py-4 px-space-sm">
-<div class="flex items-center gap-space-sm">
-<div class="relative w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="Editorial close-up of a luxurious emerald green Sri Lankan handloom raw silk saree draped with gold zari thread patterns, illuminated with soft ambient studio lighting against a clean parchment background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKxMQpAN5Q-JZYzgIRGCHUiVWdGTz5i-7VTlLH-r-npDbmgG59haXZxRmsTjg3CFLSbNdZUVnSec4aiWbrlU5J5cfbcat174NQCzDcOJmp9oyaVAKjnVXE5T0KMq-Q4Dr58jDJuPLp1OPCzakAH5EhusJ-sztO5jafIY7ECdk7z31uzVQwAcW5cqEdXgXgRZeLLnSGXYgEG7yATg46vYmkNdKkmhXZhcrmEJ9Q17V07otmM7Kz-pNs"/>
-<span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-surface-container-lowest/90 font-label-sm text-[9px] font-bold text-on-surface uppercase">Silk</span>
-</div>
-<div class="space-y-1 min-w-0">
-<div class="font-headline-sm text-[15px] font-semibold text-on-surface truncate group-hover:text-primary transition-colors product-title cursor-pointer product-title cursor-pointer">
-                    Handloom Emerald Raw Silk Saree
-                  </div>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm font-mono text-outline">#LUV-HL-8821</span>
-<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary">Women's Couture</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<div class="font-semibold text-on-surface flex items-center gap-1">
-<span>Master Somapala</span>
-<span class="material-symbols-outlined text-xs text-primary" title="Master Craftsman Verified">verified</span>
-</div>
-<div class="font-label-sm text-label-sm text-secondary truncate">Dumbara Valley Guild</div>
-<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-tertiary-container bg-tertiary-fixed/30 px-2 py-0.5 rounded-full font-medium">
-                  Central Highlands
-                </span>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-0.5">
-<div class="font-headline-sm text-[15px] font-bold text-on-surface">LKR 50,220</div>
-<div class="text-[12px] font-label-sm text-tertiary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-<span>64% Escrow: LKR 32,140</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container/60 text-error text-[11px] font-label-sm font-semibold">
-<span class="h-1.5 w-1.5 rounded-full bg-error animate-ping"></span>
-                  2 in vault (Critical Low)
-                </span>
-<div class="text-[11px] font-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-outline">shelves</span>
-                  Vault Rack A-12
-                </div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-on-surface font-medium">
-<span class="material-symbols-outlined text-xs text-primary">workspace_premium</span>
-                  UNESCO Pit-Loom
-                </span>
-<div class="text-[11px] font-label-sm text-secondary">Cert: #LK-DUM-2023</div>
-</div>
-</td>
-<td class="py-4 pr-space-md pl-space-sm text-right">
-<div class="flex items-center justify-end gap-1">
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Edit Specifications">
-<span class="material-symbols-outlined text-base">edit</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Manage Vault Stock">
-<span class="material-symbols-outlined text-base">warehouse</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-error hover:bg-error-container/40 transition-colors" title="Deactivate SKU">
-<span class="material-symbols-outlined text-base">archive</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="More Operations">
-<span class="material-symbols-outlined text-base">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 2: Ratnapura Unheated Royal Blue Sapphire -->
-<tr data-product-row data-name="Ratnapura Royal Blue Sapphire" data-sku="LUV-GEM-4921" data-status="published" data-stock="1" data-category="jewelry" data-guild="Ratnapura Alluvial Basin" data-cert="NGJA Cert RAT-4921" class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="py-4 pl-space-md pr-2 text-center">
-<input class="row-check w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
-</td>
-<td class="py-4 px-space-sm">
-<div class="flex items-center gap-space-sm">
-<div class="relative w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="Macro photography of a vivid natural Ceylon royal blue sapphire gemstone resting on a soft velvet pad, crisp reflections, sparkling facets, luxury lighting, pristine presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-JZ2eVbjCqGEcIxK39J_9WCfR2zfh-9ywq_1lkSfld5EomdER3ngxRj1xDrfVMrg1rQiMFHP3DPkpTpodqmmLXMP7R-Tb0SSB27fmBJkyhXmBRNGp_fLU-2-B5mSNWZ1rpHlRMOTBK5NcaQIhHj-Oi8lZg7a2QStPl_kPheo_Gw9AW9d17j9J5v1MldDOKGB_O9hGPyXifpt8LwYwrxeNpLOjaSCQ0SB9d-MJBC-t6HNyEr3WHe-w"/>
-<span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-surface-container-lowest/90 font-label-sm text-[9px] font-bold text-on-surface uppercase">4.2ct</span>
-</div>
-<div class="space-y-1 min-w-0">
-<div class="font-headline-sm text-[15px] font-semibold text-on-surface truncate group-hover:text-primary transition-colors product-title cursor-pointer product-title cursor-pointer">
-                    Ratnapura Royal Blue Sapphire
-                  </div>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm font-mono text-outline">#LUV-GEM-4921</span>
-<span class="px-2 py-0.5 rounded-full bg-secondary-container/60 font-label-sm text-[11px] text-on-secondary-fixed">Fine High Jewelry</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<div class="font-semibold text-on-surface">Dr. Wickramaratne</div>
-<div class="font-label-sm text-label-sm text-secondary truncate">Ratnapura Alluvial Basin</div>
-<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full font-medium">
-                  Pit 04 Certified
-                </span>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-0.5">
-<div class="font-headline-sm text-[15px] font-bold text-on-surface">LKR 185,000</div>
-<div class="text-[12px] font-label-sm text-tertiary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-<span>72% Escrow: LKR 133,200</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-on-surface font-semibold">
-<span class="material-symbols-outlined text-xs text-primary">encrypted</span>
-                  1 in Armored Safe
-                </span>
-<div class="text-[11px] font-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-outline">lock</span>
-                  Safe #03 (Biometric)
-                </div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed/40 font-label-sm text-[11px] text-on-tertiary-fixed-variant font-medium">
-<span class="material-symbols-outlined text-xs text-tertiary">diamond</span>
-                  NGJA Cert #RAT-4921
-                </span>
-<div class="text-[11px] font-label-sm text-secondary">Unheated &amp; Untreated</div>
-</div>
-</td>
-<td class="py-4 pr-space-md pl-space-sm text-right">
-<div class="flex items-center justify-end gap-1">
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Edit Specifications">
-<span class="material-symbols-outlined text-base">edit</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Manage Vault Stock">
-<span class="material-symbols-outlined text-base">warehouse</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-error hover:bg-error-container/40 transition-colors" title="Deactivate SKU">
-<span class="material-symbols-outlined text-base">archive</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="More Operations">
-<span class="material-symbols-outlined text-base">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 3: Ceylon Linen Safari Jacket -->
-<tr data-product-row data-name="Bespoke Ceylon Linen Safari Jacket" data-sku="LUV-MW-3104" data-status="published" data-stock="0" data-category="menswear" data-guild="Galle Fort Tailors" data-cert="Organic Island Linen" class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="py-4 pl-space-md pr-2 text-center">
-<input class="row-check w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
-</td>
-<td class="py-4 px-space-sm">
-<div class="flex items-center gap-space-sm">
-<div class="relative w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="Editorial men's high fashion shot of a sand-hued handspun Ceylon linen safari jacket with horn buttons, clean tailored lines, tropical architectural background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyMkJc9gOCtA7fYMl8GRV5x5CKt1bADFl0q-vUOlENxbSqtjPiCNWu2lr5QkUepaP4Nc6_VBDRdFQVlpfgZOCXIBn4u9wPfkmwjzDc0di1pcbgKLFUHpWQqPTTWLidFu2uYSZnxgydgTdarqvLJaVX3b0YfqK-rEQSQ_UiLXoy_FXcUSX76zHVtqi3jBSnvGIC9jbk0vTJpAECcNEWesF8kW9gYxATW77JGAj475ZYiEAFWPOCCxZM"/>
-<span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-surface-container-lowest/90 font-label-sm text-[9px] font-bold text-on-surface uppercase">Linen</span>
-</div>
-<div class="space-y-1 min-w-0">
-<div class="font-headline-sm text-[15px] font-semibold text-on-surface truncate group-hover:text-primary transition-colors product-title cursor-pointer product-title cursor-pointer">
-                    Bespoke Ceylon Linen Safari Jacket
-                  </div>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm font-mono text-outline">#LUV-MW-3104</span>
-<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary">Bespoke Menswear</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<div class="font-semibold text-on-surface">Galle Fort Tailors</div>
-<div class="font-label-sm text-label-sm text-secondary truncate">Master Cutters Collective</div>
-<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-full font-medium">
-                  Southern Province
-                </span>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-0.5">
-<div class="font-headline-sm text-[15px] font-bold text-on-surface">LKR 42,800</div>
-<div class="text-[12px] font-label-sm text-tertiary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-<span>58% Escrow: LKR 24,824</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed text-[11px] font-label-sm font-semibold">
-<span class="material-symbols-outlined text-xs">straighten</span>
-                  Made-to-Order (Avg 4 Days)
-                </span>
-<div class="text-[11px] font-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-outline">checkroom</span>
-                  Atelier Fitting Rack 01
-                </div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-on-surface font-medium">
-<span class="material-symbols-outlined text-xs text-tertiary">eco</span>
-                  100% Organic Island Linen
-                </span>
-<div class="text-[11px] font-label-sm text-secondary">Zero-Plastic Haberdashery</div>
-</div>
-</td>
-<td class="py-4 pr-space-md pl-space-sm text-right">
-<div class="flex items-center justify-end gap-1">
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Edit Specifications">
-<span class="material-symbols-outlined text-base">edit</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Manage Vault Stock">
-<span class="material-symbols-outlined text-base">warehouse</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-error hover:bg-error-container/40 transition-colors" title="Deactivate SKU">
-<span class="material-symbols-outlined text-base">archive</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="More Operations">
-<span class="material-symbols-outlined text-base">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 4: Jaffna Hand-Woven Palmyrah MinaudiÃ¨re -->
-<tr data-product-row data-name="Hand-Woven Palmyrah Minaudiere" data-sku="LUV-ACC-1109" data-status="published" data-stock="14" data-category="accessories" data-guild="Jaffna Women's Collective" data-cert="Eco-Certified Fiber" class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="py-4 pl-space-md pr-2 text-center">
-<input class="row-check w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
-</td>
-<td class="py-4 px-space-sm">
-<div class="flex items-center gap-space-sm">
-<div class="relative w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="Editorial product shot of an artisanal structured handbag clutch crafted from tightly hand-woven palmyrah leaf fiber with 24k gold-plated brass lock mechanism on minimalist beige stone pedestal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVrV9wgckqS-QlUvyeJpS_P6UFV4aATqmsYuLPQYCaiknCme51CNzmwjnLHry087iE0f001QBLtsRBDUNufv4oxhne_iIsANgUS3jdg7XvaHmlr-05CitoqAW7yLQZVRD_Ba42SXdLh0FBQS3HpiO2QkeB8TvXKsW43B6LSjaJfdM0iNL5kFM9nAQmR0V6qokgi-kfIiHdpZNoyiaHSOsCQ6uKM-reIHIf4fUgC1UuS-UhaK4x7yBz"/>
-<span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-surface-container-lowest/90 font-label-sm text-[9px] font-bold text-on-surface uppercase">Craft</span>
-</div>
-<div class="space-y-1 min-w-0">
-<div class="font-headline-sm text-[15px] font-semibold text-on-surface truncate group-hover:text-primary transition-colors product-title cursor-pointer product-title cursor-pointer">
-                    Hand-Woven Palmyrah MinaudiÃ¨re
-                  </div>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm font-mono text-outline">#LUV-ACC-1109</span>
-<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary">Artisanal Bags</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<div class="font-semibold text-on-surface">Jaffna Women's Collective</div>
-<div class="font-label-sm text-label-sm text-secondary truncate">Palmyrah Artisan Circle</div>
-<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-tertiary-container bg-tertiary-fixed/30 px-2 py-0.5 rounded-full font-medium">
-                  Northern Province
-                </span>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-0.5">
-<div class="font-headline-sm text-[15px] font-bold text-on-surface">LKR 36,900</div>
-<div class="text-[12px] font-label-sm text-tertiary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-<span>68% Escrow: LKR 25,092</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed/40 text-on-tertiary-fixed-variant text-[11px] font-label-sm font-semibold">
-<span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span>
-                  14 Available
-                </span>
-<div class="text-[11px] font-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-outline">shelves</span>
-                  Vault Shelf C-02
-                </div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-on-surface font-medium">
-<span class="material-symbols-outlined text-xs text-tertiary">spa</span>
-                  Eco-Certified Fiber
-                </span>
-<div class="text-[11px] font-label-sm text-secondary">Fair-Trade Cooperative</div>
-</div>
-</td>
-<td class="py-4 pr-space-md pl-space-sm text-right">
-<div class="flex items-center justify-end gap-1">
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Edit Specifications">
-<span class="material-symbols-outlined text-base">edit</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Manage Vault Stock">
-<span class="material-symbols-outlined text-base">warehouse</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-error hover:bg-error-container/40 transition-colors" title="Deactivate SKU">
-<span class="material-symbols-outlined text-base">archive</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="More Operations">
-<span class="material-symbols-outlined text-base">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 5: Botanical Pit-Loom Wrap Skirt -->
-<tr data-product-row data-name="Botanical Pit-Loom Wrap Skirt" data-sku="LUV-HL-7734" data-status="published" data-stock="8" data-category="handloom" data-guild="Kandy Highlands Weavers" data-cert="Jackwood Natural Dye" class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="py-4 pl-space-md pr-2 text-center">
-<input class="row-check w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
-</td>
-<td class="py-4 px-space-sm">
-<div class="flex items-center gap-space-sm">
-<div class="relative w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="Editorial resort fashion imagery of a warm ochre and terracotta patterned wrap skirt crafted from hand-loomed natural raw cotton dyed with jackwood tree extracts, minimalist gallery backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA776Z7VNlcGFPjlD8i4AtGqVdDyT-7CbfXp2-8DfiPkuXYZfnZxhJxq903dd-OSl41CR48tDEfyefz9WQ9I3ZPKVHOqP446HayyDQorG6QztaQeWAGY3YXKBetWVRbJB8mQP9P-B8D8GJnvqGdLEyYAP5VBvGsxQe1n4AQDSMkdYjTXHwSuTI7AS_DmUhskzySVM2POZ9IPdem32XQdPAG65gsr3n77Wp0739-DI32ihvHVRctHa5j"/>
-<span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-surface-container-lowest/90 font-label-sm text-[9px] font-bold text-on-surface uppercase">Cotton</span>
-</div>
-<div class="space-y-1 min-w-0">
-<div class="font-headline-sm text-[15px] font-semibold text-on-surface truncate group-hover:text-primary transition-colors product-title cursor-pointer product-title cursor-pointer">
-                    Botanical Pit-Loom Wrap Skirt
-                  </div>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm font-mono text-outline">#LUV-HL-7734</span>
-<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary">Women's Resort</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<div class="font-semibold text-on-surface">Kandy Highlands Weavers</div>
-<div class="font-label-sm text-label-sm text-secondary truncate">Aluvihare Village Circle</div>
-<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-full font-medium">
-                  Heritage Pit-Loom
-                </span>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-0.5">
-<div class="font-headline-sm text-[15px] font-bold text-on-surface">LKR 28,400</div>
-<div class="text-[12px] font-label-sm text-tertiary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-<span>62% Escrow: LKR 17,608</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed/40 text-on-tertiary-fixed-variant text-[11px] font-label-sm font-semibold">
-<span class="h-1.5 w-1.5 rounded-full bg-tertiary"></span>
-                  8 Available
-                </span>
-<div class="text-[11px] font-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-outline">shelves</span>
-                  Vault Rack B-09
-                </div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-on-surface font-medium">
-<span class="material-symbols-outlined text-xs text-tertiary">psychiatry</span>
-                  Jackwood Natural Dye
-                </span>
-<div class="text-[11px] font-label-sm text-secondary">Chemical-Free Mordant</div>
-</div>
-</td>
-<td class="py-4 pr-space-md pl-space-sm text-right">
-<div class="flex items-center justify-end gap-1">
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Edit Specifications">
-<span class="material-symbols-outlined text-base">edit</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Manage Vault Stock">
-<span class="material-symbols-outlined text-base">warehouse</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-error hover:bg-error-container/40 transition-colors" title="Deactivate SKU">
-<span class="material-symbols-outlined text-base">archive</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="More Operations">
-<span class="material-symbols-outlined text-base">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 6: Beeralu Lace Trim Evening Kaftan -->
-<tr data-product-row data-name="Beeralu Lace Trim Kaftan" data-sku="LUV-CT-5022" data-status="published" data-stock="3" data-category="couture" data-guild="Southern Lace Guild" data-cert="Beeralu Heritage Guild" class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="py-4 pl-space-md pr-2 text-center">
-<input class="row-check w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
-</td>
-<td class="py-4 px-space-sm">
-<div class="flex items-center gap-space-sm">
-<div class="relative w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="Fashion editorial portrait of an ivory silk chiffon evening kaftan adorned with intricate handmade Galle bobbin lace (Beeralu) along the neck and cuff trims, elegant evening light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOb-sa0cTM5G5MILX2MNFtCHYcZfghCA6fVRuGof0CIKqgf3Ig2crJbskXJjVDANEAvJ9hMVVeznJvkT9UD80fyUtv4u7UaiFFNjfPRF0BFfTVo2dgmxxE81mM5W6rvSbzFW_8kj-Yq0dWcYeuMmxYDdlzPRtSt-8xPpyUmKx7Ab9Wo5gFj3EHZZCDXqE7t0L5RRYGrnJFfduKTBAkIcaeepJo5vqjLqvshO7mNBhvGSHrJdE4OC7M"/>
-<span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-surface-container-lowest/90 font-label-sm text-[9px] font-bold text-on-surface uppercase">Lace</span>
-</div>
-<div class="space-y-1 min-w-0">
-<div class="font-headline-sm text-[15px] font-semibold text-on-surface truncate group-hover:text-primary transition-colors product-title cursor-pointer product-title cursor-pointer">
-                    Beeralu Lace Trim Kaftan
-                  </div>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm font-mono text-outline">#LUV-CT-5022</span>
-<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary">Haute Couture</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<div class="font-semibold text-on-surface">Southern Lace Guild</div>
-<div class="font-label-sm text-label-sm text-secondary truncate">Magalle Bobbin Weavers</div>
-<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-full font-medium">
-                  Southern Coast
-                </span>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-0.5">
-<div class="font-headline-sm text-[15px] font-bold text-on-surface">LKR 68,500</div>
-<div class="text-[12px] font-label-sm text-tertiary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-<span>60% Escrow: LKR 41,100</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container/40 text-error text-[11px] font-label-sm font-semibold">
-<span class="h-1.5 w-1.5 rounded-full bg-error"></span>
-                  3 Available (Low Stock)
-                </span>
-<div class="text-[11px] font-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-outline">shelves</span>
-                  Vault Rack B-01
-                </div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-on-surface font-medium">
-<span class="material-symbols-outlined text-xs text-primary">auto_awesome</span>
-                  Beeralu Heritage Guild
-                </span>
-<div class="text-[11px] font-label-sm text-secondary">SLIDA Master Certified</div>
-</div>
-</td>
-<td class="py-4 pr-space-md pl-space-sm text-right">
-<div class="flex items-center justify-end gap-1">
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Edit Specifications">
-<span class="material-symbols-outlined text-base">edit</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Manage Vault Stock">
-<span class="material-symbols-outlined text-base">warehouse</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-error hover:bg-error-container/40 transition-colors" title="Deactivate SKU">
-<span class="material-symbols-outlined text-base">archive</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="More Operations">
-<span class="material-symbols-outlined text-base">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 7: Ceylon Padparadscha Sapphire Gold Ring (Deactivated / Restock) -->
-<tr data-product-row data-name="Ceylon Padparadscha Ring" data-sku="LUV-GEM-2041" data-status="archived" data-stock="0" data-category="jewelry" data-guild="Elahera Artisans" data-cert="GIA Provenance Deed" class="hover:bg-surface-container-low/50 transition-colors group opacity-85">
-<td class="py-4 pl-space-md pr-2 text-center">
-<input class="row-check w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
-</td>
-<td class="py-4 px-space-sm">
-<div class="flex items-center gap-space-sm">
-<div class="relative w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container">
-<img class="w-full h-full object-cover" data-alt="Editorial high jewelry macro shot of a luminous pink-orange Padparadscha sapphire mounted on an 18k yellow gold sculptural band, clean reflections on black reflective stone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJ4ne4b-T8BaIodK-0ROTStolGcSWenSTOxqZ-5hTwd_kst4D4bh20ls-brMtxbXEFQZvWPWpoND1884l07xVKPaz2tP97cFHM5e77cvxOQnZP77dPU3DsKsCvfXw3j25SjTMo3Es2Cg-pfpOQy7skgPCNhcIjiPlgLrdspdsiqu_N1TLnEN5vRiVyNGNJxnoxgJ-_r1fMJvzLzggadSq25wEFhtz6CIB7_YjNeqQ4yPNuD66iiRln"/>
-<span class="absolute bottom-1 right-1 px-1 py-0.2 rounded bg-surface-container-lowest/90 font-label-sm text-[9px] font-bold text-on-surface uppercase">18K</span>
-</div>
-<div class="space-y-1 min-w-0">
-<div class="font-headline-sm text-[15px] font-semibold text-on-surface truncate group-hover:text-primary transition-colors product-title cursor-pointer product-title cursor-pointer">
-                    Ceylon Padparadscha Ring
-                  </div>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm font-mono text-outline">#LUV-GEM-2041</span>
-<span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary">High Solitaire</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<div class="font-semibold text-on-surface">Elahera Artisans</div>
-<div class="font-label-sm text-label-sm text-secondary truncate">Polonnaruwa River Guild</div>
-<span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-secondary bg-surface-container px-2 py-0.5 rounded-full font-medium">
-                  Central Basin
-                </span>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-0.5">
-<div class="font-headline-sm text-[15px] font-bold text-on-surface">LKR 320,000</div>
-<div class="text-[12px] font-label-sm text-tertiary font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">account_balance_wallet</span>
-<span>75% Escrow: LKR 240,000</span>
-</div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary font-semibold">
-<span class="material-symbols-outlined text-xs">block</span>
-                  0 (Sold Out / Restock)
-                </span>
-<div class="text-[11px] font-label-sm text-secondary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs text-outline">lock_clock</span>
-                  Safe #01 (Replenishing)
-                </div>
-</div>
-</td>
-<td class="py-4 px-space-sm">
-<div class="space-y-1">
-<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-error-container/30 font-label-sm text-[11px] text-error font-medium">
-<span class="material-symbols-outlined text-xs">inventory_2</span>
-                  Deactivated â€¢ Seasonal Restock
-                </span>
-<div class="text-[11px] font-label-sm text-secondary">GIA Provenance Deed Vaulted</div>
-</div>
-</td>
-<td class="py-4 pr-space-md pl-space-sm text-right">
-<div class="flex items-center justify-end gap-1">
-<button class="p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-surface-container transition-colors" title="Edit Specifications">
-<span class="material-symbols-outlined text-base">edit</span>
-</button>
-<button class="p-1.5 rounded-lg text-tertiary hover:bg-tertiary-fixed/30 transition-colors" title="Reactivate SKU">
-<span class="material-symbols-outlined text-base">unarchive</span>
-</button>
-<button class="p-1.5 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="More Operations">
-<span class="material-symbols-outlined text-base">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
+<tbody id="products-table-body" class="divide-y divide-surface-container text-on-surface font-body-sm text-body-sm">
+@forelse(($apiRecords['products'] ?? []) as $product)
+    @php($productId = data_get($product, 'id') ?? data_get($product, 'productId') ?? data_get($product, 'product_id'))
+    @php($productName = data_get($product, 'name') ?? data_get($product, 'productName') ?? data_get($product, 'title') ?? 'Unnamed product')
+    @php($productSku = data_get($product, 'sku') ?? data_get($product, 'SKU') ?? data_get($product, 'code') ?? '—')
+    @php($productStatus = strtolower((string) (data_get($product, 'status') ?? data_get($product, 'publicationStatus') ?? 'unknown')))
+    @php($productStock = (int) (data_get($product, 'stockQuantity') ?? data_get($product, 'quantity') ?? data_get($product, 'stock') ?? 0))
+    @php($productCategory = data_get($product, 'category.name') ?? data_get($product, 'categoryName') ?? data_get($product, 'category') ?? '—')
+    @php($productPrice = data_get($product, 'price') ?? data_get($product, 'salePrice') ?? data_get($product, 'unitPrice'))
+    @php($productImage = data_get($product, 'imageUrl') ?? data_get($product, 'image') ?? data_get($product, 'thumbnail'))
+    <tr data-product-row data-id="{{ $productId }}" data-name="{{ $productName }}" data-sku="{{ $productSku }}" data-status="{{ $productStatus }}" data-stock="{{ $productStock }}" data-price="{{ $productPrice ?? 0 }}" data-category="{{ $productCategory }}" data-guild="{{ data_get($product, 'guild.name') ?? data_get($product, 'guild') ?? '' }}" data-cert="{{ data_get($product, 'certification') ?? '' }}" class="hover:bg-surface-container-low/50 transition-colors group">
+        <td class="py-4 pl-space-md pr-2 text-center"><input class="row-check w-4 h-4 rounded text-primary" type="checkbox" aria-label="Select {{ $productName }}"></td>
+        <td class="py-4 px-space-sm"><div class="flex items-center gap-space-sm">@if($productImage)<img class="w-14 h-18 shrink-0 rounded-lg object-cover" src="{{ $productImage }}" alt="{{ $productName }}">@else<div class="w-14 h-18 shrink-0 rounded-lg bg-surface-container"></div>@endif<div class="min-w-0"><div class="product-title font-semibold text-on-surface">{{ $productName }}</div><div class="flex items-center gap-2"><span class="font-mono text-xs text-secondary">#{{ $productSku }}</span><span class="rounded-full bg-surface-container px-2 py-0.5 text-xs">{{ $productCategory }}</span></div><span data-publication-state class="text-xs text-secondary">{{ $productStatus }}</span></div></div></td>
+        <td class="py-4 px-space-sm"><div>{{ data_get($product, 'artisan.name') ?? data_get($product, 'artisan') ?? data_get($product, 'guild.name') ?? data_get($product, 'guild') ?? '—' }}</div><div class="text-xs text-secondary">{{ data_get($product, 'provenance') ?? data_get($product, 'origin') ?? '—' }}</div></td>
+        <td class="py-4 px-space-sm"><div class="font-semibold">{{ $productPrice !== null ? 'LKR '.number_format((float) $productPrice, 2) : '—' }}</div><div class="text-xs text-secondary">{{ data_get($product, 'escrowAllocation') ?? data_get($product, 'escrow') ?? '—' }}</div></td>
+        <td class="py-4 px-space-sm"><span class="inline-flex rounded-full bg-surface-container px-2 py-0.5 text-xs">{{ $productStock }} available</span><div class="text-xs text-secondary">{{ data_get($product, 'location') ?? data_get($product, 'stockLocation') ?? '—' }}</div></td>
+        <td class="py-4 px-space-sm"><span class="inline-flex rounded-full bg-surface-container px-2.5 py-0.5 text-xs">{{ data_get($product, 'certification') ?? data_get($product, 'assay') ?? '—' }}</span></td>
+        <td class="py-4 pr-space-md pl-space-sm text-right"><span class="text-xs text-secondary">{{ $productId ? 'ID '.$productId : '—' }}</span></td>
+    </tr>
+@empty
+    <tr><td colspan="7" class="px-4 py-10 text-center text-sm text-secondary">{{ !empty($apiErrors['products'] ?? null) ? 'Product data could not be loaded.' : 'No products are available.' }}</td></tr>
+@endforelse
 </tbody>
 </table>
 </div>
@@ -1090,20 +522,9 @@
 </div>
 </div>
 </div>
-<!-- Bottom System Ledger Audit Status Line -->
-<div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm pb-space-lg text-secondary font-label-sm text-label-sm">
-<div class="flex items-center gap-2">
-<span class="h-2 w-2 rounded-full bg-tertiary"></span>
-<span>Central Bank of Sri Lanka (CBSL) Escrow Ledger Node #LK-COL-7 Synchronized</span>
+
 </div>
-<div class="flex items-center gap-space-sm">
-<span>Colombo 07 Safe Assayed: Today at 15:42 SLST</span>
-<span>â€¢</span>
-<span class="text-primary font-semibold hover:underline cursor-pointer">Re-index Provenance Hashes</span>
-</div>
-</div>
-</div>
-</main></div><dialog id="product-dialog"><form method="dialog"><header style="padding:16px 20px;border-bottom:1px solid #e0e3e5;display:flex;justify-content:space-between;align-items:center"><div><div style="font:600 10px Inter,sans-serif;color:#005baf;text-transform:uppercase">Catalog workspace</div><h2 id="product-dialog-title" style="font:500 24px Bodoni Moda,serif;margin:4px 0 0">Product</h2></div><button value="close" aria-label="Close">Ã—</button></header><div id="product-dialog-content" style="padding:18px 20px;max-height:65vh;overflow:auto"></div><footer style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #e0e3e5"><button value="close" class="px-3 py-2 rounded bg-surface-container">Close</button><button id="save-product-preview" type="button" class="px-3 py-2 rounded bg-primary text-on-primary">Save preview</button></footer></form></dialog><div class="catalog-toast" id="catalog-toast" role="status" aria-live="polite"></div><script>
+</main></div><dialog id="product-dialog"><form method="dialog"><header style="padding:16px 20px;border-bottom:1px solid #e0e3e5;display:flex;justify-content:space-between;align-items:center"><div><div style="font:600 10px Inter,sans-serif;color:#005baf;text-transform:uppercase">Catalog workspace</div><h2 id="product-dialog-title" style="font:600 24px Arial,Helvetica,sans-serif;margin:4px 0 0">Product</h2></div><button value="close" aria-label="Close">Ã—</button></header><div id="product-dialog-content" style="padding:18px 20px;max-height:65vh;overflow:auto"></div><footer style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #e0e3e5"><button value="close" class="px-3 py-2 rounded bg-surface-container">Close</button><button id="save-product-preview" type="button" class="px-3 py-2 rounded bg-primary text-on-primary">Save preview</button></footer></form></dialog><div class="catalog-toast" id="catalog-toast" role="status" aria-live="polite"></div><script>
 const catalogRows = [...document.querySelectorAll('[data-product-row]')];
 const catalogSearch = document.getElementById('catalog-search');
 let activeSegment = 'all';
@@ -1112,77 +533,78 @@ const productsPageSize = document.getElementById('products-page-size');
 const productsRange = document.getElementById('products-range');
 const productsTotal = document.getElementById('products-total');
 const productsPageButtons = document.getElementById('products-page-buttons');
-
-function renderProductsPagination(matchingRows) {
-    const pageSize = Number(productsPageSize.value) || 10;
-    const pageCount = Math.max(1, Math.ceil(matchingRows.length / pageSize));
-    currentProductsPage = Math.min(currentProductsPage, pageCount);
-    const start = matchingRows.length ? (currentProductsPage - 1) * pageSize : 0;
-    const end = Math.min(start + pageSize, matchingRows.length);
-
-    catalogRows.forEach((row) => { row.hidden = true; });
-    matchingRows.slice(start, end).forEach((row) => { row.hidden = false; });
-    productsRange.textContent = matchingRows.length ? `${start + 1}â€“${end}` : '0â€“0';
-    productsTotal.textContent = String(matchingRows.length);
-
-    productsPageButtons.replaceChildren();
-    const pages = pageCount <= 5
-        ? Array.from({ length: pageCount }, (_, index) => index + 1)
-        : [...new Set([1, currentProductsPage - 1, currentProductsPage, currentProductsPage + 1, pageCount].filter((page) => page >= 1 && page <= pageCount))];
-    let previousPage = 0;
-    pages.forEach((page) => {
-        if (previousPage && page - previousPage > 1) {
-            const ellipsis = document.createElement('span');
-            ellipsis.className = 'px-1 text-outline font-label-sm text-label-sm';
-            ellipsis.textContent = 'â€¦';
-            productsPageButtons.append(ellipsis);
-        }
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.textContent = String(page);
-        button.setAttribute('aria-label', `Page ${page}`);
-        button.setAttribute('aria-current', page === currentProductsPage ? 'page' : 'false');
-        button.className = page === currentProductsPage
-            ? 'w-8 h-8 rounded bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center shadow-xs'
-            : 'w-8 h-8 rounded bg-surface-container-lowest text-secondary hover:text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center shadow-xs transition-colors';
-        button.addEventListener('click', () => { currentProductsPage = page; refreshCatalog(); });
-        productsPageButtons.append(button);
-        previousPage = page;
-    });
-
-    document.querySelector('[data-products-page="previous"]').disabled = currentProductsPage <= 1;
-    document.querySelector('[data-products-page="next"]').disabled = currentProductsPage >= pageCount;
-}
+const selectedLabel = document.getElementById('selected-label');
+const categoryFilter = document.querySelector('[data-filter="category"]');
+const statusFilter = document.querySelector('[data-filter="status"]');
+const guildFilter = document.querySelector('[data-filter="guild"]');
+const certificateFilter = document.querySelector('[data-filter="certificate"]');
+const priceFilter = document.querySelector('[data-filter="price"]');
+const productTableBody = document.getElementById('products-table-body');
 
 function refreshCatalog() {
     const query = catalogSearch.value.trim().toLowerCase();
     const matchingRows = catalogRows.filter((row) => {
         const stock = Number(row.dataset.stock || 0);
-        const status = row.dataset.status || 'published';
-        const haystack = `${row.dataset.name} ${row.dataset.sku} ${row.dataset.guild} ${row.dataset.cert}`.toLowerCase();
+        const status = row.dataset.status || '';
+        const haystack = row.innerText.toLowerCase();
         const matchesSegment = activeSegment === 'all'
-            || (activeSegment === 'active' && status === 'published')
+            || (activeSegment === 'active' && ['published', 'active'].includes(status))
             || (activeSegment === 'low' && stock > 0 && stock <= 3)
             || (activeSegment === 'archived' && status === 'archived')
-            || (activeSegment === 'drafts' && status === 'draft');
-
-        return haystack.includes(query) && matchesSegment;
+            || (activeSegment === 'drafts' && ['draft', 'unpublished'].includes(status));
+        const matchesCategory = !categoryFilter?.value || categoryFilter.value === 'all' || row.dataset.category === categoryFilter.value;
+        const matchesStatus = !statusFilter?.value || statusFilter.value === 'all' || (statusFilter.value === 'stocked' && Number(row.dataset.stock || 0) > 0) || (statusFilter.value === 'low' && Number(row.dataset.stock || 0) > 0 && Number(row.dataset.stock || 0) <= 3) || (statusFilter.value === 'out' && Number(row.dataset.stock || 0) === 0) || (statusFilter.value === 'made-to-order' && row.dataset.stock === 'made-to-order') || (statusFilter.value === 'sealed' && row.dataset.status === 'sealed');
+        const matchesGuild = !guildFilter?.value || guildFilter.value === 'all' || row.dataset.guild === guildFilter.value;
+        const matchesCertificate = !certificateFilter?.value || certificateFilter.value === 'all' || row.dataset.cert === certificateFilter.value;
+        const price = Number(row.dataset.price || 0);
+        const matchesPrice = !priceFilter?.value || priceFilter.value === 'all' || (priceFilter.value === 'under25' && price < 25000) || (priceFilter.value === '25to75' && price >= 25000 && price <= 75000) || (priceFilter.value === '75to200' && price > 75000 && price <= 200000) || (priceFilter.value === 'over200' && price > 200000);
+        return haystack.includes(query) && matchesSegment && matchesCategory && matchesStatus && matchesGuild && matchesCertificate && matchesPrice;
     });
-    renderProductsPagination(matchingRows);
-    document.getElementById('catalog-total-count').textContent = String(catalogRows.length);
+    const pageSize = Number(productsPageSize.value) || 10;
+    const pageCount = Math.max(1, Math.ceil(matchingRows.length / pageSize));
+    currentProductsPage = Math.min(Math.max(currentProductsPage, 1), pageCount);
+    const start = matchingRows.length ? (currentProductsPage - 1) * pageSize : 0;
+    const end = Math.min(start + pageSize, matchingRows.length);
+    catalogRows.forEach((row) => { row.hidden = true; });
+    matchingRows.slice(start, end).forEach((row) => { row.hidden = false; });
+    productsRange.textContent = matchingRows.length ? `${start + 1} to ${end}` : '0 to 0';
+    productsTotal.textContent = String(matchingRows.length);
+    if (selectedLabel) selectedLabel.textContent = `Selected ${document.querySelectorAll('.row-check:checked').length} of ${matchingRows.length} items`;
+    productsPageButtons.replaceChildren();
+    for (let page = 1; page <= pageCount; page++) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = String(page);
+        button.setAttribute('aria-current', page === currentProductsPage ? 'page' : 'false');
+        button.addEventListener('click', () => { currentProductsPage = page; refreshCatalog(); });
+        productsPageButtons.append(button);
+    }
+    document.querySelector('[data-products-page="previous"]').disabled = currentProductsPage <= 1;
+    document.querySelector('[data-products-page="next"]').disabled = currentProductsPage >= pageCount;
+    const activeRows = catalogRows.filter((row) => ['published', 'active'].includes(row.dataset.status));
+    const lowStockRows = activeRows.filter((row) => Number(row.dataset.stock || 0) > 0 && Number(row.dataset.stock || 0) <= 3);
+    const guilds = new Set(catalogRows.map((row) => row.dataset.guild).filter(Boolean));
+    document.getElementById('catalog-total-count').textContent = String(activeRows.length);
+    document.getElementById('catalog-status-summary').textContent = `${activeRows.length} active products`;
+    document.getElementById('catalog-low-stock-count').textContent = String(lowStockRows.length);
+    document.getElementById('catalog-low-stock-summary').textContent = `${lowStockRows.length} products with low stock`;
+    document.getElementById('catalog-guild-count').textContent = `${guilds.size} guilds`;
+    document.getElementById('catalog-guild-summary').textContent = `${guilds.size} distinct product guilds`;
     document.querySelectorAll('.segment-tab').forEach((tab) => {
         const segment = tab.dataset.segment;
         const count = catalogRows.filter((row) => {
             const stock = Number(row.dataset.stock || 0);
-            const status = row.dataset.status || 'published';
+            const status = row.dataset.status || '';
             return segment === 'all'
-                || (segment === 'active' && status === 'published')
+                || (segment === 'active' && ['published', 'active'].includes(status))
                 || (segment === 'low' && stock > 0 && stock <= 3)
                 || (segment === 'archived' && status === 'archived')
-                || (segment === 'drafts' && status === 'draft');
+                || (segment === 'drafts' && ['draft', 'unpublished'].includes(status));
         }).length;
-        const label = tab.textContent.trim().replace(/\s*\(\d+\)$/, '');
-        tab.textContent = `${label} (${count})`;
+        const label = tab.dataset.label;
+        const badge = tab.querySelector('.segment-count');
+        if (badge) badge.textContent = String(count);
+        else tab.textContent = `${label} (${count})`;
     });
 }
 
@@ -1193,27 +615,26 @@ document.querySelector('[data-products-page="next"]').addEventListener('click', 
 document.querySelectorAll('.segment-tab').forEach((tab) => tab.addEventListener('click', () => {
     currentProductsPage = 1;
     activeSegment = tab.dataset.segment;
-    document.querySelectorAll('.segment-tab').forEach((item) => {
-        item.classList.toggle('bg-surface-container-lowest', item === tab);
-        item.classList.toggle('font-semibold', item === tab);
-    });
     refreshCatalog();
 }));
+[categoryFilter, statusFilter, guildFilter, certificateFilter, priceFilter].forEach((filter) => filter?.addEventListener('change', () => { currentProductsPage = 1; refreshCatalog(); }));
 
-const masterCheckbox = document.getElementById('bulk-select-all');
-function updateSelectedCount() {
-    const selected = document.querySelectorAll('.row-check:checked').length;
-    document.getElementById('selected-label').textContent = `Selected ${selected} of ${catalogRows.filter((row) => !row.hidden).length} items`;
-}
-masterCheckbox.addEventListener('change', (event) => {
-    catalogRows.filter((row) => !row.hidden).forEach((row) => {
-        row.querySelector('.row-check').checked = event.target.checked;
-    });
-    updateSelectedCount();
+document.getElementById('bulk-select-all')?.addEventListener('change', (event) => {
+    catalogRows.filter((row) => !row.hidden).forEach((row) => { row.querySelector('.row-check').checked = event.target.checked; });
+    if (selectedLabel) selectedLabel.textContent = `Selected ${document.querySelectorAll('.row-check:checked').length} of ${catalogRows.filter((row) => !row.hidden).length} items`;
 });
-document.querySelectorAll('.row-check').forEach((checkbox) => checkbox.addEventListener('change', updateSelectedCount));
+document.querySelectorAll('.row-check').forEach((checkbox) => checkbox.addEventListener('change', () => {
+    if (selectedLabel) selectedLabel.textContent = `Selected ${document.querySelectorAll('.row-check:checked').length} of ${catalogRows.filter((row) => !row.hidden).length} items`;
+}));
+document.getElementById('add-product-button')?.setAttribute('disabled', 'disabled');
+document.querySelectorAll('[title="Edit Specifications"], [title="Manage Vault Stock"], [title="Deactivate SKU"], [title="Reactivate SKU"]').forEach((button) => button.setAttribute('disabled', 'disabled'));
+catalogRows.forEach((row) => {
+    row.querySelector('.product-title')?.addEventListener('click', () => {
+        const id = row.dataset.id;
+        if (id) window.location.assign(`${window.location.pathname}?productId=${encodeURIComponent(id)}`);
+    });
+});
 refreshCatalog();
-
 const message = document.getElementById('catalog-toast');
 let messageTimer;
 function notify(text) {

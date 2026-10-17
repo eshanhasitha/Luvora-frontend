@@ -20,7 +20,7 @@
     <div class="overflow-x-auto">
         <table class="min-w-full text-left text-sm">
             <thead><tr><th class="p-3">Notification</th><th class="p-3">Details</th><th class="p-3">Status</th><th class="p-3">Action</th></tr></thead>
-            <tbody class="divide-y divide-surface-container">
+            <tbody id="notification-list-rows" class="divide-y divide-surface-container">
                 @forelse($apiRecords['notifications'] ?? [] as $notification)
                     @php($notificationId = data_get($notification, 'notificationId', data_get($notification, 'id')))
                     @php($isRead = (bool) data_get($notification, 'isRead', data_get($notification, 'read', false)))
