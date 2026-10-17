@@ -288,7 +288,7 @@
 <span class="font-headline-md text-headline-md text-on-surface tracking-tight">LKR 128.4M</span>
 </div>
 <div class="flex items-center gap-space-xs mt-2 text-on-surface-variant font-body-sm text-body-sm">
-<span class="font-semibold text-on-surface">486 Master SKUs</span>
+<span class="font-semibold text-on-surface">— Master SKUs</span>
 <span class="text-outline-variant">•</span>
 <span class="text-primary font-medium">Verified In-Vault</span>
 </div>

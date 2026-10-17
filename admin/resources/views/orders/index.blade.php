@@ -401,7 +401,7 @@
 <div class="flex items-center gap-space-xs min-w-max">
 <button class="bg-primary text-on-primary font-label-sm text-label-sm px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">
 <span>All Orders</span>
-<span class="bg-on-primary/20 px-1.5 py-0.5 rounded-full text-[10px]">1,428</span>
+<span id="orders-tab-count" class="bg-on-primary/20 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
 </button>
 <button class="bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors">
 <span>Requires Vault Action</span>
@@ -931,29 +931,11 @@
 <!-- Section 5: Pagination & Selection Counter -->
 <div class="px-4 py-3.5 bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-sm text-label-sm text-secondary">
 <div class="flex items-center gap-space-md">
-<span>0 of 7 orders selected on this page</span>
+<span id="orders-selected-count">0 orders selected on this page</span>
 <span class="hidden sm:inline text-outline">•</span>
-<span>Showing 1–7 of 1,428 Orders | Page 1 of 204</span>
+<span><span id="order-list-count" data-list-count></span></span>
 </div>
-<div class="flex items-center gap-1">
-<button class="p-1.5 rounded-md hover:bg-surface-container text-outline disabled:opacity-40" disabled="">
-<span class="material-symbols-outlined text-base">first_page</span>
-</button>
-<button class="p-1.5 rounded-md hover:bg-surface-container text-outline disabled:opacity-40" disabled="">
-<span class="material-symbols-outlined text-base">chevron_left</span>
-</button>
-<button class="w-7 h-7 rounded-md bg-primary text-on-primary font-semibold text-xs flex items-center justify-center">1</button>
-<button class="w-7 h-7 rounded-md hover:bg-surface-container text-on-surface text-xs flex items-center justify-center">2</button>
-<button class="w-7 h-7 rounded-md hover:bg-surface-container text-on-surface text-xs flex items-center justify-center">3</button>
-<span class="px-1 text-outline">...</span>
-<button class="w-7 h-7 rounded-md hover:bg-surface-container text-on-surface text-xs flex items-center justify-center">204</button>
-<button class="p-1.5 rounded-md hover:bg-surface-container text-on-surface">
-<span class="material-symbols-outlined text-base">chevron_right</span>
-</button>
-<button class="p-1.5 rounded-md hover:bg-surface-container text-on-surface">
-<span class="material-symbols-outlined text-base">last_page</span>
-</button>
-</div>
+
 </div>
 </section>
 <section id="returns-refunds" class="grid grid-cols-1 xl:grid-cols-2 gap-space-md mb-space-lg" aria-label="Cancelled orders, returns and refunds">
@@ -994,6 +976,21 @@
  document.querySelectorAll('#orders-table-body tr td:nth-child(2) span').forEach(id=>id.addEventListener('click',()=>{document.getElementById('order-detail-content').textContent=id.closest('tr').innerText;dialog.classList.remove('hidden');dialog.classList.add('flex');}));
  document.getElementById('close-order-details')?.addEventListener('click',()=>{dialog.classList.add('hidden');dialog.classList.remove('flex');});
  document.querySelectorAll('[data-order-action]').forEach(button=>button.addEventListener('click',()=>{button.textContent=button.dataset.orderAction+' selected';}));
+})();
+</script><script>
+(() => {
+ const tbody=document.getElementById('orders-table-body');
+ const summary=document.getElementById('order-list-count');
+ if(!tbody||!summary)return;
+ const rows=[...tbody.querySelectorAll('tr')];
+ const count=()=>{const visible=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=visible ? ("Showing 1–"+visible+" of "+visible+" orders · Page 1 of 1") : "Showing 0 orders · Page 1 of 1";document.getElementById('orders-tab-count').textContent=rows.length;};
+ const updateSelected=()=>{const selected=rows.filter(row=>row.querySelector('input[type="checkbox"]:checked')).length;document.getElementById('orders-selected-count').textContent=selected+` of ${rows.length} orders selected on this page`;};
+ tbody.addEventListener('change',updateSelected);
+ updateSelected();
+ new MutationObserver(count).observe(tbody,{subtree:true,attributes:true,attributeFilter:['hidden','style']});
+ document.getElementById('order-search')?.addEventListener('input',count);
+ document.getElementById('order-status-filter')?.addEventListener('change',count);
+ count();
 })();
 </script></body></html>
 

@@ -388,7 +388,7 @@
 </div>
 </div>
 <div>
-<p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">1,428 Orders</p>
+<p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">— Orders</p>
 <div class="flex items-center gap-1.5 mt-1 text-tertiary font-label-sm text-label-sm">
 <span class="material-symbols-outlined text-sm">check_circle</span>
 <span class="font-semibold">98.4%</span>
@@ -658,7 +658,7 @@
 <span class="block text-label-sm text-tertiary">Cryptographically Signed</span>
 </td>
 <td class="py-3.5 px-space-sm font-mono text-body-sm">
-<span class="font-medium text-on-surface">1,428 TXNs</span>
+<span class="font-medium text-on-surface">— TXNs</span>
 <span class="block text-label-sm text-secondary">4.8 MB (PDF + XLS)</span>
 </td>
 <td class="py-3.5 px-space-sm">
@@ -893,16 +893,9 @@
 <!-- Table Pagination & Ledger Footer -->
 <div class="p-space-sm bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-sm text-label-sm font-label-sm text-secondary">
 <div class="flex items-center gap-2">
-<span>Displaying 6 of 24 Audited Dossiers</span>
+<span id="report-dossier-count">Displaying 0 audited dossiers · Page 1 of 1</span>
 <span class="text-outline">|</span>
 <span class="text-tertiary font-medium">All Hashes Synchronized to CBSL Sandbox</span>
-</div>
-<div class="flex items-center gap-1">
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest shadow-sm text-on-surface disabled:opacity-50" disabled="">Previous</button>
-<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-semibold">1</button>
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface">2</button>
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface">3</button>
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface">Next</button>
 </div>
 </div>
 </section>
@@ -1021,4 +1014,6 @@
 </div>
 </div>
 </section>
-</div></main></div><script>document.querySelectorAll("[data-export]").forEach(function(button){button.addEventListener("click",function(){var format=button.dataset.export;if(format==="pdf"){window.print();return;}var rows=Array.from(document.querySelectorAll("table tr")).map(function(row){return Array.from(row.querySelectorAll("th,td")).map(function(cell){return cell.innerText.trim();});});var content=format==="json"?JSON.stringify(rows,null,2):rows.map(function(row){return row.map(function(value){return "\""+value.replaceAll("\"","\"\"")+"\"";}).join(",");}).join("\r\n");var blob=new Blob([content],{type:format==="json"?"application/json":"text/csv;charset=utf-8"});var link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="luvora-reports."+(format==="json"?"json":"csv");link.click();URL.revokeObjectURL(link.href);});});</script></body></html>
+</div></main></div><script>document.querySelectorAll("[data-export]").forEach(function(button){button.addEventListener("click",function(){var format=button.dataset.export;if(format==="pdf"){window.print();return;}var rows=Array.from(document.querySelectorAll("table tr")).map(function(row){return Array.from(row.querySelectorAll("th,td")).map(function(cell){return cell.innerText.trim();});});var content=format==="json"?JSON.stringify(rows,null,2):rows.map(function(row){return row.map(function(value){return "\""+value.replaceAll("\"","\"\"")+"\"";}).join(",");}).join("\r\n");var blob=new Blob([content],{type:format==="json"?"application/json":"text/csv;charset=utf-8"});var link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="luvora-reports."+(format==="json"?"json":"csv");link.click();URL.revokeObjectURL(link.href);});});</script><script>
+(() => {const tbody=document.querySelector('main table tbody');const summary=document.getElementById('report-dossier-count');if(!tbody||!summary)return;const rows=[...tbody.rows];const update=()=>{const n=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=`Displaying ${n} of ${n} audited dossiers · Page 1 of 1`;};new MutationObserver(update).observe(tbody,{subtree:true,attributes:true,attributeFilter:['hidden','style']});update();})();
+</script></body></html>

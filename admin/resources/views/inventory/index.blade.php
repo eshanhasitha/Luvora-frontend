@@ -284,7 +284,7 @@
 <span class="material-symbols-outlined text-sm">trending_up</span>
           +4.8% vs last month
         </span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">486 SKUs | 1,240 Units</span>
+<span id="inventory-summary-count" class="font-label-sm text-label-sm text-on-surface-variant">0 SKUs</span>
 </div>
 </div>
 <!-- Card 2: Stock Availability Progress -->
@@ -404,7 +404,7 @@
 <!-- Segmented Status Badges / Category Pills -->
 <div class="flex items-center gap-space-xs overflow-x-auto pb-1 text-nowrap">
 <button class="px-3.5 py-1.5 rounded-full bg-on-surface text-surface-container-lowest font-label-sm text-label-sm font-semibold transition-all">
-        All Inventory (486)
+        All Inventory (0)
       </button>
 <button class="px-3.5 py-1.5 rounded-full bg-surface-container-low hover:bg-error-container/40 text-error font-label-sm text-label-sm font-semibold flex items-center gap-1.5 transition-all">
 <span class="h-1.5 w-1.5 rounded-full bg-error"></span>
@@ -933,27 +933,9 @@
 <!-- Table Footer & Pagination -->
 <div class="p-space-md bg-surface-container-low/40 flex flex-col sm:flex-row items-center justify-between gap-space-sm">
 <span class="font-label-md text-label-md text-on-surface-variant">
-        Showing <span class="font-semibold text-on-surface">1–7</span> of <span class="font-semibold text-on-surface">486</span> Master SKUs | Page 1 of 70
+        <span id="inventory-list-count" data-list-count></span>
       </span>
-<div class="flex items-center gap-1">
-<button class="p-2 rounded-lg bg-surface-container-lowest text-outline hover:text-on-surface disabled:opacity-40 transition-colors" disabled="">
-<span class="material-symbols-outlined text-base">first_page</span>
-</button>
-<button class="p-2 rounded-lg bg-surface-container-lowest text-outline hover:text-on-surface disabled:opacity-40 transition-colors" disabled="">
-<span class="material-symbols-outlined text-base">chevron_left</span>
-</button>
-<span class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm font-bold">1</span>
-<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors">2</button>
-<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors">3</button>
-<span class="text-outline px-1">...</span>
-<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors">70</button>
-<button class="p-2 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-base">chevron_right</span>
-</button>
-<button class="p-2 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-base">last_page</span>
-</button>
-</div>
+
 </div>
 </div>
 <!-- Bottom Regulatory & Compliance Status Bar -->
@@ -985,7 +967,7 @@
 <div id="inventory-reports" class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm">
 <div class="flex items-center justify-between mb-space-sm"><div><h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Inventory Reports</h2><p class="font-body-sm text-body-sm text-secondary mt-1">Review stock levels and movement summaries</p></div><span class="material-symbols-outlined text-primary">analytics</span></div>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
-<button type="button" data-inventory-report="Stock overview" class="rounded-lg bg-surface-container-low p-space-sm text-left hover:bg-surface-container"><strong class="block font-label-md text-label-md">Stock overview</strong><span class="font-body-sm text-body-sm text-secondary">486 items · 8 below par</span></button>
+<button type="button" data-inventory-report="Stock overview" class="rounded-lg bg-surface-container-low p-space-sm text-left hover:bg-surface-container"><strong class="block font-label-md text-label-md">Stock overview</strong><span class="font-body-sm text-body-sm text-secondary"><span id="inventory-report-count">0 items · 0 below par</span></span></button>
 <button type="button" data-inventory-report="Low-stock report" class="rounded-lg bg-surface-container-low p-space-sm text-left hover:bg-surface-container"><strong class="block font-label-md text-label-md">Low-stock report</strong><span class="font-body-sm text-body-sm text-secondary">Reorder and par-level summary</span></button>
 <button type="button" data-inventory-report="Movement report" class="rounded-lg bg-surface-container-low p-space-sm text-left hover:bg-surface-container"><strong class="block font-label-md text-label-md">Movement report</strong><span class="font-body-sm text-body-sm text-secondary">Inbound, outbound, and transfers</span></button>
 <button type="button" data-inventory-report="Warehouse report" class="rounded-lg bg-surface-container-low p-space-sm text-left hover:bg-surface-container"><strong class="block font-label-md text-label-md">Warehouse report</strong><span class="font-body-sm text-body-sm text-secondary">Balances by storage location</span></button>
@@ -1151,7 +1133,9 @@ document.querySelectorAll('[data-inventory-report]').forEach((button) => button.
      const content = label === 'Stock movement history' ? document.getElementById('stock-movements') : document.getElementById('inventory-reports');
      if (content) content.scrollIntoView({ behavior: 'smooth', block: 'start' });
    }));
-</script></main></div></body></html>
+</script></main></div><script>
+(() => {const tbody=document.querySelector('main table tbody');const summary=document.getElementById('inventory-list-count');if(!tbody||!summary)return;const rows=[...tbody.rows];const update=()=>{const n=rows.filter(row=>row.style.display!=='none'&&!row.hidden).length;summary.textContent=n?`Showing 1–${n} of ${n} Master SKUs · Page 1 of 1`:'Showing 0 Master SKUs · Page 1 of 1';document.getElementById('inventory-summary-count').textContent=rows.length+' SKUs';const low=rows.filter(row=>/critical|low stock|below par/i.test(row.cells[5]?.innerText||'')).length;document.getElementById('inventory-report-count').textContent=rows.length+' items · '+low+' below par';const tab=[...document.querySelectorAll('button')].find(button=>button.textContent.includes('All Inventory'));if(tab)tab.textContent='All Inventory ('+rows.length+')';};new MutationObserver(update).observe(tbody,{subtree:true,attributes:true,attributeFilter:['style','hidden']});document.getElementById('inventorySearch')?.addEventListener('input',update);update();})();
+</script></body></html>
 
 
 

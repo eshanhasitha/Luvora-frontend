@@ -96,6 +96,9 @@
 </div>
 @php($apiManagedPages = ['dashboard', 'products', 'inventory', 'customers', 'orders', 'delivery', 'delivery-assignments', 'payments', 'payment-details', 'finance-reports', 'reviews', 'categories', 'staff', 'audit-logs', 'security-activity', 'support-tickets', 'support-complaints', 'promotions', 'coupons', 'campaigns', 'banners', 'reports', 'settings', 'roles', 'support-ticket-detail'])
 @if(in_array($apiPage ?? '', $apiManagedPages, true))
+    <style>
+        #admin-live-api-results ~ * { display: none !important; }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (@json($apiPage ?? '') === 'notifications') return;
@@ -103,25 +106,19 @@
             const main = liveResults?.closest('main');
             if (!liveResults || !main) return;
 
-            main.querySelectorAll('table').forEach((table) => {
-                if (liveResults.contains(table)) return;
-                const sampleSection = table.closest('section');
-                if (sampleSection && !liveResults.contains(sampleSection)) sampleSection.hidden = true;
-                else table.hidden = true;
-            });
+            const hideSampleBranches = (container) => {
+                [...container.children].forEach((element) => {
+                    if (element === liveResults || element.matches('[role="alert"], [role="status"]')) return;
+                    if (element.contains(liveResults)) {
+                        hideSampleBranches(element);
+                        return;
+                    }
+                    element.hidden = true;
+                    element.style.setProperty('display', 'none', 'important');
+                });
+            };
 
-            main.querySelectorAll('article').forEach((card) => {
-                if (liveResults.contains(card) || card.querySelector('button, input, select, textarea, a')) return;
-                if (/\d/.test(card.innerText || '')) card.hidden = true;
-            });
-
-            main.querySelectorAll('span, p, div').forEach((element) => {
-                if (liveResults.contains(element) || element.children.length > 0) return;
-                if (/^\s*(Showing|Displaying)\s+[\d,]+/i.test(element.textContent || '')) {
-                    const footer = element.closest('section, nav') || element.parentElement;
-                    if (footer && !liveResults.contains(footer)) footer.hidden = true;
-                }
-            });
+            hideSampleBranches(main);
         });
     </script>
 @endif

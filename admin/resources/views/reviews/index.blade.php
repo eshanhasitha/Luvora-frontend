@@ -266,7 +266,7 @@
 </div>
 </div>
 <div class="mt-space-sm pt-space-xs border-t border-surface-container flex items-center justify-between text-secondary font-label-sm text-label-sm">
-<span>Verified Patrons: 1,842</span>
+<span id="review-patron-count">Verified Patrons: 0</span>
 <span class="text-primary font-medium">100% In-Vault Assayed</span>
 </div>
 </div>
@@ -349,7 +349,7 @@
 <div class="flex items-center gap-space-xs overflow-x-auto pb-1 scrollbar-none">
 <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold transition-all">
 <span>All Reviews</span>
-<span class="px-2 py-0.5 rounded-full bg-surface-container-lowest/20 text-on-primary font-label-sm text-label-sm">1,842</span>
+<span id="review-total-count" class="px-2 py-0.5 rounded-full bg-surface-container-lowest/20 text-on-primary font-label-sm text-label-sm">0</span>
 </button>
 <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-surface-container text-on-surface-variant font-label-md text-label-md transition-all">
 <span>Pending Moderation</span>
@@ -412,7 +412,7 @@
 <div class="flex items-center gap-space-sm">
 <input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" type="checkbox"/>
 <span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-secondary">
-        Batch Selection (1 Selected of 1,842)
+        Batch Selection (0 Selected of 0)
       </span>
 <span class="h-4 w-px bg-outline-variant mx-1"></span>
 <button class="font-label-sm text-label-sm text-primary font-semibold hover:underline">Select All in View</button>
@@ -869,7 +869,7 @@
 <div class="mt-space-lg bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
 <div class="flex flex-col space-y-1">
 <div class="text-secondary font-label-md text-label-md">
-        Showing <span class="text-on-surface font-semibold">1–4</span> of <span class="text-on-surface font-semibold">1,842</span> Verified Testimonials
+        <span id="reviews-list-count" data-list-count></span>
       </div>
 <div class="flex items-center gap-1.5 font-label-sm text-label-sm text-outline">
 <span class="material-symbols-outlined text-xs text-tertiary">shield_lock</span>
@@ -877,19 +877,7 @@
 </div>
 </div>
 <!-- Numbered Pagination -->
-<div class="flex items-center gap-1.5">
-<button class="p-2 rounded-lg bg-surface-container-low text-secondary hover:bg-surface-container transition-all disabled:opacity-40" disabled="">
-<span class="material-symbols-outlined text-base">chevron_left</span>
-</button>
-<button class="w-9 h-9 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold">1</button>
-<button class="w-9 h-9 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-all">2</button>
-<button class="w-9 h-9 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-all">3</button>
-<span class="px-2 text-outline font-label-sm text-label-sm">...</span>
-<button class="w-9 h-9 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-all">307</button>
-<button class="p-2 rounded-lg bg-surface-container-low text-secondary hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined text-base">chevron_right</span>
-</button>
-</div>
+
 </div>
 </div></main></div><script>
 (() => {
@@ -898,5 +886,7 @@
  search?.addEventListener('input',refresh);
  document.querySelectorAll('button').forEach(button=>{const t=button.innerText.trim().toLowerCase();if(['all reviews','pending moderation','approved & live','flagged / hidden'].includes(t)){button.addEventListener('click',()=>{filter=t==='all reviews'?'all':t==='pending moderation'?'pending':t==='approved & live'?'approved':'flagged';refresh();});}if(t.includes('approve'))button.addEventListener('click',()=>{const card=button.closest('.bg-surface-container-lowest');const badge=card?.querySelector('.bg-error-container');if(badge)badge.textContent='Approved & Live';button.textContent='Approved';button.disabled=true;refresh();});if(t==='archive / flag'||button.title==='Flag')button.addEventListener('click',()=>{const card=button.closest('.bg-surface-container-lowest');if(card){const badge=card.querySelector('.bg-tertiary-fixed, .bg-error-container');if(badge)badge.textContent='Flagged / Hidden';refresh();}});});
 })();
+</script><script>
+(() => {const container=document.querySelector('.mt-space-sm.space-y-space-md');const summary=document.getElementById('reviews-list-count');if(!container||!summary)return;const cards=[...container.children];const update=()=>{const n=cards.filter(card=>!card.hidden&&card.style.display!=='none').length;const selected=container.querySelectorAll('input[type="checkbox"]:checked').length;summary.textContent=n?`Showing 1–${n} of ${n} reviews · Page 1 of 1`:'Showing 0 reviews · Page 1 of 1';document.getElementById('review-total-count').textContent=cards.length;document.getElementById('review-patron-count').textContent='Reviewers in view: '+cards.length;const batch=[...document.querySelectorAll('*')].find(element=>element.children.length===0&&element.textContent.includes('Batch Selection ('));if(batch)batch.textContent='Batch Selection ('+selected+' Selected of '+cards.length+')';};new MutationObserver(update).observe(container,{subtree:true,attributes:true,attributeFilter:['style','hidden']});document.getElementById('review-search')?.addEventListener('input',update);container.addEventListener('change',update);document.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>setTimeout(update,0)));update();})();
 </script></body></html>
 

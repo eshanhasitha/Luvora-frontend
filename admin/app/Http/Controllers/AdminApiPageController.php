@@ -71,7 +71,7 @@ class AdminApiPageController extends Controller
         ]],
     ];
 
-    public function show(Request $request, string $page, LuvoraAdminApiClient $api): View
+    public function show(Request $request, string $page, LuvoraAdminApiClient $api): View|RedirectResponse
     {
         abort_unless(isset(self::PAGES[$page]), 404);
         $config = self::PAGES[$page];
@@ -165,7 +165,6 @@ class AdminApiPageController extends Controller
         $errors = [];
         $records = [];
         $pagination = [];
-        $unauthorized = false;
 
         foreach ($config['requests'] as $key => [$method, $endpoint]) {
             try {
@@ -181,20 +180,13 @@ class AdminApiPageController extends Controller
                         session(['admin_user' => data_get($response->json(), 'user') ?? data_get($response->json(), 'data.user') ?? $response->json()]);
                     }
                 } else {
-                    $unauthorized = $unauthorized || $response->status() === 401;
+                    // A 401 from an optional API section should be shown as an API error,
+                    // not tear down the Laravel session for every other section.
                     $errors[$key] = data_get($response->json(), 'message', 'The requested data could not be loaded.');
                 }
             } catch (ConnectionException) {
                 $errors[$key] = 'The admin API is unavailable.';
             }
-        }
-
-        if ($unauthorized) {
-            session()->forget(['admin_access_token', 'admin_refresh_token', 'admin_user']);
-
-            return redirect()->route('login')->withErrors([
-                'email' => 'Your admin session was rejected by the API. Please sign in again. If this continues, contact your API administrator.',
-            ]);
         }
 
         return view($config['view'], [

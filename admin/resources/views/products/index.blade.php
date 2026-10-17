@@ -273,7 +273,7 @@
 </div>
 <div class="pt-space-sm">
 <div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md font-semibold text-on-surface">486</span>
+<span id="catalog-total-count" class="font-headline-md text-headline-md font-semibold text-on-surface">0</span>
 <span class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center">
 <span class="material-symbols-outlined text-xs">arrow_upward</span>+18 this month
           </span>
@@ -368,10 +368,10 @@
 <!-- Quick Segment Tabs -->
 <div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg overflow-x-auto">
 <button data-segment="all" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm font-semibold bg-surface-container-lowest text-on-surface shadow-xs">
-          All (486)
+          All (0)
         </button>
 <button data-segment="active" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">
-          Active (442)
+          Active (0)
         </button>
 <button data-segment="low" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-error hover:bg-error-container/20 transition-colors flex items-center gap-1">
           Low Stock <span class="px-1.5 py-0.5 rounded-full bg-error text-on-error text-[10px]">8</span>
@@ -1066,11 +1066,11 @@
 <!-- Showing Results Status -->
 <div class="flex items-center gap-space-md">
 <span class="font-body-sm text-body-sm text-secondary">
-          Showing <span class="font-semibold text-on-surface">1–7</span> of <span class="font-semibold text-on-surface">486</span> master products
+          Showing <span class="font-semibold text-on-surface" id="products-range">0–0</span> of <span class="font-semibold text-on-surface" id="products-total">0</span> master products
         </span>
 <div class="flex items-center gap-2">
 <span class="font-label-sm text-label-sm text-outline">Per page:</span>
-<select class="bg-surface-container-lowest text-on-surface font-label-sm text-label-sm px-2 py-1 rounded shadow-xs focus:outline-none">
+<select id="products-page-size" aria-label="Products per page" class="bg-surface-container-lowest text-on-surface font-label-sm text-label-sm px-2 py-1 rounded shadow-xs focus:outline-none">
 <option>10</option>
 <option>25</option>
 <option>50</option>
@@ -1080,23 +1080,11 @@
 </div>
 <!-- Pagination Buttons -->
 <div class="flex items-center gap-1">
-<button class="p-1.5 rounded bg-surface-container-lowest text-outline hover:text-on-surface shadow-xs transition-colors disabled:opacity-40" disabled="">
+<button type="button" data-products-page="previous" aria-label="Previous page" class="p-1.5 rounded bg-surface-container-lowest text-outline hover:text-on-surface shadow-xs transition-colors disabled:opacity-40" disabled>
 <span class="material-symbols-outlined text-base">chevron_left</span>
 </button>
-<button class="w-8 h-8 rounded bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center shadow-xs">
-          1
-        </button>
-<button class="w-8 h-8 rounded bg-surface-container-lowest text-secondary hover:text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center shadow-xs transition-colors">
-          2
-        </button>
-<button class="w-8 h-8 rounded bg-surface-container-lowest text-secondary hover:text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center shadow-xs transition-colors">
-          3
-        </button>
-<span class="px-1 text-outline font-label-sm text-label-sm">…</span>
-<button class="w-8 h-8 rounded bg-surface-container-lowest text-secondary hover:text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center shadow-xs transition-colors">
-          70
-        </button>
-<button class="p-1.5 rounded bg-surface-container-lowest text-secondary hover:text-on-surface shadow-xs transition-colors">
+<div id="products-page-buttons" class="flex items-center gap-1" aria-label="Products pages"></div>
+<button type="button" data-products-page="next" aria-label="Next page" class="p-1.5 rounded bg-surface-container-lowest text-secondary hover:text-on-surface shadow-xs transition-colors" disabled>
 <span class="material-symbols-outlined text-base">chevron_right</span>
 </button>
 </div>
@@ -1119,10 +1107,56 @@
 const catalogRows = [...document.querySelectorAll('[data-product-row]')];
 const catalogSearch = document.getElementById('catalog-search');
 let activeSegment = 'all';
+let currentProductsPage = 1;
+const productsPageSize = document.getElementById('products-page-size');
+const productsRange = document.getElementById('products-range');
+const productsTotal = document.getElementById('products-total');
+const productsPageButtons = document.getElementById('products-page-buttons');
+
+function renderProductsPagination(matchingRows) {
+    const pageSize = Number(productsPageSize.value) || 10;
+    const pageCount = Math.max(1, Math.ceil(matchingRows.length / pageSize));
+    currentProductsPage = Math.min(currentProductsPage, pageCount);
+    const start = matchingRows.length ? (currentProductsPage - 1) * pageSize : 0;
+    const end = Math.min(start + pageSize, matchingRows.length);
+
+    catalogRows.forEach((row) => { row.hidden = true; });
+    matchingRows.slice(start, end).forEach((row) => { row.hidden = false; });
+    productsRange.textContent = matchingRows.length ? `${start + 1}–${end}` : '0–0';
+    productsTotal.textContent = String(matchingRows.length);
+
+    productsPageButtons.replaceChildren();
+    const pages = pageCount <= 5
+        ? Array.from({ length: pageCount }, (_, index) => index + 1)
+        : [...new Set([1, currentProductsPage - 1, currentProductsPage, currentProductsPage + 1, pageCount].filter((page) => page >= 1 && page <= pageCount))];
+    let previousPage = 0;
+    pages.forEach((page) => {
+        if (previousPage && page - previousPage > 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'px-1 text-outline font-label-sm text-label-sm';
+            ellipsis.textContent = '…';
+            productsPageButtons.append(ellipsis);
+        }
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = String(page);
+        button.setAttribute('aria-label', `Page ${page}`);
+        button.setAttribute('aria-current', page === currentProductsPage ? 'page' : 'false');
+        button.className = page === currentProductsPage
+            ? 'w-8 h-8 rounded bg-primary text-on-primary font-label-sm text-label-sm font-semibold flex items-center justify-center shadow-xs'
+            : 'w-8 h-8 rounded bg-surface-container-lowest text-secondary hover:text-on-surface font-label-sm text-label-sm font-medium flex items-center justify-center shadow-xs transition-colors';
+        button.addEventListener('click', () => { currentProductsPage = page; refreshCatalog(); });
+        productsPageButtons.append(button);
+        previousPage = page;
+    });
+
+    document.querySelector('[data-products-page="previous"]').disabled = currentProductsPage <= 1;
+    document.querySelector('[data-products-page="next"]').disabled = currentProductsPage >= pageCount;
+}
 
 function refreshCatalog() {
     const query = catalogSearch.value.trim().toLowerCase();
-    catalogRows.forEach((row) => {
+    const matchingRows = catalogRows.filter((row) => {
         const stock = Number(row.dataset.stock || 0);
         const status = row.dataset.status || 'published';
         const haystack = `${row.dataset.name} ${row.dataset.sku} ${row.dataset.guild} ${row.dataset.cert}`.toLowerCase();
@@ -1132,12 +1166,32 @@ function refreshCatalog() {
             || (activeSegment === 'archived' && status === 'archived')
             || (activeSegment === 'drafts' && status === 'draft');
 
-        row.hidden = !haystack.includes(query) || !matchesSegment;
+        return haystack.includes(query) && matchesSegment;
+    });
+    renderProductsPagination(matchingRows);
+    document.getElementById('catalog-total-count').textContent = String(catalogRows.length);
+    document.querySelectorAll('.segment-tab').forEach((tab) => {
+        const segment = tab.dataset.segment;
+        const count = catalogRows.filter((row) => {
+            const stock = Number(row.dataset.stock || 0);
+            const status = row.dataset.status || 'published';
+            return segment === 'all'
+                || (segment === 'active' && status === 'published')
+                || (segment === 'low' && stock > 0 && stock <= 3)
+                || (segment === 'archived' && status === 'archived')
+                || (segment === 'drafts' && status === 'draft');
+        }).length;
+        const label = tab.textContent.trim().replace(/\s*\(\d+\)$/, '');
+        tab.textContent = `${label} (${count})`;
     });
 }
 
-catalogSearch.addEventListener('input', refreshCatalog);
+catalogSearch.addEventListener('input', () => { currentProductsPage = 1; refreshCatalog(); });
+productsPageSize.addEventListener('change', () => { currentProductsPage = 1; refreshCatalog(); });
+document.querySelector('[data-products-page="previous"]').addEventListener('click', () => { currentProductsPage--; refreshCatalog(); });
+document.querySelector('[data-products-page="next"]').addEventListener('click', () => { currentProductsPage++; refreshCatalog(); });
 document.querySelectorAll('.segment-tab').forEach((tab) => tab.addEventListener('click', () => {
+    currentProductsPage = 1;
     activeSegment = tab.dataset.segment;
     document.querySelectorAll('.segment-tab').forEach((item) => {
         item.classList.toggle('bg-surface-container-lowest', item === tab);
@@ -1149,7 +1203,7 @@ document.querySelectorAll('.segment-tab').forEach((tab) => tab.addEventListener(
 const masterCheckbox = document.getElementById('bulk-select-all');
 function updateSelectedCount() {
     const selected = document.querySelectorAll('.row-check:checked').length;
-    document.getElementById('selected-label').textContent = `Selected ${selected} of ${catalogRows.length} items`;
+    document.getElementById('selected-label').textContent = `Selected ${selected} of ${catalogRows.filter((row) => !row.hidden).length} items`;
 }
 masterCheckbox.addEventListener('change', (event) => {
     catalogRows.filter((row) => !row.hidden).forEach((row) => {
@@ -1158,6 +1212,7 @@ masterCheckbox.addEventListener('change', (event) => {
     updateSelectedCount();
 });
 document.querySelectorAll('.row-check').forEach((checkbox) => checkbox.addEventListener('change', updateSelectedCount));
+refreshCatalog();
 
 const message = document.getElementById('catalog-toast');
 let messageTimer;
@@ -1276,6 +1331,7 @@ saveButton.addEventListener('click', () => {
             refreshCatalog();
         });
         row.querySelector('.row-check').addEventListener('change', updateSelectedCount);
+        currentProductsPage = 1;
     }
     dialog.close();
     notify(editingRow ? 'Product updated in this page preview.' : 'Product added to this page preview.');

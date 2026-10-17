@@ -882,19 +882,13 @@
 <!-- Table Pagination & Footer Status -->
 <div class="bg-surface-container-low px-space-md py-3 flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
 <div class="flex items-center gap-space-sm">
-<span>Showing <strong class="text-on-surface">6 of 38</strong> active deliveries</span>
+<span><span id="delivery-list-count" data-list-count></span></span>
 <span class="text-outline">•</span>
 <span class="text-tertiary font-semibold flex items-center gap-1">
 <span class="h-2 w-2 rounded-full bg-tertiary"></span> All 14 vans reporting GPS heartbeat
         </span>
 </div>
-<div class="flex items-center gap-1">
-<button class="px-2.5 py-1 rounded-md bg-surface-container-lowest text-outline hover:text-on-surface shadow-sm transition-all" disabled="">Prev</button>
-<button class="px-2.5 py-1 rounded-md bg-primary text-on-primary font-semibold shadow-sm">1</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container-lowest text-on-surface hover:bg-surface-container shadow-sm transition-all">2</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container-lowest text-on-surface hover:bg-surface-container shadow-sm transition-all">3</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container-lowest text-on-surface hover:bg-surface-container shadow-sm transition-all">Next</button>
-</div>
+
 </div>
 </div>
 <!-- Bottom Split Grid: Chauffeur Pool Matrix & Live Reviews Strip -->
@@ -1141,6 +1135,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateRows();
     }));
 });
-</script></div></main></div></body></html>
+</script></div></main></div><script>
+(() => {const tbody=document.querySelector('main table tbody');const summary=document.getElementById('delivery-list-count');if(!tbody||!summary)return;const rows=[...tbody.rows];const update=()=>{const n=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=`Showing ${n} of ${n} deliveries · Page 1 of 1`;};new MutationObserver(update).observe(tbody,{subtree:true,attributes:true,attributeFilter:['style','hidden']});document.getElementById('delivery-search')?.addEventListener('input',update);document.querySelectorAll('[data-delivery-filter],[data-delivery-status]').forEach(control=>control.addEventListener('change',update));document.querySelectorAll('[data-delivery-status]').forEach(control=>control.addEventListener('click',update));update();})();
+</script></body></html>
 
 

@@ -271,7 +271,7 @@
 <span class="material-symbols-outlined text-sm font-bold">arrow_upward</span>
 <span>+18.4% MoM</span>
 </div>
-<span class="font-label-sm text-label-sm text-secondary">1,428 Cleared TXNs</span>
+<span id="payment-cleared-count" class="font-label-sm text-label-sm text-secondary">0 Cleared TXNs</span>
 </div>
 <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-primary/5 pointer-events-none"></div>
 </div>
@@ -333,7 +333,7 @@
 <div class="flex items-center gap-space-xs overflow-x-auto pb-1">
 <button class="px-4 py-2 rounded-full bg-on-surface text-surface font-label-md text-label-md flex items-center gap-2 whitespace-nowrap shadow-sm">
 <span>All Payments</span>
-<span class="px-1.5 py-0.5 text-label-sm font-label-sm rounded-full bg-surface/20 text-surface">1,428</span>
+<span id="payment-total-count" class="px-1.5 py-0.5 text-label-sm font-label-sm rounded-full bg-surface/20 text-surface">0</span>
 </button>
 <button class="px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-md text-label-md flex items-center gap-2 whitespace-nowrap transition-colors">
 <span>Escrow Locked</span>
@@ -906,7 +906,7 @@
 <!-- Pagination & Batch Multi-Action Bar -->
 <div class="py-space-sm px-4 bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-sm">
 <div class="flex items-center gap-space-sm">
-<span class="font-label-sm text-label-sm text-secondary">Showing 1–7 of 1,428 Payments</span>
+<span class="font-label-sm text-label-sm text-secondary"><span id="payment-list-count" data-list-count></span></span>
 <div class="hidden sm:flex items-center gap-1">
 <span class="font-label-sm text-label-sm text-outline">| Multi-Select:</span>
 <button class="font-label-sm text-label-sm text-primary hover:underline font-semibold ml-1">Batch Settle RTGS</button>
@@ -915,19 +915,7 @@
 </div>
 </div>
 <!-- Numbered Pagination -->
-<div class="flex items-center gap-1 self-center md:self-auto">
-<button class="w-8 h-8 rounded-lg bg-surface-container text-secondary flex items-center justify-center hover:bg-surface-container-high transition-colors" disabled="">
-<span class="material-symbols-outlined text-base">chevron_left</span>
-</button>
-<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center shadow-sm">1</button>
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">2</button>
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">3</button>
-<span class="px-1 text-outline font-label-sm">...</span>
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">204</button>
-<button class="w-8 h-8 rounded-lg bg-surface-container text-on-surface flex items-center justify-center hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-base">chevron_right</span>
-</button>
-</div>
+
 </div>
 </div>
 <!-- Compliance & Audit Telemetry Banner -->
@@ -962,6 +950,18 @@
  search?.addEventListener('input',()=>{const q=search.value.toLowerCase().trim();rows.forEach(row=>row.hidden=!row.innerText.toLowerCase().includes(q));});
  const modal=document.getElementById('payment-detail-modal');document.querySelectorAll('#payments-table-body [title="View Details"],#payments-table-body [title="Transaction Details"],#payments-table-body [title="Receipt"]').forEach(button=>button.addEventListener('click',()=>{document.getElementById('payment-detail-content').textContent=button.closest('tr').innerText;modal.classList.remove('hidden');modal.classList.add('flex');}));
  document.getElementById('close-payment-detail')?.addEventListener('click',()=>{modal.classList.add('hidden');modal.classList.remove('flex');});
+})();
+</script><script>
+(() => {
+ const tbody=document.getElementById('payments-table-body');
+ const summary=document.getElementById('payment-list-count');
+ if(!tbody||!summary)return;
+ const rows=[...tbody.querySelectorAll('tr')];
+ const count=()=>{const visible=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;const cleared=rows.filter(row=>row.innerText.toLowerCase().includes('cleared')).length;summary.textContent=visible ? ("Showing 1–"+visible+" of "+visible+" payments · Page 1 of 1") : "Showing 0 payments · Page 1 of 1";document.getElementById('payment-total-count').textContent=rows.length;document.getElementById('payment-cleared-count').textContent=cleared+' Cleared TXNs';};
+ new MutationObserver(count).observe(tbody,{subtree:true,attributes:true,attributeFilter:['hidden','style']});
+ document.getElementById('payment-search')?.addEventListener('input',count);
+
+ count();
 })();
 </script></body></html>
 

@@ -265,7 +265,7 @@
 </div>
 <div class="mt-space-md">
 <div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md text-on-surface font-semibold">3,892</span>
+<span id="customer-total-count" class="font-headline-md text-headline-md text-on-surface font-semibold">0</span>
 <span class="font-label-md text-label-md text-secondary">Patrons</span>
 </div>
 <div class="flex items-center gap-space-xs mt-2">
@@ -339,7 +339,7 @@
 <div class="flex items-center gap-space-xs overflow-x-auto pb-1 -mb-1 scrollbar-none">
 <button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm">
 <span>All Patrons</span>
-<span class="bg-on-primary/20 text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full">3,892</span>
+<span id="customer-tab-count" class="bg-on-primary/20 text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
 </button>
 <button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">
 <span class="material-symbols-outlined text-sm text-secondary">workspace_premium</span>
@@ -977,7 +977,7 @@
 <div class="px-space-md py-4 bg-surface-container-low/50 flex flex-col md:flex-row items-center justify-between gap-space-md">
 <div class="flex items-center gap-space-md">
 <span class="font-body-sm text-body-sm text-secondary">
-          Showing <span class="font-semibold text-on-surface">1–7</span> of <span class="font-semibold text-on-surface">3,892</span> Registered Patrons • Page 1 of 556
+          <span id="customer-list-count" data-list-count></span>
         </span>
 <div class="hidden lg:flex items-center gap-1.5 bg-surface-container-lowest px-2.5 py-1 rounded-full text-xs text-outline">
 <span class="material-symbols-outlined text-xs text-tertiary">lock</span>
@@ -987,19 +987,7 @@
 </div>
 </div>
 <!-- Pagination Controls -->
-<div class="flex items-center gap-1.5">
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container transition-colors disabled:opacity-40" disabled="">
-<span class="material-symbols-outlined text-base">chevron_left</span>
-</button>
-<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center shadow-sm">1</button>
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">2</button>
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">3</button>
-<span class="px-1 text-outline font-label-md">...</span>
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center justify-center transition-colors">556</button>
-<button class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-base">chevron_right</span>
-</button>
-</div>
+
 </div>
 </div>
 </div></main></div><script>
@@ -1010,6 +998,18 @@
  const dialog=document.getElementById('customer-dossier');
  document.querySelectorAll('[title="Inspect Patron Dossier"]').forEach(button=>button.addEventListener('click',()=>{const row=button.closest('tr');const cells=[...row.cells].map(cell=>cell.innerText.trim()).filter(Boolean);document.getElementById('dossier-title').textContent=cells[1]?.split('\n')[0]||'Customer dossier';document.getElementById('customer-profile-content').textContent=cells.slice(1,4).join(' · ');dialog.classList.remove('hidden');dialog.classList.add('flex');}));
  document.getElementById('close-customer-dossier')?.addEventListener('click',()=>{dialog.classList.add('hidden');dialog.classList.remove('flex');});
+})();
+</script><script>
+(() => {
+ const tbody=document.getElementById('customers-table-body');
+ const summary=document.getElementById('customer-list-count');
+ if(!tbody||!summary)return;
+ const rows=[...tbody.querySelectorAll('tr')];
+ const count=()=>{const visible=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=visible ? ("Showing 1–"+visible+" of "+visible+" patrons · Page 1 of 1") : "Showing 0 patrons · Page 1 of 1";document.getElementById('customer-total-count').textContent=rows.length;document.getElementById('customer-tab-count').textContent=rows.length;};
+ new MutationObserver(count).observe(tbody,{subtree:true,attributes:true,attributeFilter:['hidden','style']});
+ document.getElementById('customer-search')?.addEventListener('input',count);
+
+ count();
 })();
 </script></body></html>
 

@@ -276,7 +276,7 @@
 <div class="flex items-start justify-between mb-space-sm">
 <div>
 <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Total Orders</span>
-<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">1,428 Orders</h3>
+<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">— Orders</h3>
 </div>
 <div class="w-10 h-10 rounded-full bg-secondary-fixed/50 flex items-center justify-center text-on-secondary-fixed">
 <span class="material-symbols-outlined text-xl">shopping_bag</span>
@@ -302,7 +302,7 @@
 <div class="flex items-start justify-between mb-space-sm">
 <div>
 <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Active Patrons</span>
-<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">3,892 Patrons</h3>
+<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">— Patrons</h3>
 </div>
 <div class="w-10 h-10 rounded-full bg-tertiary-fixed/40 flex items-center justify-center text-tertiary">
 <span class="material-symbols-outlined text-xl">shield_person</span>
@@ -325,7 +325,7 @@
 <div class="flex items-start justify-between mb-space-sm">
 <div>
 <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Curations &amp; Ateliers</span>
-<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">486 Curations</h3>
+<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">— Curations</h3>
 </div>
 <div class="w-10 h-10 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary">
 <span class="material-symbols-outlined text-xl">dry_cleaning</span>
