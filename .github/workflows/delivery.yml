@@ -1,0 +1,58 @@
+name: Delivery CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "delivery/**"
+      - ".github/workflows/delivery.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "delivery/**"
+      - ".github/workflows/delivery.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: delivery
+
+jobs:
+  ci:
+    name: Build and test delivery
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install Node dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Run Laravel tests
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan test
