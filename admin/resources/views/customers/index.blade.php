@@ -1,496 +1,77 @@
-<!DOCTYPE html>
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Customers | Luvora Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script><style>body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}:focus-visible{outline:3px solid rgba(54,92,74,.45);outline-offset:2px}</style>
+</head>
+<body class="min-h-screen bg-[#f7f8f6] text-[#202321]">
+@include('partials.sidebar')
+@php
+  $customerRows = $apiRecords['customers'] ?? [];
+  $customer = data_get($apiData, 'customer.data') ?? data_get($apiData, 'customer.customer') ?? data_get($apiData, 'customer');
+  if (!is_array($customer) || array_is_list($customer)) $customer = [];
+  $customerId = data_get($customer, 'id') ?? request('customerId');
+  $customerOrders = $apiRecords['customerOrders'] ?? [];
+  $orderPaging = $apiPagination['customerOrders'] ?? [];
+  $orderTotal = $orderPaging['total'] ?? null;
+  $customerOrdersComplete = $orderTotal !== null && (int)$orderTotal <= count($customerOrders);
+  $lifetimeSpend = $customerOrdersComplete ? array_sum(array_map(fn($order) => (float)data_get($order, 'totalAmount', 0), $customerOrders)) : null;
+  $customerName = trim((string)data_get($customer, 'firstName', '').' '.(string)data_get($customer, 'lastName', ''));
+  $customerDetail = request()->filled('customerId');
+@endphp
+<div class="min-h-screen md:pl-64"><main class="mx-auto max-w-[1500px] px-4 pb-12 pt-24 sm:px-6 lg:px-9">
+  @include('partials.api-state')
+  <div id="customers-loading" hidden role="status" aria-live="polite" class="mb-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span class="sr-only">Loading customers</span><div class="mb-4 h-4 w-40 animate-pulse rounded bg-slate-200"></div><div class="space-y-3">@for($i=0;$i<5;$i++)<div class="grid grid-cols-4 gap-4"><div class="col-span-2 h-10 animate-pulse rounded-lg bg-slate-100"></div><div class="h-10 animate-pulse rounded-lg bg-slate-100"></div><div class="h-10 animate-pulse rounded-lg bg-slate-100"></div></div>@endfor</div></div>
+  @if(session('status'))<div role="status" class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ session('status') }}</div>@endif
+  @if($errors->has('api'))<div role="alert" class="mb-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">{{ $errors->first('api') }}</div>@endif
+  <nav aria-label="Breadcrumb" class="mb-5 flex items-center gap-2 text-xs text-slate-500"><a href="{{ route('dashboard') }}" class="hover:text-[#365c4a]">Admin</a><span>/</span><a href="{{ route('customers.index') }}" class="hover:text-[#365c4a]">Customers</a>@if($customerDetail && $customer)<span>/</span><span aria-current="page" class="font-semibold text-slate-800">{{ $customerName ?: 'Customer profile' }}</span>@endif</nav>
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      "colors": {
-        "surface-bright": "#f7f9fb",
-        "surface-variant": "#e0e3e5",
-        "tertiary-fixed": "#6ffbbe",
-        "primary-fixed-dim": "#a8c8ff",
-        "on-background": "#191c1e",
-        "surface-container": "#eceef0",
-        "inverse-on-surface": "#eff1f3",
-        "on-tertiary-container": "#f5fff6",
-        "secondary-fixed": "#dae2fd",
-        "inverse-primary": "#a8c8ff",
-        "on-tertiary-fixed-variant": "#005236",
-        "inverse-surface": "#2d3133",
-        "on-primary-fixed-variant": "#004689",
-        "on-secondary-fixed": "#131b2e",
-        "surface": "#f7f9fb",
-        "on-tertiary-fixed": "#002113",
-        "outline": "#717785",
-        "surface-container-low": "#f2f4f6",
-        "surface-container-highest": "#e0e3e5",
-        "primary-container": "#0074db",
-        "surface-container-high": "#e6e8ea",
-        "primary": "#005baf",
-        "surface-tint": "#005eb3",
-        "surface-dim": "#d8dadc",
-        "outline-variant": "#c0c6d6",
-        "tertiary-container": "#00855b",
-        "on-error-container": "#93000a",
-        "on-secondary-fixed-variant": "#3f465c",
-        "tertiary": "#006947",
-        "on-tertiary": "#ffffff",
-        "background": "#f7f9fb",
-        "secondary": "#565e74",
-        "on-error": "#ffffff",
-        "primary-fixed": "#d5e3ff",
-        "on-secondary-container": "#5c647a",
-        "tertiary-fixed-dim": "#4edea3",
-        "on-surface": "#191c1e",
-        "surface-container-lowest": "#ffffff",
-        "on-surface-variant": "#404754",
-        "error": "#ba1a1a",
-        "on-primary": "#ffffff",
-        "on-primary-fixed": "#001b3c",
-        "on-primary-container": "#fefcff",
-        "error-container": "#ffdad6",
-        "secondary-container": "#dae2fd",
-        "on-secondary": "#ffffff",
-        "secondary-fixed-dim": "#bec6e0"
-      },
-      "borderRadius": {
-        "DEFAULT": "0.25rem",
-        "lg": "0.5rem",
-        "xl": "0.75rem",
-        "full": "9999px"
-      },
-      "spacing": {
-        "gutter-sm": "1rem",
-        "margin": "1.5rem",
-        "gutter-lg": "2rem",
-        "space-lg": "1.5rem",
-        "space-xs": "0.25rem",
-        "margin-lg": "4rem",
-        "space-sm": "0.5rem",
-        "margin-sm": "1rem",
-        "gutter": "1.5rem",
-        "space-md": "1rem",
-        "space-xl": "2.5rem"
-      },
-      "fontFamily": {
-        "headline-lg": [
-          "Bodoni Moda"
-        ],
-        "label-sm": [
-          "Inter"
-        ],
-        "body-lg": [
-          "Plus Jakarta Sans"
-        ],
-        "label-md": [
-          "Inter"
-        ],
-        "body-md": [
-          "Plus Jakarta Sans"
-        ],
-        "headline-lg-mobile": [
-          "Bodoni Moda"
-        ],
-        "display-hero": [
-          "Bodoni Moda"
-        ],
-        "headline-md": [
-          "Bodoni Moda"
-        ],
-        "headline-sm": [
-          "Plus Jakarta Sans"
-        ],
-        "label-lg": [
-          "Inter"
-        ],
-        "display-hero-mobile": [
-          "Bodoni Moda"
-        ],
-        "body-sm": [
-          "Plus Jakarta Sans"
-        ]
-      },
-      "fontSize": {
-        "headline-lg": [
-          "40px",
-          {
-            "lineHeight": "48px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "500"
-          }
-        ],
-        "label-sm": [
-          "11px",
-          {
-            "lineHeight": "14px",
-            "letterSpacing": "0.06em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-lg": [
-          "18px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "400"
-          }
-        ],
-        "label-md": [
-          "12px",
-          {
-            "lineHeight": "16px",
-            "letterSpacing": "0.04em",
-            "fontWeight": "500"
-          }
-        ],
-        "body-md": [
-          "15px",
-          {
-            "lineHeight": "22px",
-            "fontWeight": "400"
-          }
-        ],
-        "headline-lg-mobile": [
-          "30px",
-          {
-            "lineHeight": "36px",
-            "letterSpacing": "0em",
-            "fontWeight": "500"
-          }
-        ],
-        "display-hero": [
-          "56px",
-          {
-            "lineHeight": "64px",
-            "letterSpacing": "-0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "headline-md": [
-          "28px",
-          {
-            "lineHeight": "34px",
-            "fontWeight": "500"
-          }
-        ],
-        "headline-sm": [
-          "20px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "600"
-          }
-        ],
-        "label-lg": [
-          "14px",
-          {
-            "lineHeight": "20px",
-            "letterSpacing": "0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "display-hero-mobile": [
-          "38px",
-          {
-            "lineHeight": "44px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-sm": [
-          "13px",
-          {
-            "lineHeight": "18px",
-            "fontWeight": "400"
-          }
-        ]
-      }
-    }
-  }
-}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head><body class="bg-surface text-on-surface">@include('partials.sidebar')<div class="md:pl-64"><header class="fixed top-0 left-0 right-0 md:left-64 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-lg flex items-center justify-between"><button type="button" class="mr-3 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm md:hidden" aria-label="Toggle admin navigation" aria-controls="admin-sidebar" aria-expanded="false" onclick="const nav=document.getElementById('admin-sidebar');const open=nav.classList.toggle('-translate-x-full');this.setAttribute('aria-expanded',String(!open))"><span class="material-symbols-outlined">menu</span></button><div class="flex min-w-0 items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-2 rounded-full"><span class="material-symbols-outlined text-base text-primary">storefront</span><span class="font-label-sm text-label-sm text-on-surface font-semibold">Colombo 07 Flagship</span><span class="material-symbols-outlined text-sm text-outline">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span><input class="w-full bg-surface-container-lowest pl-10 pr-4 py-2 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]" placeholder="Search SKUs, high jewelry orders, sovereign patrons..." type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-tertiary-fixed/30 px-space-sm py-1.5 rounded-full"><span class="h-2 w-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant font-medium">CBSL Escrow Synchronized</span></div><button class="relative p-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-error"></span></button><div class="flex items-center gap-space-sm pl-space-xs"><a href="{{ route('admin.profile') }}" aria-label="Open admin profile" title="Admin profile">@include('partials.profile-avatar', ['avatarSize' => 'h-8 w-8'])</a><div class="hidden xl:flex flex-col text-right"><span class="font-label-md text-label-md text-on-surface font-medium">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span><span class="font-label-sm text-label-sm text-secondary">{{ data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Administrator' }}</span></div></div></div></header><main class="w-full pt-20 px-gutter-lg bg-surface min-h-screen">@include('partials.api-state')<div class="flex flex-col w-full pb-space-xl">
-<!-- Top Breadcrumb & Administrative Dossier Action Header -->
-<div class="flex flex-col gap-space-sm pt-space-md mb-space-lg">
-<!-- Breadcrumb Pathway -->
-<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
-<a class="hover:text-primary transition-colors" href="{{ route('dashboard') }}">Executive Portal</a>
-<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
-<span class="hover:text-primary transition-colors cursor-pointer">Customers &amp; VIP Patrons</span>
-<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
-<span class="text-primary font-semibold">All Customers</span>
-</div>
-<!-- Editorial Title & Action Block -->
-<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
-<div class="max-w-3xl">
-<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none">
-          Customers &amp; Sovereign Circle CRM
-        </h1>
-<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">
-          Curated registry of Sri Lankan and global high-patronage clientele, bespoke fitting measurements, lifetime vault spend, and Sovereign Circle concierge allocations.
-        </p>
-</div>
-<div class="flex flex-wrap items-center gap-space-sm self-start lg:self-center">
-<!-- Sync Telemetry Subtle Action -->
-<button class="h-10 w-10 flex items-center justify-center rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all shadow-sm" title="Synchronize Patron Node Data">
-<span class="material-symbols-outlined text-lg">sync</span>
-</button>
-<!-- Export CRM Dossier Button -->
-<button class="h-10 px-5 flex items-center gap-space-xs rounded-full bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-sm hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined text-base text-secondary">file_download</span>
-          Export CRM Dossier
-        </button>
-<!-- Enroll VIP Patron Primary Action -->
-<button class="h-10 px-6 flex items-center gap-space-xs rounded-full bg-primary text-on-primary font-label-lg text-label-lg shadow-md hover:bg-primary-container active:scale-[0.98] transition-all">
-<span class="material-symbols-outlined text-base">person_add</span>
-          + Enroll VIP Patron
-        </button>
-</div>
-</div>
-</div>
-<!-- Executive Patron Telemetry KPI Bento Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md mb-space-lg">
-<!-- Card 1: Total Registered Patrons -->
-<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Total Registered Patrons</span>
-<div class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-lg">badge</span>
-</div>
-</div>
-<div class="mt-space-md">
-<div class="flex items-baseline gap-space-xs">
-<span id="customer-total-count" class="font-headline-md text-headline-md text-on-surface font-semibold">0</span>
-<span class="font-label-md text-label-md text-secondary">Patrons</span>
-</div>
-<div class="flex items-center gap-space-xs mt-2">
-<span class="inline-flex items-center gap-0.5 text-xs font-semibold text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded-full">
-<span class="material-symbols-outlined text-xs">arrow_upward</span> +314
-          </span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">this month • 84% Verified Residencies</span>
-</div>
-</div>
-</div>
-<!-- Card 2: Sovereign Circle Tier -->
-<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Sovereign Circle Tier</span>
-<div class="w-8 h-8 rounded-full bg-secondary-fixed/40 flex items-center justify-center text-on-secondary-fixed">
-<span class="material-symbols-outlined text-lg">workspace_premium</span>
-</div>
-</div>
-<div class="mt-space-md">
-<div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md text-on-surface font-semibold">642</span>
-<span class="font-label-md text-label-md text-secondary">Sovereign</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 truncate">
-          Tier 1 VIPs • LKR 100k+ AOV • Chauffeur Allocation
-        </p>
-</div>
-</div>
-<!-- Card 3: Avg Lifetime Value -->
-<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Avg Lifetime Value</span>
-<div class="w-8 h-8 rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-lg">account_balance_wallet</span>
-</div>
-</div>
-<div class="mt-space-md">
-<div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md text-on-surface font-semibold">LKR 846,200</span>
-</div>
-<div class="flex items-center gap-space-xs mt-2">
-<span class="inline-flex items-center gap-0.5 text-xs font-semibold text-tertiary bg-tertiary-fixed/30 px-2 py-0.5 rounded-full">
-<span class="material-symbols-outlined text-xs">trending_up</span> +18.4% YoY
-          </span>
-<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Top patron LKR 4.12M</span>
-</div>
-</div>
-</div>
-<!-- Card 4: Active Orders in Pipeline -->
-<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Active Orders in Pipeline</span>
-<div class="w-8 h-8 rounded-full bg-tertiary-fixed/30 flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined text-lg">local_shipping</span>
-</div>
-</div>
-<div class="mt-space-md">
-<div class="flex items-baseline gap-space-xs">
-<span class="font-headline-md text-headline-md text-on-surface font-semibold">38</span>
-<span class="font-label-md text-label-md text-secondary">Active Dispatches</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 truncate">
-          14 In-Transit Vans • 8 In-Salon Fittings
-        </p>
-</div>
-</div>
-</div>
-<!-- Filter, Search & Patron Segment Controls Bar -->
-<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md flex flex-col gap-space-md">
-<!-- Quick Segment Tabs with Pill Counters -->
-<div class="flex items-center gap-space-xs overflow-x-auto pb-1 -mb-1 scrollbar-none">
-<button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm">
-<span>All Patrons</span>
-<span id="customer-tab-count" class="bg-on-primary/20 text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
-</button>
-<button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-sm text-secondary">workspace_premium</span>
-<span>Sovereign Circle</span>
-<span class="bg-surface-container-highest text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full">642</span>
-</button>
-<button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-sm text-primary">local_shipping</span>
-<span>Active Dispatches</span>
-<span class="bg-primary-fixed text-on-primary-fixed text-[10px] font-bold px-2 py-0.5 rounded-full">38</span>
-</button>
-<button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-sm text-secondary">straighten</span>
-<span>Fitting Scheduled</span>
-<span class="bg-surface-container-highest text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full">19</span>
-</button>
-<button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-sm text-tertiary">diamond</span>
-<span>High Lifetime Value (&gt; LKR 1M)</span>
-<span class="bg-tertiary-fixed/40 text-on-tertiary-fixed-variant text-[10px] font-bold px-2 py-0.5 rounded-full">128</span>
-</button>
-<button class="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-sm text-error">pending</span>
-<span>Pending Verification</span>
-<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-full">14</span>
-</button>
-</div>
-<!-- Search Input & Modular Dropdown Filters -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm pt-space-xs">
-<!-- Universal Patron Search Bar -->
-<div class="relative md:col-span-12 xl:col-span-5">
-<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
-<input class="w-full bg-surface-container-low pl-11 pr-4 py-2.5 rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:shadow-[0_0_0_2px_#005baf] transition-all" id="customer-search" placeholder="Search by patron name, phone (+94), sanctuary address, passkey ID, or assigned couturier..." type="search"/>
-</div>
-<!-- Filter Dropdown 1: Status -->
-<div class="relative md:col-span-3 xl:col-span-2">
-<select class="w-full appearance-none bg-surface-container-low pl-3 pr-8 py-2.5 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-lowest cursor-pointer transition-all">
-<option>All Statuses</option>
-<option>Active VIP</option>
-<option>In Fitting</option>
-<option>Active Transit</option>
-<option>Dormant</option>
-<option>Verification Pending</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-<!-- Filter Dropdown 2: Tier -->
-<div class="relative md:col-span-3 xl:col-span-2">
-<select class="w-full appearance-none bg-surface-container-low pl-3 pr-8 py-2.5 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-lowest cursor-pointer transition-all">
-<option>All Tiers</option>
-<option>Sovereign Circle</option>
-<option>Private Patron</option>
-<option>Jaffna Guild Patron</option>
-<option>Diplomatic Circle</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-<!-- Filter Dropdown 3: Registration Date Range -->
-<div class="relative md:col-span-3 xl:col-span-1.5">
-<select class="w-full appearance-none bg-surface-container-low pl-3 pr-8 py-2.5 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-lowest cursor-pointer transition-all">
-<option>All Time</option>
-<option>Last 30 Days</option>
-<option>Last 6 Months</option>
-<option>All registration years</option>
-<option>Charter 2021</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-<!-- Filter Dropdown 4: Assigned Couturier -->
-<div class="relative md:col-span-3 xl:col-span-1.5">
-<select class="w-full appearance-none bg-surface-container-low pl-3 pr-8 py-2.5 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-lowest cursor-pointer transition-all">
-<option>All Stylists</option>
-<option>Madame Ananya</option>
-<option>Master Somapala</option>
-<option>Miss Dilini</option>
-<option>Sunil Appu</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-</div>
-</div>
-<!-- High-Fidelity Customers Master Data Table -->
-<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-low/70 text-outline font-label-sm text-label-sm uppercase tracking-wider select-none">
-<th class="py-3.5 pl-space-md pr-2 w-10">
-<input class="rounded w-4 h-4 text-primary focus:ring-0 cursor-pointer accent-primary" type="checkbox"/>
-</th>
-<th class="py-3.5 px-4 font-label-sm tracking-widest">Customer &amp; Sanctuary</th>
-<th class="py-3.5 px-4 font-label-sm tracking-widest">Tier &amp; Dispatch Status</th>
-<th class="py-3.5 px-4 font-label-sm tracking-widest">Registration</th>
-<th class="py-3.5 px-4 font-label-sm tracking-widest">Orders &amp; Curations</th>
-<th class="py-3.5 px-4 font-label-sm tracking-widest">Lifetime Spend</th>
-<th class="py-3.5 px-4 font-label-sm tracking-widest">Assigned Concierge</th>
-<th class="py-3.5 pr-space-md pl-4 font-label-sm tracking-widest text-right">Actions</th>
-</tr>
-</thead>
-<tbody id="customers-table-body" class="divide-y divide-surface-container">
-@forelse(($apiRecords['customers'] ?? []) as $record)
-    <tr>
-        @foreach($record as $field => $value)
-            @if(!is_array($value) && !is_object($value))<td class="px-4 py-3">{{ $value ?? '�' }}</td>@endif
-        @endforeach
-    </tr>
-@empty
-    <tr data-empty-state><td colspan="7" class="px-4 py-8 text-center text-sm text-secondary">{{ !empty($apiErrors['customers'] ?? null) ? 'Unable to load customer data.' : 'No customer records found.' }}</td></tr>
-@endforelse
-</tbody>
-</table>
-</div>
-<!-- Customer dossier: profile, order history, account status, and support -->
-<div id="customer-dossier" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true" aria-labelledby="dossier-title"><section class="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-surface-container-lowest p-space-lg shadow-2xl"><header class="flex items-center justify-between border-b border-surface-container pb-space-md"><div><p class="font-label-sm text-label-sm uppercase tracking-widest text-primary">Customer profile</p><h2 id="dossier-title" class="font-headline-md text-headline-md font-semibold text-on-surface">Customer dossier</h2></div><button id="close-customer-dossier" type="button" class="rounded-full p-2 hover:bg-surface-container" aria-label="Close customer dossier">×</button></header><div class="grid grid-cols-1 md:grid-cols-2 gap-space-md py-space-md"><article class="rounded-xl bg-surface-container-low p-space-md"><h3 class="font-label-lg text-label-lg font-semibold">Profile &amp; account status</h3><div id="customer-profile-content" class="mt-2 font-body-sm text-body-sm text-secondary">Select a customer to view contact and account details.</div><label class="mt-3 block font-label-sm text-label-sm text-secondary">Account status<select id="customer-account-status" class="mt-1 w-full rounded-lg bg-surface-container-lowest p-2"><option>Active</option><option>Under review</option><option>Suspended</option></select></label></article><article class="rounded-xl bg-surface-container-low p-space-md"><h3 class="font-label-lg text-label-lg font-semibold">Order history</h3><ul id="customer-order-history" class="mt-2 space-y-2 font-body-sm text-body-sm text-secondary"><li>#LUV-OR-9912 · Emerald Silk · LKR 50,220 · En route</li><li>#LUV-OR-9841 · Bespoke fitting · Completed</li><li>46 lifetime orders · LKR 3,842,000 spend</li></ul></article><article class="md:col-span-2 rounded-xl bg-surface-container-low p-space-md"><div class="flex items-center justify-between"><h3 class="font-label-lg text-label-lg font-semibold">Customer support history</h3><span class="rounded-full bg-primary-fixed px-2 py-1 text-xs font-semibold">2 recent cases</span></div><div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2 font-body-sm text-body-sm"><div class="rounded-lg bg-surface-container-lowest p-3"><strong>SUP-2048 · Fitting appointment</strong><p class="text-secondary">Concierge confirmed Colombo 07 fitting · Resolved</p></div><div class="rounded-lg bg-surface-container-lowest p-3"><strong>SUP-1982 · Delivery update</strong><p class="text-secondary">Customer asked for live courier ETA · Resolved</p></div></div></article></div></section></div><!-- Master Table Footer & Cryptographic Telemetry -->
-<div class="px-space-md py-4 bg-surface-container-low/50 flex flex-col md:flex-row items-center justify-between gap-space-md">
-<div class="flex items-center gap-space-md">
-<span class="font-body-sm text-body-sm text-secondary">
-          <span id="customer-list-count" data-list-count></span>
-        </span>
-<div class="hidden lg:flex items-center gap-1.5 bg-surface-container-lowest px-2.5 py-1 rounded-full text-xs text-outline">
-<span class="material-symbols-outlined text-xs text-tertiary">lock</span>
-<span>Sovereign CRM Vault Node: 0x48A...D19C</span>
-<span class="text-outline-variant">•</span>
-<span>CBSL &amp; PDPA Compliant</span>
-</div>
-</div>
-<!-- Pagination Controls -->
-
-</div>
-</div>
-</div></main></div><script>
-(() => {
- const search=document.getElementById('customer-search');
- const rows=[...document.querySelectorAll('#customers-table-body tr')];
- search?.addEventListener('input',()=>{const q=search.value.toLowerCase().trim();rows.forEach(row=>row.hidden=!row.innerText.toLowerCase().includes(q));});
- const dialog=document.getElementById('customer-dossier');
- document.querySelectorAll('[title="Inspect Patron Dossier"]').forEach(button=>button.addEventListener('click',()=>{const row=button.closest('tr');const cells=[...row.cells].map(cell=>cell.innerText.trim()).filter(Boolean);document.getElementById('dossier-title').textContent=cells[1]?.split('\n')[0]||'Customer dossier';document.getElementById('customer-profile-content').textContent=cells.slice(1,4).join(' · ');dialog.classList.remove('hidden');dialog.classList.add('flex');}));
- document.getElementById('close-customer-dossier')?.addEventListener('click',()=>{dialog.classList.add('hidden');dialog.classList.remove('flex');});
-})();
-</script><script>
-(() => {
- const tbody=document.getElementById('customers-table-body');
- const summary=document.getElementById('customer-list-count');
- if(!tbody||!summary)return;
- const rows=[...tbody.querySelectorAll('tr')];
- const count=()=>{const visible=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=visible ? ("Showing 1–"+visible+" of "+visible+" patrons") : "Showing 0 patrons";document.getElementById('customer-total-count').textContent=rows.length;document.getElementById('customer-tab-count').textContent=rows.length;};
- new MutationObserver(count).observe(tbody,{subtree:true,attributes:true,attributeFilter:['hidden','style']});
- document.getElementById('customer-search')?.addEventListener('input',count);
-
- count();
-})();
-</script></body></html>
-
-
+  @if($customerDetail)
+    @if(!empty($apiErrors['customer'] ?? null))
+      <section role="alert" class="rounded-2xl border border-amber-200 bg-amber-50 p-6"><h1 class="text-xl font-semibold text-amber-950">Customer profile unavailable</h1><p class="mt-2 text-sm text-amber-900">{{ $apiErrors['customer'] }}</p><a href="{{ route('customers.index') }}" class="mt-4 inline-flex rounded-lg border border-amber-300 bg-white px-4 py-2 text-sm font-semibold">Back to customers</a></section>
+    @elseif($customer)
+      <div class="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p class="mb-2 text-[11px] font-bold uppercase tracking-[.2em] text-[#365c4a]">Customer management</p><h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">{{ $customerName ?: 'Customer profile' }}</h1><p class="mt-2 text-sm text-slate-600">Customer since {{ data_get($customer,'createdAt') ? \Illuminate\Support\Carbon::parse(data_get($customer,'createdAt'))->timezone(config('app.timezone'))->format('M j, Y') : 'date unavailable' }}</p></div><a href="{{ route('customers.index') }}" class="rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50">Back to customers</a></div>
+      <div class="grid gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(300px,.8fr)]">
+        <div class="space-y-5">
+          <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-start justify-between gap-4"><div><h2 class="font-semibold text-slate-900">Profile information</h2><p class="mt-1 text-xs text-slate-500">Private contact information is provided by the authenticated admin customer API.</p></div><span class="rounded-full px-3 py-1.5 text-xs font-semibold {{ data_get($customer,'isActive') ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-100 text-slate-700' }}">{{ data_get($customer,'isActive') ? 'Active' : 'Inactive' }}</span></div><dl class="mt-5 grid gap-4 sm:grid-cols-2"><div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Name</dt><dd class="mt-1 text-sm text-slate-900">{{ $customerName ?: 'Not provided' }}</dd></div><div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Email</dt><dd class="mt-1 break-all text-sm text-slate-900">{{ data_get($customer,'email','Not provided') }}</dd></div><div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Phone</dt><dd class="mt-1 text-sm text-slate-900">{{ data_get($customer,'phoneNumber') ?: 'Not provided' }}</dd></div><div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Customer ID</dt><dd class="mt-1 break-all font-mono text-xs text-slate-700">{{ $customerId }}</dd></div><div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Registered</dt><dd class="mt-1 text-sm text-slate-900">{{ data_get($customer,'createdAt') ? \Illuminate\Support\Carbon::parse(data_get($customer,'createdAt'))->timezone(config('app.timezone'))->format('M j, Y · H:i') : 'Not provided' }}</dd></div></dl><div class="mt-5 border-t border-slate-100 pt-4"><h3 class="text-sm font-semibold text-slate-800">Addresses</h3><p class="mt-1 text-sm leading-6 text-slate-500">Customer addresses are not exposed by the admin customer API. The available address routes are scoped to the signed-in customer, so no address data is requested here.</p></div></section>
+          <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="border-b border-slate-100 px-5 py-4"><h2 class="font-semibold text-slate-900">Order history</h2><p class="mt-1 text-xs text-slate-500">Loaded from OrderService for this customer.</p></div>
+            @if(!empty($apiErrors['customerOrders'] ?? null))<div role="alert" class="p-6 text-sm text-rose-800">Order history could not be loaded: {{ $apiErrors['customerOrders'] }}</div>
+            @elseif(count($customerOrders))<div class="overflow-x-auto"><table class="min-w-[650px] w-full text-left text-sm"><thead class="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-3">Order</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Status</th><th class="px-5 py-3 text-right">Total</th></tr></thead><tbody class="divide-y divide-slate-100">@foreach($customerOrders as $order)<tr><td class="px-5 py-4"><a href="{{ route('orders.index',['orderId'=>data_get($order,'id'),'customerId'=>$customerId]) }}" class="font-semibold text-slate-900 hover:text-[#365c4a]">{{ data_get($order,'orderNumber','Order') }}</a><p class="mt-1 text-xs text-slate-500">{{ is_array(data_get($order,'items')) ? array_sum(array_map(fn($item)=>(int)data_get($item,'quantity',0),data_get($order,'items'))) : '—' }} items</p></td><td class="whitespace-nowrap px-4 py-4 text-xs text-slate-600">{{ data_get($order,'createdAt') ? \Illuminate\Support\Carbon::parse(data_get($order,'createdAt'))->timezone(config('app.timezone'))->format('M j, Y') : '—' }}</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ str_replace('_',' ',data_get($order,'status','Unknown')) }}</span></td><td class="whitespace-nowrap px-5 py-4 text-right font-medium tabular-nums">LKR {{ number_format((float)data_get($order,'totalAmount',0),2) }}</td></tr>@endforeach</tbody></table></div>@if(!$customerOrdersComplete)<p class="border-t border-slate-100 px-5 py-3 text-xs text-slate-500">Showing the first {{ count($customerOrders) }} orders. Additional pages are not included in the spend calculation.</p>@endif
+            @else<div class="px-5 py-12 text-center"><span class="material-symbols-outlined text-3xl text-slate-400" aria-hidden="true">receipt_long</span><h3 class="mt-2 font-semibold text-slate-800">No orders found</h3><p class="mt-1 text-sm text-slate-500">No order history was returned for this customer.</p></div>@endif
+          </section>
+        </div>
+        <aside class="space-y-5"><section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><h2 class="font-semibold text-slate-900">Customer summary</h2><dl class="mt-4 space-y-4"><div class="flex justify-between gap-4"><dt class="text-sm text-slate-600">Order count</dt><dd class="font-semibold tabular-nums">{{ $orderTotal !== null ? number_format((int)$orderTotal) : 'Not available' }}</dd></div><div class="flex justify-between gap-4"><dt class="text-sm text-slate-600">Lifetime spend</dt><dd class="font-semibold tabular-nums">{{ $lifetimeSpend !== null ? 'LKR '.number_format($lifetimeSpend,2) : 'Not available' }}</dd></div></dl><p class="mt-4 text-xs leading-5 text-slate-500">Spend is calculated only when the API returns the customer's complete order history (up to 100 orders).</p></section>
+          <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><h2 class="font-semibold text-slate-900">Account status</h2><p class="mt-2 text-sm text-slate-600">{{ data_get($customer,'isActive') ? 'This account is active.' : 'This account is inactive.' }}</p><form method="POST" action="{{ route('admin.api-mutate') }}" class="mt-4" data-customer-status-form data-current-active="{{ data_get($customer,'isActive') ? 'true' : 'false' }}">@csrf<input type="hidden" name="_api_method" value="PATCH"><input type="hidden" name="_api_endpoint" value="/api/admin/customers/{{ $customerId }}/status"><input type="hidden" name="Active" value="{{ data_get($customer,'isActive') ? 'false' : 'true' }}"><button type="submit" class="w-full rounded-lg {{ data_get($customer,'isActive') ? 'border border-rose-200 text-rose-700 hover:bg-rose-50' : 'bg-[#202321] text-white hover:bg-[#365c4a]' }} px-4 py-2.5 text-sm font-semibold">{{ data_get($customer,'isActive') ? 'Deactivate account' : 'Reactivate account' }}</button></form><p class="mt-3 text-xs leading-5 text-slate-500">This action uses the AuthService status endpoint. Deactivation revokes active refresh tokens.</p></section></aside>
+      </div>
+    @else
+      <section class="rounded-2xl border border-amber-200 bg-amber-50 p-6"><h1 class="font-semibold text-amber-950">Customer not found</h1><p class="mt-2 text-sm text-amber-900">The customer API did not return a matching profile.</p><a href="{{ route('customers.index') }}" class="mt-4 inline-flex rounded-lg border border-amber-300 bg-white px-4 py-2 text-sm font-semibold">Back to customers</a></section>
+    @endif
+  @else
+    <div class="mb-7"><p class="mb-2 text-[11px] font-bold uppercase tracking-[.2em] text-[#365c4a]">Customer management</p><div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Customers</h1><p class="mt-2 text-sm leading-6 text-slate-600">Search customer accounts and review authorized profile and order details.</p></div><span class="rounded-full border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600">AuthService · OrderService</span></div></div>
+    <section class="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"><form id="customer-filters" method="GET" action="{{ route('customers.index') }}" class="grid gap-3 sm:grid-cols-[minmax(0,1fr)_220px_auto_auto]"><label class="text-xs font-semibold text-slate-600">Search customers<input type="search" name="search" value="{{ request('search') }}" placeholder="Name or email" class="mt-1.5 block w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal"></label><label class="text-xs font-semibold text-slate-600">Account status<select name="status" class="mt-1.5 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal"><option value="">All accounts</option><option value="true" @selected(request('status')==='true')>Active</option><option value="false" @selected(request('status')==='false')>Inactive</option></select></label><button type="submit" class="self-end rounded-lg bg-[#202321] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#365c4a]">Apply filters</button><a href="{{ route('customers.index') }}" class="self-end rounded-lg border border-slate-200 px-4 py-2.5 text-center text-sm font-semibold text-slate-700">Reset</a></form><p class="mt-3 text-xs text-slate-500">Search and account status are applied by the authenticated admin customer API.</p></section>
+    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="flex flex-col justify-between gap-2 border-b border-slate-100 px-5 py-4 sm:flex-row sm:items-center"><div><h2 class="font-semibold text-slate-900">Customer directory</h2><p class="mt-1 text-xs text-slate-500">Contact fields are returned only by the admin customer endpoint.</p></div><span class="text-xs text-slate-500">{{ $apiPagination['customers']['total'] ?? count($customerRows) }} customers</span></div>
+      @if(!empty($apiErrors['customers'] ?? null))<div role="alert" class="px-5 py-14 text-center"><span class="material-symbols-outlined text-3xl text-amber-700" aria-hidden="true">cloud_off</span><h3 class="mt-2 font-semibold text-slate-800">Customer data unavailable</h3><p class="mt-1 text-sm text-slate-600">{{ $apiErrors['customers'] }}</p><a href="{{ request()->fullUrl() }}" class="mt-4 inline-flex rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold">Retry</a></div>
+      @elseif(count($customerRows))<div class="overflow-x-auto"><table class="min-w-[980px] w-full text-left text-sm"><thead class="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500"><tr><th class="px-5 py-3.5">Customer</th><th class="px-4 py-3.5">Customer ID</th><th class="px-4 py-3.5">Registration date</th><th class="px-4 py-3.5 text-right">Orders</th><th class="px-4 py-3.5 text-right">Lifetime spend</th><th class="px-4 py-3.5">Account</th><th class="px-5 py-3.5"></th></tr></thead><tbody class="divide-y divide-slate-100">@foreach($customerRows as $row)@php($rowId=data_get($row,'id'))@php($rowName=trim((string)data_get($row,'firstName','').' '.(string)data_get($row,'lastName','')))<tr><td class="px-5 py-4"><span class="block font-semibold text-slate-900">{{ $rowName ?: 'Customer' }}</span><span class="mt-1 block text-xs text-slate-600">{{ data_get($row,'email','Email unavailable') }}</span></td><td class="break-all px-4 py-4 font-mono text-[10px] text-slate-500">{{ $rowId }}</td><td class="whitespace-nowrap px-4 py-4 text-xs text-slate-600">{{ data_get($row,'createdAt') ? \Illuminate\Support\Carbon::parse(data_get($row,'createdAt'))->timezone(config('app.timezone'))->format('M j, Y') : '—' }}</td><td class="px-4 py-4 text-right text-slate-500">Not provided</td><td class="px-4 py-4 text-right text-slate-500">Not provided</td><td class="px-4 py-4"><span class="rounded-full px-2.5 py-1 text-xs font-medium {{ data_get($row,'isActive') ? 'bg-emerald-50 text-emerald-800' : 'bg-slate-100 text-slate-700' }}">{{ data_get($row,'isActive') ? 'Active' : 'Inactive' }}</span></td><td class="px-5 py-4 text-right"><a href="{{ route('customers.index',['customerId'=>$rowId]) }}" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">View</a></td></tr>@endforeach</tbody></table></div>
+      @if(isset($apiPagination['customers']) && (($apiPagination['customers']['pages'] ?? 1)>1))@php($paging=$apiPagination['customers'])<nav class="flex items-center justify-between border-t border-slate-100 px-5 py-3 text-sm" aria-label="Customer pages"><span class="text-slate-500">Page {{ $paging['page'] }} of {{ $paging['pages'] }} · {{ $paging['total'] }} customers</span><div class="flex gap-2"><a href="{{ request()->fullUrlWithQuery(['page'=>max(1,$paging['page']-1)]) }}" @if($paging['page']<=1) aria-disabled="true" tabindex="-1" @endif class="rounded-lg border border-slate-200 px-3 py-1.5 {{ $paging['page']<=1?'pointer-events-none opacity-40':'hover:bg-slate-50' }}">Previous</a><a href="{{ request()->fullUrlWithQuery(['page'=>min($paging['pages'],$paging['page']+1)]) }}" @if(!$paging['hasNext']) aria-disabled="true" tabindex="-1" @endif class="rounded-lg border border-slate-200 px-3 py-1.5 {{ !$paging['hasNext']?'pointer-events-none opacity-40':'hover:bg-slate-50' }}">Next</a></div></nav>@endif
+      @else<div class="px-5 py-14 text-center"><span class="material-symbols-outlined text-3xl text-slate-400" aria-hidden="true">person_search</span><h3 class="mt-2 font-semibold text-slate-800">No customers found</h3><p class="mt-1 text-sm text-slate-500">Try another name, email, or account status.</p></div>@endif
+    </section>
+  @endif
+</main></div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const loading = document.getElementById('customers-loading');
+  const showLoading = () => { if (loading) loading.hidden = false; };
+  document.getElementById('customer-filters')?.addEventListener('submit', showLoading);
+  document.querySelectorAll('nav[aria-label="Customer pages"] a').forEach(link => link.addEventListener('click', event => {
+    if (link.getAttribute('aria-disabled') !== 'true') showLoading();
+  }));
+  document.querySelectorAll('[data-customer-status-form]').forEach(form => form.addEventListener('submit', event => {
+    const active = form.dataset.currentActive === 'true';
+    const message = active ? 'Deactivate this customer account? Active refresh tokens will be revoked.' : 'Reactivate this customer account?';
+    if (!window.confirm(message)) event.preventDefault();
+  }));
+});
+</script>
+</body></html>

@@ -16,7 +16,10 @@
 @endif
 
 @php($pageableSources = ['notifications', 'staff', 'roles', 'logs', 'events', 'tickets', 'complaints', 'promotions', 'coupons', 'campaigns', 'banners', 'products', 'stock', 'orders', 'orderTransactions', 'customers', 'categories', 'payments', 'transactions', 'shipments', 'reviews', 'reports', 'recentOrders', 'topProducts', 'lowStock', 'pendingTasks'])
-@if(in_array(($apiPage ?? ''), ['products', 'categories', 'inventory', 'customers', 'orders', 'payments'], true))
+@if(($apiPage ?? '') === 'dashboard')
+    <style>#admin-live-api-results { display: none !important; }</style>
+@endif
+@if(in_array(($apiPage ?? ''), ['products', 'categories', 'inventory', 'customers', 'orders', 'payments', 'reports', 'staff', 'roles', 'settings', 'system-health', 'audit-logs', 'support-tickets', 'support-ticket-detail', 'support-complaints', 'reported-reviews', 'coupons', 'campaigns', 'banners', 'finance-reports', 'finance-refunds', 'finance-failed', 'delivery-failed', 'delivery-assignments'], true))
     <style>#admin-live-api-results { display: none !important; }</style>
 @endif<div id="admin-live-api-results">
 @foreach(($apiRecords ?? []) as $source => $records)

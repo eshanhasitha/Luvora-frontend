@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 
 class LuvoraAdminApiClient
@@ -27,6 +28,24 @@ class LuvoraAdminApiClient
             'DELETE' => $request->delete($url, $data),
             default => throw new \InvalidArgumentException('Unsupported HTTP method.'),
         };
+    }
+
+    public function upload(string $endpoint, string $token, UploadedFile $file): Response
+    {
+        $stream = fopen($file->getRealPath(), 'rb');
+
+        try {
+            return Http::withToken($token)
+                ->acceptJson()
+                ->attach('file', $stream, $file->getClientOriginalName(), [
+                    'Content-Type' => $file->getMimeType() ?: 'application/octet-stream',
+                ])
+                ->post($this->baseUrl.$endpoint);
+        } finally {
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
+        }
     }
 
     public function login(array $data): Response

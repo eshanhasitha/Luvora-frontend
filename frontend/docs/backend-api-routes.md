@@ -96,7 +96,7 @@ The admin app calls the API server-side through its Laravel session and sends `A
 | Auth/profile | `GET/PATCH /api/admin/auth/me` | Profile is fetched and profile name/email update is wired. Password change endpoint exists but the profile form is not connected to it. Admin login uses `/api/admin/auth/login`; confirm that remains the supported login contract. |
 | Customers | `GET /api/admin/customers[/{customerId}]` | List and optional `?customerId=` detail reads wired. Status update not yet wired pending DTO. |
 | Staff | `GET /api/admin/staff[/{staffId}]`, `GET /api/admin/staff/{staffId}/roles` | List/detail/roles reads wired. Create, status and role writes are pending DTOs. |
-| Products | `GET /api/admin/products[/{productId}]` | List and optional detail reads wired. Create/status writes are pending DTOs. |
+| Products | `GET /api/admin/products[/{productId}]`, `POST /api/admin/products`, `POST /api/admin/products/images` | List/detail and create are wired to ProductService. Create sends `Name`, `CategoryId`, `Description`, `Price`, optional `DiscountPrice`/`Brand`, `SKU`, `Sizes[]`, `Colors[]`, and `ImageUrls[]`; images upload using multipart field `file`. Sizes/colors are product-level option lists, not variant SKUs or per-variant inventory. Status and other writes remain pending frontend integration. |
 | Categories | `GET /api/admin/categories[/{categoryId}]` | List/detail reads wired. Create/update/status/delete writes are pending DTOs. |
 | Orders | `GET /api/admin/orders[/{orderId}]` | List/detail reads wired. Status update is pending DTO. |
 | Inventory | `GET /api/admin/inventory/stock[/{productId}]` | Stock list/detail reads wired. `summary`, `low-stock`, and `out-of-stock` are not in the supplied API list and are no longer requested. Stock update is pending DTO. |
@@ -107,12 +107,14 @@ The admin app calls the API server-side through its Laravel session and sends `A
 | Promotions/coupons/campaigns/banners | Listed GET endpoints | Collection and optional detail reads wired. Create/update/status/delete/image/reorder writes are pending DTOs; banner image needs multipart field details. |
 | Support | `/api/admin/support/...` | Ticket/complaint list reads use `/tickets` and `/complaints`; optional detail reads use `/{ticketId}` and `/{complaintId}`. Exact subpaths and methods for messages, assignment, create/update/status were not specified and need confirmation. |
 | Reports | `GET /api/admin/reports`, `GET /{reportType}` | List and optional `?reportType=` reads wired. Export create/poll is pending its request DTO and job response fields. |
-| Dashboard | Summary, sales/orders charts, recent orders, top products, low stock, pending tasks, revenue summary | All eight reads use the supplied paths. Upstream 401/503 responses remain backend/auth/service availability errors and are shown as affected sections. |
+| Dashboard | `GET /api/admin/dashboard/summary`, `/sales-chart`, `/orders-chart`, `/recent-orders`, `/top-products`, `/revenue-summary` | These six reads use supplied paths. The earlier `/dashboard/low-stock` and `/dashboard/pending-tasks` paths are not in the supplied API inventory and are not called. Stock and orders lists are sourced from their documented admin endpoints; low-stock alerts can only be derived when stock rows include quantity and reorder threshold fields. Summary/chart response DTOs are not documented, so metrics/status breakdowns are displayed only when the response supplies recognized fields. |
 | Settings | `/api/admin/settings/...` | Existing section GET remains; exact list/update endpoints and DTOs are needed to wire saves. |
 | Audit/system | `/api/admin/audit-logs/...`, `/api/admin/system/...` | Audit list/security events read paths exist; exact audit detail and system service-status endpoint paths need confirmation. |
 
 ### Admin API contracts still needed
 
+- Dashboard summary and chart DTOs: revenue, order/customer totals, average order value, pending order count, conversion rate (including its denominator/window), order-status breakdown, point labels and values, currency/time zone, and supported date query parameter names. Current UI sends `startDate`/`endDate` to supplied dashboard reads; confirm those names upstream.
+- If dashboard-level low-stock alerts or pending tasks are required, add and document those API routes. The current dashboard derives low stock from the documented inventory list only when reorder thresholds are present; pending orders are derived from the documented orders list only when status values are present.
 - Request/response DTOs for all write operations, especially required fields, enum values, validation errors, and response envelopes.
 - Exact support ticket and complaint route paths/methods for detail, create/update/status, assign, and ticket messages.
 - Admin login and refresh route/response contract, including token lifetime and refresh behavior.

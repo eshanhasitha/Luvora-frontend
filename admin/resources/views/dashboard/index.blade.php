@@ -1,913 +1,217 @@
-<!DOCTYPE html>
-
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      "colors": {
-        "surface-bright": "#f7f9fb",
-        "surface-variant": "#e0e3e5",
-        "tertiary-fixed": "#6ffbbe",
-        "primary-fixed-dim": "#a8c8ff",
-        "on-background": "#191c1e",
-        "surface-container": "#eceef0",
-        "inverse-on-surface": "#eff1f3",
-        "on-tertiary-container": "#f5fff6",
-        "secondary-fixed": "#dae2fd",
-        "inverse-primary": "#a8c8ff",
-        "on-tertiary-fixed-variant": "#005236",
-        "inverse-surface": "#2d3133",
-        "on-primary-fixed-variant": "#004689",
-        "on-secondary-fixed": "#131b2e",
-        "surface": "#f7f9fb",
-        "on-tertiary-fixed": "#002113",
-        "outline": "#717785",
-        "surface-container-low": "#f2f4f6",
-        "surface-container-highest": "#e0e3e5",
-        "primary-container": "#0074db",
-        "surface-container-high": "#e6e8ea",
-        "primary": "#005baf",
-        "surface-tint": "#005eb3",
-        "surface-dim": "#d8dadc",
-        "outline-variant": "#c0c6d6",
-        "tertiary-container": "#00855b",
-        "on-error-container": "#93000a",
-        "on-secondary-fixed-variant": "#3f465c",
-        "tertiary": "#006947",
-        "on-tertiary": "#ffffff",
-        "background": "#f7f9fb",
-        "secondary": "#565e74",
-        "on-error": "#ffffff",
-        "primary-fixed": "#d5e3ff",
-        "on-secondary-container": "#5c647a",
-        "tertiary-fixed-dim": "#4edea3",
-        "on-surface": "#191c1e",
-        "surface-container-lowest": "#ffffff",
-        "on-surface-variant": "#404754",
-        "error": "#ba1a1a",
-        "on-primary": "#ffffff",
-        "on-primary-fixed": "#001b3c",
-        "on-primary-container": "#fefcff",
-        "error-container": "#ffdad6",
-        "secondary-container": "#dae2fd",
-        "on-secondary": "#ffffff",
-        "secondary-fixed-dim": "#bec6e0"
-      },
-      "borderRadius": {
-        "DEFAULT": "0.25rem",
-        "lg": "0.5rem",
-        "xl": "0.75rem",
-        "full": "9999px"
-      },
-      "spacing": {
-        "gutter-sm": "1rem",
-        "margin": "1.5rem",
-        "gutter-lg": "2rem",
-        "space-lg": "1.5rem",
-        "space-xs": "0.25rem",
-        "margin-lg": "4rem",
-        "space-sm": "0.5rem",
-        "margin-sm": "1rem",
-        "gutter": "1.5rem",
-        "space-md": "1rem",
-        "space-xl": "2.5rem"
-      },
-      "fontFamily": {
-        "headline-lg": [
-          "Bodoni Moda"
-        ],
-        "label-sm": [
-          "Inter"
-        ],
-        "body-lg": [
-          "Plus Jakarta Sans"
-        ],
-        "label-md": [
-          "Inter"
-        ],
-        "body-md": [
-          "Plus Jakarta Sans"
-        ],
-        "headline-lg-mobile": [
-          "Bodoni Moda"
-        ],
-        "display-hero": [
-          "Bodoni Moda"
-        ],
-        "headline-md": [
-          "Bodoni Moda"
-        ],
-        "headline-sm": [
-          "Plus Jakarta Sans"
-        ],
-        "label-lg": [
-          "Inter"
-        ],
-        "display-hero-mobile": [
-          "Bodoni Moda"
-        ],
-        "body-sm": [
-          "Plus Jakarta Sans"
-        ]
-      },
-      "fontSize": {
-        "headline-lg": [
-          "40px",
-          {
-            "lineHeight": "48px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "500"
-          }
-        ],
-        "label-sm": [
-          "11px",
-          {
-            "lineHeight": "14px",
-            "letterSpacing": "0.06em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-lg": [
-          "18px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "400"
-          }
-        ],
-        "label-md": [
-          "12px",
-          {
-            "lineHeight": "16px",
-            "letterSpacing": "0.04em",
-            "fontWeight": "500"
-          }
-        ],
-        "body-md": [
-          "15px",
-          {
-            "lineHeight": "22px",
-            "fontWeight": "400"
-          }
-        ],
-        "headline-lg-mobile": [
-          "30px",
-          {
-            "lineHeight": "36px",
-            "letterSpacing": "0em",
-            "fontWeight": "500"
-          }
-        ],
-        "display-hero": [
-          "56px",
-          {
-            "lineHeight": "64px",
-            "letterSpacing": "-0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "headline-md": [
-          "28px",
-          {
-            "lineHeight": "34px",
-            "fontWeight": "500"
-          }
-        ],
-        "headline-sm": [
-          "20px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "600"
-          }
-        ],
-        "label-lg": [
-          "14px",
-          {
-            "lineHeight": "20px",
-            "letterSpacing": "0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "display-hero-mobile": [
-          "38px",
-          {
-            "lineHeight": "44px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-sm": [
-          "13px",
-          {
-            "lineHeight": "18px",
-            "fontWeight": "400"
-          }
-        ]
-      }
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Overview | Luvora Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: {
+                colors: { ink: '#202321', muted: '#707873', line: '#e8ebe8', canvas: '#f7f8f6', accent: '#365c4a', soft: '#edf3ee' },
+                fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'], serif: ['Bodoni Moda', 'Georgia', 'serif'] },
+                boxShadow: { card: '0 8px 28px rgba(25,35,29,.045)' }
+            }}
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600&family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+    <style>
+        [x-cloak]{display:none!important}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 20}
+        body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+        :focus-visible{outline:3px solid rgba(54,92,74,.45);outline-offset:2px}
+        @keyframes shimmer{100%{transform:translateX(100%)}}
+        .skeleton{position:relative;overflow:hidden;background:#edf0ed}.skeleton:after{position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);content:'';animation:shimmer 1.6s infinite}
+        .chart-grid{stroke:#e8ebe8;stroke-dasharray:3 5}.chart-label{fill:#8b928d;font:11px Inter,sans-serif}
+    </style>
+</head>
+<body class="min-h-screen bg-canvas text-ink">
+@php
+    $summaryPayload = $apiData['summary'] ?? [];
+    $summaryRows = $apiRecords['summary'] ?? [];
+    $summary = is_array($summaryPayload) && ! array_is_list($summaryPayload) ? $summaryPayload : [];
+    if ($summary === [] && isset($summaryRows[0]) && is_array($summaryRows[0])) $summary = $summaryRows[0];
+    if (count($summary) === 1 && is_array($summary[0] ?? null)) $summary = $summary[0];
+    if ($summary === [] && is_array(data_get($summaryPayload, 'data'))) {
+        $nestedSummary = data_get($summaryPayload, 'data');
+        $summary = array_is_list($nestedSummary) ? (is_array($nestedSummary[0] ?? null) ? $nestedSummary[0] : []) : $nestedSummary;
     }
-  }
-}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head><body class="bg-surface text-on-surface">@include('partials.sidebar')<div class="md:pl-64"><header class="fixed top-0 left-0 right-0 md:left-64 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-lg flex items-center justify-between"><button type="button" class="mr-3 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm md:hidden" aria-label="Toggle admin navigation" aria-controls="admin-sidebar" aria-expanded="false" onclick="const nav=document.getElementById('admin-sidebar');const open=nav.classList.toggle('-translate-x-full');this.setAttribute('aria-expanded',String(!open))"><span class="material-symbols-outlined">menu</span></button><div class="flex min-w-0 items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-2 rounded-full"><span class="material-symbols-outlined text-base text-primary">storefront</span><span class="font-label-sm text-label-sm text-on-surface font-semibold">Colombo 07 Flagship</span><span class="material-symbols-outlined text-sm text-outline">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span><input class="w-full bg-surface-container-lowest pl-10 pr-4 py-2 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]" placeholder="Search SKUs, high jewelry orders, sovereign patrons..." type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-tertiary-fixed/30 px-space-sm py-1.5 rounded-full"><span class="h-2 w-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant font-medium">CBSL Escrow Synchronized</span></div><button class="relative p-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-error"></span></button><div class="flex items-center gap-space-sm pl-space-xs"><a href="{{ route('admin.profile') }}" aria-label="Open admin profile" title="Admin profile">@include('partials.profile-avatar', ['avatarSize' => 'h-8 w-8'])</a><div class="hidden xl:flex flex-col text-right"><span class="font-label-md text-label-md text-on-surface font-medium">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span><span class="font-label-sm text-label-sm text-secondary">{{ data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Administrator' }}</span></div></div></div></header><main class="w-full pt-20 px-gutter-lg bg-surface min-h-screen">@include('partials.api-state')<div class="flex flex-col w-full">
-<!-- Top Operational Context & Actions -->
-<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md pt-4 pb-space-lg">
-<div class="flex flex-col max-w-3xl">
-<div class="flex items-center gap-2 mb-2">
-<span class="inline-block w-2 h-2 rounded-full bg-primary-container"></span>
-<span class="font-label-sm text-label-sm text-outline tracking-widest uppercase">
-          Executive Overview &amp; Atelier Telemetry
-        </span>
-</div>
-<h1 class="dashboard-title font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none mb-2">
-        <span class="dashboard-title-initial">E</span>xecutive Dashboard &amp; Atelier Intelligence
-      </h1>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
-        Real-time financial telemetry, artisan consignment velocity, sapphire escrow settlement, and islandwide white-glove dispatch telemetry.
-      </p>
-</div>
-<div class="flex flex-wrap items-center gap-space-sm">
-<!-- Date Range Filter -->
-<div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-2 rounded-full shadow-sm">
-<span class="material-symbols-outlined text-outline text-lg">calendar_today</span>
-<span class="font-label-md text-label-md text-on-surface font-medium">Last 30 Days</span>
-<span class="material-symbols-outlined text-outline text-sm">arrow_drop_down</span>
-</div>
-<!-- Store Selector -->
-<div class="flex items-center gap-space-xs bg-surface-container-lowest px-space-md py-2 rounded-full shadow-sm">
-<span class="material-symbols-outlined text-primary text-lg">apartment</span>
-<span class="font-label-md text-label-md text-on-surface font-medium">Colombo 07 Flagship &amp; Global E-Store</span>
-<span class="material-symbols-outlined text-outline text-sm">expand_more</span>
-</div>
-<!-- Export CTA -->
-<button class="flex items-center gap-space-xs bg-on-surface text-surface-container-lowest px-space-md py-2 rounded-full font-label-md text-label-md font-semibold hover:bg-on-surface-variant transition-all shadow-sm">
-<span class="material-symbols-outlined text-lg">download</span>
-        Export Dossier (CSV/PDF)
-      </button>
-</div>
-</div>
-<!-- Primary Executive KPI Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md mb-space-lg">
-<!-- KPI 1: Gross Revenue -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
-<div class="flex items-start justify-between mb-space-sm">
-<div>
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Gross Revenue</span>
-<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">LKR 48,290,400</h3>
-</div>
-<div class="w-10 h-10 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-xl">payments</span>
-</div>
-</div>
-<!-- Sparkline & Delta -->
-<div class="flex items-center justify-between mt-2 pt-2 bg-surface-container-low/50 px-space-sm py-1.5 rounded-lg">
-<div class="flex items-center gap-1 text-tertiary">
-<span class="material-symbols-outlined text-base">trending_up</span>
-<span class="font-label-md text-label-md font-semibold">+18.4%</span>
-<span class="font-label-sm text-label-sm text-outline ml-1">(+LKR 7.5M)</span>
-</div>
-<svg class="w-20 h-6 text-primary overflow-visible" fill="none" viewbox="0 0 80 24">
-<path d="M0 18 L15 14 L30 19 L45 8 L60 11 L75 3 L80 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-</svg>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 truncate">
-        Includes LKR 14.2M unheated Ceylon Sapphire escrow
-      </p>
-</div>
-<!-- KPI 2: Total Orders -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
-<div class="flex items-start justify-between mb-space-sm">
-<div>
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Total Orders</span>
-<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">— Orders</h3>
-</div>
-<div class="w-10 h-10 rounded-full bg-secondary-fixed/50 flex items-center justify-center text-on-secondary-fixed">
-<span class="material-symbols-outlined text-xl">shopping_bag</span>
-</div>
-</div>
-<div class="flex items-center justify-between mt-2 pt-2 bg-surface-container-low/50 px-space-sm py-1.5 rounded-lg">
-<div class="flex items-center gap-1 text-tertiary">
-<span class="material-symbols-outlined text-base">trending_up</span>
-<span class="font-label-md text-label-md font-semibold">+12.6%</span>
-<span class="font-label-sm text-label-sm text-outline ml-1">MoM</span>
-</div>
-<span class="font-label-sm text-label-sm text-outline">AOV: LKR 33,816</span>
-</div>
-<div class="flex items-center gap-1.5 mt-2">
-<span class="w-2 h-2 rounded-full bg-tertiary"></span>
-<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
-          98.4% On-time white-glove delivery
-        </p>
-</div>
-</div>
-<!-- KPI 3: Active Patrons -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
-<div class="flex items-start justify-between mb-space-sm">
-<div>
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Active Patrons</span>
-<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">— Patrons</h3>
-</div>
-<div class="w-10 h-10 rounded-full bg-tertiary-fixed/40 flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined text-xl">shield_person</span>
-</div>
-</div>
-<div class="flex items-center justify-between mt-2 pt-2 bg-surface-container-low/50 px-space-sm py-1.5 rounded-lg">
-<div class="flex items-center gap-1 text-primary">
-<span class="material-symbols-outlined text-base">group_add</span>
-<span class="font-label-md text-label-md font-semibold">+314</span>
-<span class="font-label-sm text-label-sm text-outline ml-1">this month</span>
-</div>
-<span class="font-label-sm text-label-sm text-tertiary font-medium">642 Sovereign Circle</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 truncate">
-        76.8% Repeat patronage &amp; fitting rate
-      </p>
-</div>
-<!-- KPI 4: Catalog & Active Products -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all">
-<div class="flex items-start justify-between mb-space-sm">
-<div>
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-medium">Curations &amp; Ateliers</span>
-<h3 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mt-1">— Curations</h3>
-</div>
-<div class="w-10 h-10 rounded-full bg-primary-fixed/40 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-xl">dry_cleaning</span>
-</div>
-</div>
-<div class="flex items-center justify-between mt-2 pt-2 bg-surface-container-low/50 px-space-sm py-1.5 rounded-lg">
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm text-outline">34 Handlooms</span>
-<span class="text-outline/40">•</span>
-<span class="font-label-sm text-label-sm text-outline">112 Gems</span>
-</div>
-<span class="font-label-sm text-label-sm text-tertiary font-semibold">94.2% In-Stock</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 truncate">
-        340 RTW Couture items in circulation
-      </p>
-</div>
-</div>
-<!-- Main Telemetry Grid: Chart & Highlights -->
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md mb-space-lg">
-<!-- Revenue Telemetry Interactive Chart -->
-<div class="lg:col-span-8 bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
-<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-md">
-<div>
-<div class="flex items-center gap-2">
-<h2 class="font-headline-md text-headline-md text-on-surface">Revenue Trends &amp; Escrow Intake</h2>
-<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm">Audited</span>
-</div>
-<p class="font-body-sm text-body-sm text-outline">Weekly sales performance across Luvora categories</p>
-</div>
-<!-- Metric Tabs -->
-<div class="flex items-center bg-surface-container p-1 rounded-full text-label-sm font-label-sm">
-<button class="px-3 py-1 bg-surface-container-lowest text-on-surface font-semibold rounded-full shadow-sm">
-            Revenue (LKR)
-          </button>
-<button class="px-3 py-1 text-outline hover:text-on-surface transition-colors">
-            Order Volume
-          </button>
-<button class="px-3 py-1 text-outline hover:text-on-surface transition-colors">
-            Artisan Escrow
-          </button>
-</div>
-</div>
-<!-- Interactive SVG Multi-Bar & Area Visual -->
-<div class="relative w-full h-72 flex flex-col justify-end pt-6">
-<!-- SVG Grid & Bars -->
-<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 700 240">
-<defs>
-<lineargradient id="sapphireGrad" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#0074db" stop-opacity="0.25"></stop>
-<stop offset="100%" stop-color="#0074db" stop-opacity="0.0"></stop>
-</lineargradient>
-<lineargradient id="barGlow" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#005baf"></stop>
-<stop offset="100%" stop-color="#0074db"></stop>
-</lineargradient>
-</defs>
-<!-- Horizontal Reference Lines -->
-<line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="30" y2="30"></line>
-<line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="80" y2="80"></line>
-<line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="130" y2="130"></line>
-<line stroke="#eceef0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="700" y1="180" y2="180"></line>
-<line stroke="#c0c6d6" stroke-width="1" x1="0" x2="700" y1="220" y2="220"></line>
-<!-- Background Area Fill for Sapphire Escrow Volume -->
-<path d="M 50 170 Q 180 130 280 90 T 500 60 T 650 40 L 650 220 L 50 220 Z" fill="url(#sapphireGrad)"></path>
-<path d="M 50 170 Q 180 130 280 90 T 500 60 T 650 40" fill="none" stroke="#0074db" stroke-linecap="round" stroke-width="2.5"></path>
-<!-- Week 1 Group -->
-<rect fill="#005baf" height="110" rx="4" width="22" x="70" y="110"></rect>
-<rect fill="#6ffbbe" height="80" opacity="0.85" rx="4" width="22" x="96" y="140"></rect>
-<rect fill="#dae2fd" height="60" rx="4" width="22" x="122" y="160"></rect>
-<!-- Week 2 Group -->
-<rect fill="#005baf" height="135" rx="4" width="22" x="220" y="85"></rect>
-<rect fill="#6ffbbe" height="95" opacity="0.85" rx="4" width="22" x="246" y="125"></rect>
-<rect fill="#dae2fd" height="70" rx="4" width="22" x="272" y="150"></rect>
-<!-- Week 3 Group -->
-<rect fill="#005baf" height="160" rx="4" width="22" x="370" y="60"></rect>
-<rect fill="#6ffbbe" height="115" opacity="0.85" rx="4" width="22" x="396" y="105"></rect>
-<rect fill="#dae2fd" height="85" rx="4" width="22" x="422" y="135"></rect>
-<!-- Week 4 Group (Peak) -->
-<rect fill="url(#barGlow)" height="180" rx="4" width="22" x="520" y="40"></rect>
-<rect fill="#6ffbbe" height="140" opacity="0.85" rx="4" width="22" x="546" y="80"></rect>
-<rect fill="#dae2fd" height="105" rx="4" width="22" x="572" y="115"></rect>
-<!-- Active Marker Dot on Peak -->
-<circle cx="650" cy="40" fill="#005baf" r="5" stroke="#ffffff" stroke-width="2"></circle>
-</svg>
-<!-- X-Axis Labels -->
-<div class="flex justify-between px-10 pt-3 text-label-sm font-label-sm text-outline">
-<div class="text-center">Week 1 (Oct 1-7)<br/><span class="text-on-surface font-semibold">LKR 9.8M</span></div>
-<div class="text-center">Week 2 (Oct 8-14)<br/><span class="text-on-surface font-semibold">LKR 11.2M</span></div>
-<div class="text-center">Week 3 (Oct 15-21)<br/><span class="text-on-surface font-semibold">LKR 12.6M</span></div>
-<div class="text-center">Week 4 (Oct 22-31)<br/><span class="text-primary font-semibold">LKR 14.6M</span></div>
-</div>
-</div>
-<!-- Legend -->
-<div class="flex flex-wrap items-center justify-between pt-4 mt-2 bg-surface-container-low/40 px-space-md py-2 rounded-lg">
-<div class="flex items-center gap-space-md">
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 rounded-full bg-primary"></span>
-<span class="font-label-sm text-label-sm text-on-surface">Ceylon Sapphires &amp; Gems</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 rounded-full bg-tertiary-fixed"></span>
-<span class="font-label-sm text-label-sm text-on-surface">Dumbara Handlooms &amp; Sarees</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="w-3 h-3 rounded-full bg-secondary-fixed"></span>
-<span class="font-label-sm text-label-sm text-on-surface">Bespoke Ceylon Tailoring</span>
-</div>
-</div>
-<span class="font-label-sm text-label-sm text-outline">Telemetry latency: &lt;140ms</span>
-</div>
-</div>
-<!-- Highlight Stats & Atelier Operations -->
-<div class="lg:col-span-4 flex flex-col gap-space-md">
-<!-- Highlight 1: Top Grossing Category -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
-<div class="flex items-center justify-between mb-2">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-medium">Top Grossing Segment</span>
-<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">44.3% Share</span>
-</div>
-<h4 class="font-headline-sm text-headline-sm text-on-surface">Ceylon Sapphires &amp; High Jewelry</h4>
-<p class="font-display-hero-mobile text-display-hero-mobile text-primary font-bold mt-1 mb-2">LKR 21.4M</p>
-<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
-<div class="bg-primary h-1.5 rounded-full" style="width: 44.3%"></div>
-</div>
-<div class="flex items-center justify-between text-label-sm font-label-sm text-outline mt-2">
-<span>Avg. Gem Ticket: LKR 191,000</span>
-<span>NGJA Audited</span>
-</div>
-</div>
-<!-- Highlights Grid 2x2 in Side Panel -->
-<div class="grid grid-cols-2 gap-space-sm flex-1">
-<!-- Average Basket -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-center">
-<span class="material-symbols-outlined text-primary text-2xl mb-1">shopping_basket</span>
-<span class="font-label-sm text-label-sm text-outline">Average Basket</span>
-<p class="font-headline-sm text-headline-sm text-on-surface font-semibold mt-1">LKR 124,500</p>
-<span class="font-label-sm text-label-sm text-tertiary mt-1">+8.2% vs target</span>
-</div>
-<!-- Doorstep Fittings -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-center">
-<span class="material-symbols-outlined text-secondary text-2xl mb-1">local_taxi</span>
-<span class="font-label-sm text-label-sm text-outline">Chauffeur Fittings</span>
-<p class="font-headline-sm text-headline-sm text-on-surface font-semibold mt-1">184 Rides</p>
-<span class="font-label-sm text-label-sm text-primary mt-1">100% VIP conversion</span>
-</div>
-<!-- Escrow Velocity -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-center col-span-2">
-<div class="flex items-center justify-between">
-<div>
-<span class="font-label-sm text-label-sm text-outline">Escrow Settlement Velocity</span>
-<p class="font-headline-sm text-headline-sm text-on-surface font-semibold mt-1">99.1% Released &lt; 24h</p>
-</div>
-<div class="w-12 h-12 rounded-full bg-tertiary-fixed/30 flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined text-2xl">verified_user</span>
-</div>
-</div>
-<p class="font-body-sm text-body-sm text-outline mt-2">
-            CBSL multi-signature escrow triggers automatic payout to Ratnapura &amp; Dumbara artisan co-operatives immediately upon gemologist sign-off.
-          </p>
-</div>
-</div>
-</div>
-</div>
-<!-- Critical Operational Feed & Real-time Inventory Alerts -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm mb-space-lg">
-<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-md">
-<div class="flex items-center gap-space-sm">
-<div class="w-3 h-3 rounded-full bg-error animate-ping"></div>
-<div>
-<h3 class="font-headline-md text-headline-md text-on-surface">Urgent Stock Telemetry &amp; Artisan Requisitions</h3>
-<p class="font-body-sm text-body-sm text-outline">4 priority conditions requiring atelier or vault director intervention</p>
-</div>
-</div>
-<button class="flex items-center gap-1 font-label-md text-label-md text-primary font-semibold hover:underline">
-        View All 18 Alerts <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-<!-- Operational and pending order alert cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-space-sm">
-<!-- Alert 1 -->
-<div class="bg-surface-container-low/60 p-space-md rounded-lg flex flex-col justify-between hover:bg-surface-container-low transition-colors">
-<div class="flex items-start justify-between mb-2">
-<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold uppercase">
-            Critical Low Stock
-          </span>
-<span class="material-symbols-outlined text-error text-xl">inventory_2</span>
-</div>
-<div>
-<h4 class="font-label-lg text-label-lg text-on-surface font-semibold">Handloom Emerald Raw Silk Saree</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Dumbara Valley Guild — Only 2 pieces remaining in Colombo 07 vault.</p>
-</div>
-<button class="mt-4 w-full py-1.5 px-3 rounded-full bg-on-surface text-surface-container-lowest font-label-sm text-label-sm font-semibold hover:bg-on-surface-variant transition-all">
-          Reorder from Master Somapala
-        </button>
-</div>
-<!-- Alert 2 -->
-<div class="bg-surface-container-low/60 p-space-md rounded-lg flex flex-col justify-between hover:bg-surface-container-low transition-colors">
-<div class="flex items-start justify-between mb-2">
-<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold uppercase">
-            Gem Clearance
-          </span>
-<span class="material-symbols-outlined text-primary text-xl">diamond</span>
-</div>
-<div>
-<h4 class="font-label-lg text-label-lg text-on-surface font-semibold">Ratnapura Royal Blue Sapphire (4.2ct)</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Pending NGJA Assaying Certificate verification node #RAT-5012.</p>
-</div>
-<button class="mt-4 w-full py-1.5 px-3 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold hover:bg-primary-container transition-all">
-          Review Vault Deed
-        </button>
-</div>
-<!-- Alert 3 -->
-<div class="bg-surface-container-low/60 p-space-md rounded-lg flex flex-col justify-between hover:bg-surface-container-low transition-colors">
-<div class="flex items-start justify-between mb-2">
-<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold uppercase">
-            Material Requisition
-          </span>
-<span class="material-symbols-outlined text-secondary text-xl">colorize</span>
-</div>
-<div>
-<h4 class="font-label-lg text-label-lg text-on-surface font-semibold">Natural Jackwood Botanical Dye</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Kandy Highlands Guild — 4 days supply remaining at pit-loom workshop.</p>
-</div>
-<button class="mt-4 w-full py-1.5 px-3 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm font-semibold hover:bg-surface-variant transition-all">
-          Dispatch Replenishment
-        </button>
-</div>
-<!-- Alert 4 -->
-<div class="bg-surface-container-low/60 p-space-md rounded-lg flex flex-col justify-between hover:bg-surface-container-low transition-colors">
-<div class="flex items-start justify-between mb-2">
-<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed/60 text-on-tertiary-fixed font-label-sm text-label-sm font-semibold uppercase">
-            Pre-Order Ceiling
-          </span>
-<span class="material-symbols-outlined text-tertiary text-xl">lock_clock</span>
-</div>
-<div>
-<h4 class="font-label-lg text-label-lg text-on-surface font-semibold">Jaffna Palmyrah Minaudière</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">48 VIP backorders waiting. Capacity limit at Northern weaver circle.</p>
-</div>
-<button class="mt-4 w-full py-1.5 px-3 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm font-semibold hover:bg-tertiary-container transition-all">
-          Expand Allocation
-        </button>
-</div><!-- Pending orders alert -->
-<div class="bg-surface-container-low/60 p-space-md rounded-lg flex flex-col justify-between hover:bg-surface-container-low transition-colors">
-<div class="flex items-start justify-between mb-2">
-<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold uppercase">Pending Orders</span>
-<span class="material-symbols-outlined text-error text-xl">pending_actions</span>
-</div>
-<div>
-<h4 class="font-label-lg text-label-lg text-on-surface font-semibold">12 orders awaiting fulfillment</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Review payment and dispatch status for orders that need attention.</p>
-</div>
-<a href="#recent-orders" class="mt-4 w-full py-1.5 px-3 rounded-full bg-on-surface text-surface-container-lowest font-label-sm text-label-sm font-semibold text-center hover:bg-on-surface-variant transition-all">Review Orders</a>
-</div>
-</div>
-</div>
-<!-- Recent Orders Master Table -->
-<div id="recent-orders" class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm mb-space-lg overflow-hidden">
-<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-md">
-<div>
-<h3 class="font-headline-md text-headline-md text-on-surface">Recent Curations &amp; Live Dispatches</h3>
-<p class="font-body-sm text-body-sm text-outline">White-glove escort tracking, jeweler escrow, and bespoke fittings</p>
-</div>
-<div class="flex items-center gap-space-sm">
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-base">search</span>
-<input class="bg-surface-container-low pl-9 pr-3 py-1.5 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="Filter orders..." type="text"/>
-</div>
-<button class="p-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors">
-<span class="material-symbols-outlined text-lg">tune</span>
-</button>
-</div>
-</div>
-<!-- Data Table Container -->
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead>
-<tr class="bg-surface-container-low/40">
-<th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Order ID &amp; Date</th>
-<th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Patron / VIP Status</th>
-<th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Curated Items</th>
-<th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Escrow / Amount</th>
-<th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Fulfillment Channel</th>
-<th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider">Telemetry Status</th>
-<th class="py-3 px-4 font-label-sm text-label-sm text-outline uppercase tracking-wider text-right">Actions</th>
-</tr>
-</thead>
-<tbody id="dashboard-orders-body" class="font-body-sm text-body-sm">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low/30 transition-colors">
-<td class="py-4 px-4">
-<span class="font-label-md text-label-md font-semibold text-on-surface">#LV-89241-COL</span>
-<p class="text-outline text-xs mt-0.5">Today, 14:28 PM</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-full bg-secondary-container flex items-center justify-center font-label-sm text-label-sm font-semibold text-on-secondary-container">AS</span>
-<div>
-<span class="font-label-md text-label-md font-semibold text-on-surface">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span>
-<div class="flex items-center gap-1 mt-0.5">
-<span class="material-symbols-outlined text-xs text-primary">workspace_premium</span>
-<span class="font-label-sm text-label-sm text-primary font-medium">Sovereign Circle</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-4">
-<span class="text-on-surface font-medium">Handloom Emerald Saree + Raw Silk Blouse</span>
-<p class="text-outline text-xs">2 pieces • Dumbara Atelier</p>
-</td>
-<td class="py-4 px-4">
-<span class="font-headline-sm text-headline-sm font-bold text-on-surface">LKR 50,220</span>
-<p class="text-tertiary text-xs">CBSL 256-Bit Escrow</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-1.5 text-on-surface">
-<span class="material-symbols-outlined text-base text-primary">directions_car</span>
-<span>Mercedes EQV Chauffeur #09</span>
-</div>
-<p class="text-outline text-xs">Colombo 07 Signature Route</p>
-</td>
-<td class="py-4 px-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
-                En Route (Arriving in 12m)
-              </span>
-</td>
-<td class="py-4 px-4 text-right">
-<div class="inline-flex items-center gap-1">
-<button class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold hover:bg-primary-container hover:text-on-primary transition-all">
-                  Track Van
-                </button>
-<button class="p-1 text-outline hover:text-on-surface">
-<span class="material-symbols-outlined text-lg">visibility</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low/30 transition-colors">
-<td class="py-4 px-4">
-<span class="font-label-md text-label-md font-semibold text-on-surface">#LV-89240-KAN</span>
-<p class="text-outline text-xs mt-0.5">Today, 11:15 AM</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-full bg-primary-fixed flex items-center justify-center font-label-sm text-label-sm font-semibold text-on-primary-fixed">KJ</span>
-<div>
-<span class="font-label-md text-label-md font-semibold text-on-surface">Dr. Keshini Jayasuriya</span>
-<p class="text-outline text-xs">Kandy Heritage Patron</p>
-</div>
-</div>
-</td>
-<td class="py-4 px-4">
-<span class="text-on-surface font-medium">Unheated Royal Blue Sapphire Teardrop</span>
-<p class="text-outline text-xs">1 item • Certificate #RAT-4980</p>
-</td>
-<td class="py-4 px-4">
-<span class="font-headline-sm text-headline-sm font-bold text-on-surface">LKR 185,000</span>
-<p class="text-outline text-xs">Koko 3-Split 0% Verified</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-1.5 text-on-surface">
-<span class="material-symbols-outlined text-base text-secondary">security</span>
-<span>Armored Courier (Security Escort)</span>
-</div>
-<p class="text-outline text-xs">Direct to Vault-Kandy</p>
-</td>
-<td class="py-4 px-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">
-<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                Vault Sealed (NGJA Cleared)
-              </span>
-</td>
-<td class="py-4 px-4 text-right">
-<div class="inline-flex items-center gap-1">
-<button class="px-2.5 py-1 rounded-full bg-on-surface text-surface-container-lowest font-label-sm text-label-sm font-semibold hover:bg-on-surface-variant transition-all">
-                  Dispatch
-                </button>
-<button class="p-1 text-outline hover:text-on-surface">
-<span class="material-symbols-outlined text-lg">contract</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low/30 transition-colors">
-<td class="py-4 px-4">
-<span class="font-label-md text-label-md font-semibold text-on-surface">#LV-89239-GAL</span>
-<p class="text-outline text-xs mt-0.5">Today, 09:40 AM</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm font-semibold text-on-surface">MS</span>
-<div>
-<span class="font-label-md text-label-md font-semibold text-on-surface">Hon. Malik Samarawickrama</span>
-<div class="flex items-center gap-1 mt-0.5">
-<span class="material-symbols-outlined text-xs text-primary">verified</span>
-<span class="font-label-sm text-label-sm text-secondary font-medium">Diplomatic List</span>
-</div>
-</div>
-</div>
-</td>
-<td class="py-4 px-4">
-<span class="text-on-surface font-medium">Bespoke Ceylon Linen Safari Jacket</span>
-<p class="text-outline text-xs">1 item • Custom Cut Measurements</p>
-</td>
-<td class="py-4 px-4">
-<span class="font-headline-sm text-headline-sm font-bold text-on-surface">LKR 42,800</span>
-<p class="text-outline text-xs">Mastercard Sovereign</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-1.5 text-on-surface">
-<span class="material-symbols-outlined text-base text-outline">straighten</span>
-<span>Bespoke Pinning Session</span>
-</div>
-<p class="text-outline text-xs">Galle Fort Master Suite</p>
-</td>
-<td class="py-4 px-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                Tailor Assigned
-              </span>
-</td>
-<td class="py-4 px-4 text-right">
-<div class="inline-flex items-center gap-1">
-<button class="px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface font-label-sm text-label-sm font-semibold hover:bg-surface-container transition-all">
-                  Spec Sheet
-                </button>
-<button class="p-1 text-outline hover:text-on-surface">
-<span class="material-symbols-outlined text-lg">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low/30 transition-colors">
-<td class="py-4 px-4">
-<span class="font-label-md text-label-md font-semibold text-on-surface">#LV-89238-CMB</span>
-<p class="text-outline text-xs mt-0.5">Yesterday, 18:22 PM</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm font-semibold text-on-surface">AD</span>
-<div>
-<span class="font-label-md text-label-md font-semibold text-on-surface">Ayesha De Silva</span>
-<p class="text-outline text-xs">Colombo Direct</p>
-</div>
-</div>
-</td>
-<td class="py-4 px-4">
-<span class="text-on-surface font-medium">Dumbara Pit-Loom Wrap Skirt &amp; Ahimsa Silk Top</span>
-<p class="text-outline text-xs">2 items • Eco-Loom Collection</p>
-</td>
-<td class="py-4 px-4">
-<span class="font-headline-sm text-headline-sm font-bold text-on-surface">LKR 28,400</span>
-<p class="text-outline text-xs">Mintpay Pay-Later</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-1.5 text-on-surface">
-<span class="material-symbols-outlined text-base text-outline">local_shipping</span>
-<span>Express Same-Day Colombo</span>
-</div>
-<p class="text-outline text-xs">Atelier Warehouse 02</p>
-</td>
-<td class="py-4 px-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold">
-<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
-                Preparing Dispatch
-              </span>
-</td>
-<td class="py-4 px-4 text-right">
-<div class="inline-flex items-center gap-1">
-<button class="px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface font-label-sm text-label-sm font-semibold hover:bg-surface-container transition-all">
-                  Print Waybill
-                </button>
-<button class="p-1 text-outline hover:text-on-surface">
-<span class="material-symbols-outlined text-lg">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 5 -->
-<tr class="hover:bg-surface-container-low/30 transition-colors">
-<td class="py-4 px-4">
-<span class="font-label-md text-label-md font-semibold text-on-surface">#LV-89237-JAF</span>
-<p class="text-outline text-xs mt-0.5">Yesterday, 15:04 PM</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-2">
-<span class="w-7 h-7 rounded-full bg-primary-fixed flex items-center justify-center font-label-sm text-label-sm font-semibold text-on-primary-fixed">TS</span>
-<div>
-<span class="font-label-md text-label-md font-semibold text-on-surface">T. Sivagurunathan</span>
-<p class="text-outline text-xs">Jaffna Peninsula Patron</p>
-</div>
-</div>
-</td>
-<td class="py-4 px-4">
-<span class="text-on-surface font-medium">Jaffna Hand-Woven Palmyrah Briefcase</span>
-<p class="text-outline text-xs">1 item • Northern Artisan Collective</p>
-</td>
-<td class="py-4 px-4">
-<span class="font-headline-sm text-headline-sm font-bold text-on-surface">LKR 36,900</span>
-<p class="text-outline text-xs">Visa International Direct</p>
-</td>
-<td class="py-4 px-4">
-<div class="flex items-center gap-1.5 text-on-surface">
-<span class="material-symbols-outlined text-base text-primary">flight_takeoff</span>
-<span>Islandwide Air Transit</span>
-</div>
-<p class="text-outline text-xs">Palali - Ratmalana Airlink</p>
-</td>
-<td class="py-4 px-4">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-                In Transit (A5 Corridor)
-              </span>
-</td>
-<td class="py-4 px-4 text-right">
-<div class="inline-flex items-center gap-1">
-<button class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold hover:bg-primary transition-all">
-                  View Airway
-                </button>
-<button class="p-1 text-outline hover:text-on-surface">
-<span class="material-symbols-outlined text-lg">more_vert</span>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Bottom Operational Telemetry & Fast Actions Bar -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm mb-space-lg flex flex-col lg:flex-row items-center justify-between gap-space-md">
-<!-- Fast Action Triggers -->
-<div class="flex flex-wrap items-center gap-space-xs w-full lg:w-auto">
-<button class="flex items-center gap-1.5 px-space-md py-2 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold hover:bg-primary-container transition-all shadow-sm">
-<span class="material-symbols-outlined text-base">add</span>
-        Add New Curation
-      </button>
-<button class="flex items-center gap-1.5 px-space-md py-2 rounded-full bg-surface-container-low text-on-surface font-label-sm text-label-sm font-medium hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined text-base text-secondary">alt_route</span>
-        Fleet Re-route
-      </button>
-<button class="flex items-center gap-1.5 px-space-md py-2 rounded-full bg-surface-container-low text-on-surface font-label-sm text-label-sm font-medium hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined text-base text-primary">sync</span>
-        Sync Gem Deeds
-      </button>
-<button class="flex items-center gap-1.5 px-space-md py-2 rounded-full bg-surface-container-low text-on-surface font-label-sm text-label-sm font-medium hover:bg-surface-container transition-all">
-<span class="material-symbols-outlined text-base text-tertiary">receipt</span>
-        Daily CBSL Reconciliation
-      </button>
-</div>
-<!-- Live System Telemetry Status -->
-<div class="flex flex-wrap items-center gap-space-md w-full lg:w-auto text-label-sm font-label-sm text-outline border-t lg:border-t-0 pt-2 lg:pt-0">
-<div class="flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-tertiary"></span>
-<span>CBSL Gateway: <strong class="text-on-surface">99.98%</strong></span>
-</div>
-<div class="flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary"></span>
-<span>Escrow Node: <strong class="text-on-surface">#812,941</strong></span>
-</div>
-<div class="flex items-center gap-1.5">
-<span class="material-symbols-outlined text-sm text-secondary">thermostat</span>
-<span>Colombo Vault: <strong class="text-on-surface">21.8°C / 45% Hum</strong></span>
-</div>
-</div>
-</div>
-</div></main></div></body></html>
+    if ($summary === [] && is_array(data_get($summaryPayload, 'summary'))) $summary = data_get($summaryPayload, 'summary');
+    $revenueRowsPayload = $apiData['revenueSummary'] ?? [];
+    $revenueSummaryRows = $apiRecords['revenueSummary'] ?? [];
+    $revenueSummary = is_array($revenueRowsPayload) && ! array_is_list($revenueRowsPayload) ? $revenueRowsPayload : [];
+    if ($revenueSummary === [] && isset($revenueSummaryRows[0]) && is_array($revenueSummaryRows[0])) $revenueSummary = $revenueSummaryRows[0];
+    if (count($revenueSummary) === 1 && is_array($revenueSummary[0] ?? null)) $revenueSummary = $revenueSummary[0];
+    $ordersPayload = $apiData['ordersChart'] ?? [];
+    $salesPayload = $apiData['salesChart'] ?? [];
+    $statusSource = data_get($ordersPayload, 'byStatus') ?? data_get($ordersPayload, 'statuses') ?? data_get($ordersPayload, 'statusBreakdown') ?? data_get($ordersPayload, 'data.byStatus') ?? data_get($ordersPayload, 'data.statuses') ?? data_get($summary, 'ordersByStatus') ?? data_get($summary, 'orderStatusBreakdown') ?? [];
+    $statusChartRows = $apiRecords['ordersChart'] ?? [];
+    if (! is_array($statusSource) && count($statusChartRows) && is_array($statusChartRows[0])) $statusSource = $statusChartRows[0];
+    if (is_array($statusSource) && count($statusSource) === 1 && is_array($statusSource[0] ?? null)) $statusSource = $statusSource[0];
+    $allOrders = $apiRecords['orders'] ?? [];
+    if (! is_array($statusSource) || $statusSource === []) {
+        $statusSource = [];
+        foreach ($allOrders as $order) {
+            $statusName = (string) (data_get($order, 'status') ?? data_get($order, 'orderStatus') ?? 'Unknown');
+            $statusSource[$statusName] = ($statusSource[$statusName] ?? 0) + 1;
+        }
+    }
+    if (! is_array($statusSource)) $statusSource = [];
+    $statusRows = [];
+    foreach ($statusSource as $status => $statusValue) {
+        $label = is_array($statusValue) ? (data_get($statusValue, 'status') ?? data_get($statusValue, 'label') ?? (is_string($status) ? $status : 'Other')) : (is_string($status) ? $status : 'Other');
+        $count = is_array($statusValue) ? (data_get($statusValue, 'count') ?? data_get($statusValue, 'total') ?? data_get($statusValue, 'value') ?? data_get($statusValue, 'Order Count') ?? 0) : $statusValue;
+        if (is_numeric($count)) $statusRows[] = ['label' => (string) $label, 'value' => (float) $count];
+    }
+    $salesChartPayload = $apiData['salesChart'] ?? [];
+    $chartDays = data_get($salesChartPayload, 'days') ?? data_get($salesChartPayload, 'data.days') ?? data_get($salesChartPayload, 'data') ?? [];
+    $summaryDays = data_get($summary, 'days') ?? data_get($summary, 'Days') ?? [];
+    $chartDays = is_array($chartDays) && $chartDays !== [] ? $chartDays : $summaryDays;
+    $revenueRows = $apiRecords['salesChart'] ?? [];
+    if (count($revenueRows) === 1 && data_get($revenueRows[0] ?? [], 'days') !== null) $revenueRows = data_get($revenueRows[0], 'days');
+    if (! count($revenueRows) && is_array($chartDays)) {
+        foreach ($chartDays as $day) {
+            if (is_array($day) && (data_get($day, 'grossOrderValue') !== null || data_get($day, 'orderCount') !== null || data_get($day, 'Gross Order Value') !== null || data_get($day, 'Order Count') !== null)) $revenueRows[] = $day;
+        }
+    }
+    $revenueRows = array_values(array_filter($revenueRows, fn ($row) => is_numeric($row) || data_get($row, 'value') !== null || data_get($row, 'revenue') !== null || data_get($row, 'sales') !== null || data_get($row, 'grossOrderValue') !== null || data_get($row, 'Gross Order Value') !== null || data_get($row, 'total') !== null));
+    $revenueValues = array_map(fn ($row) => (float) (is_numeric($row) ? $row : (data_get($row, 'value') ?? data_get($row, 'revenue') ?? data_get($row, 'sales') ?? data_get($row, 'grossOrderValue') ?? data_get($row, 'Gross Order Value') ?? data_get($row, 'total') ?? 0)), $revenueRows);
+    $revenueMax = max($revenueValues ?: [0]);
+    $revenueMax = $revenueMax > 0 ? $revenueMax : 1;
+    $orderRows = $apiRecords['recentOrders'] ?? [];
+    $topProducts = $apiRecords['topProducts'] ?? [];
+    $lowStock = array_values(array_filter(is_array($apiRecords['stock'] ?? null) ? $apiRecords['stock'] : [], function ($stockRow) {
+        $quantity = data_get($stockRow, 'availableQuantity') ?? data_get($stockRow, 'quantity') ?? data_get($stockRow, 'stock');
+        $threshold = data_get($stockRow, 'reorderLevel') ?? data_get($stockRow, 'reorderPoint') ?? data_get($stockRow, 'lowStockThreshold');
+        return is_numeric($quantity) && is_numeric($threshold) && (float) $quantity <= (float) $threshold;
+    }));
+    $revenueNumber = data_get($summary, 'grossOrderValue') ?? data_get($summary, 'Gross Order Value') ?? data_get($summary, 'grossRevenue') ?? data_get($summary, 'totalRevenue') ?? data_get($revenueSummary, 'grossOrderValue') ?? data_get($revenueSummary, 'Gross Order Value');
+    if (! is_numeric($revenueNumber) && is_array($chartDays)) $revenueNumber = array_sum(array_map(fn ($day) => (float) (data_get($day, 'grossOrderValue') ?? data_get($day, 'Gross Order Value') ?? 0), $chartDays));
+    $revenueValue = data_get($summary, 'grossOrderValueFormatted') ?? data_get($summary, 'grossRevenueFormatted') ?? data_get($summary, 'totalRevenueFormatted') ?? data_get($revenueSummary, 'grossOrderValueFormatted') ?? data_get($revenueSummary, 'revenueFormatted') ?? (is_numeric($revenueNumber) ? 'LKR '.number_format((float) $revenueNumber, 2) : null);
+    $ordersValue = data_get($summary, 'orderCount') ?? data_get($summary, 'totalOrders') ?? data_get($summary, 'ordersCount') ?? data_get($summary, 'Order Count');
+    $aovValue = data_get($summary, 'averageOrderValueFormatted') ?? data_get($summary, 'averageOrderValue') ?? data_get($summary, 'averageOrderAmount');
+    if (! is_numeric($aovValue) && is_numeric($revenueNumber) && is_numeric($ordersValue) && (float) $ordersValue > 0) $aovValue = (float) $revenueNumber / (float) $ordersValue;
+    $customersValue = data_get($summary, 'customerCount') ?? data_get($summary, 'totalCustomers') ?? data_get($summary, 'customersCount');
+    $conversionValue = data_get($summary, 'conversionRate') ?? data_get($summary, 'conversionRatePercent');
+    $pendingValue = data_get($summary, 'pendingOrders') ?? data_get($summary, 'pendingOrderCount') ?? data_get($summary, 'ordersPending');
+    $pendingValue = $pendingValue ?? data_get($ordersPayload, 'pendingOrderCount') ?? data_get($ordersPayload, 'pendingOrders');
+    if ($pendingValue === null && count($allOrders)) {
+        $statusesArePresent = count(array_filter($allOrders, fn ($order) => data_get($order, 'status') !== null || data_get($order, 'orderStatus') !== null)) === count($allOrders);
+        if ($statusesArePresent) {
+            $pendingValue = count(array_filter($allOrders, fn ($order) => in_array(strtolower((string) (data_get($order, 'status') ?? data_get($order, 'orderStatus'))), ['pending', 'awaiting payment', 'processing'], true)));
+        }
+    }
+    $startDate = request()->query('startDate', now()->subDays(29)->toDateString());
+    $endDate = request()->query('endDate', now()->toDateString());
+    $loading = request()->boolean('loading');
+@endphp
 
+@include('partials.sidebar')
+<div class="min-h-screen md:pl-64">
+    <header class="fixed inset-x-0 top-0 z-30 flex h-[76px] items-center justify-between border-b border-line bg-white/90 px-4 backdrop-blur-xl md:left-64 md:px-8">
+        <div class="flex min-w-0 items-center gap-3">
+            <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink md:hidden" aria-label="Open navigation" aria-controls="admin-sidebar" aria-expanded="false" onclick="const nav=document.getElementById('admin-sidebar');nav.classList.toggle('-translate-x-full');this.setAttribute('aria-expanded',String(!nav.classList.contains('-translate-x-full')))"><span class="material-symbols-outlined">menu</span></button>
+            <form method="GET" action="{{ route('dashboard') }}" class="hidden w-full max-w-lg items-center gap-2 rounded-xl border border-line bg-canvas px-3 py-2 sm:flex">
+                <span class="material-symbols-outlined text-muted">search</span>
+                <input type="search" name="search" value="{{ request('search') }}" aria-label="Search admin" placeholder="Search orders, products, customers" class="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-muted">
+                <input type="hidden" name="startDate" value="{{ $startDate }}"><input type="hidden" name="endDate" value="{{ $endDate }}">
+            </form>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.notifications') }}" class="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-muted" aria-label="Notifications"><span class="material-symbols-outlined">notifications</span></a>
+            <a href="{{ route('admin.profile') }}" class="flex items-center gap-3 rounded-full py-1 pl-1 pr-2 hover:bg-canvas" aria-label="Admin profile">
+                @include('partials.profile-avatar', ['avatarSize' => 'h-9 w-9'])
+                <span class="hidden text-left sm:block"><span class="block text-sm font-semibold">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin' }}</span><span class="block text-xs text-muted">{{ data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Administrator' }}</span></span>
+            </a>
+        </div>
+    </header>
+    <main class="mx-auto max-w-[1600px] px-4 pb-12 pt-24 sm:px-6 lg:px-9">
+        <nav aria-label="Breadcrumb" class="mb-5 flex items-center gap-2 text-xs text-muted"><a href="{{ route('dashboard') }}" class="hover:text-accent">Admin</a><span aria-hidden="true">/</span><span aria-current="page" class="font-semibold text-ink">Overview</span></nav>
+        @include('partials.api-state')
+        <div class="mb-7 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <div><p class="mb-2 text-[11px] font-semibold uppercase tracking-[.18em] text-accent">Luvora administration</p><h1 class="font-serif text-4xl font-medium tracking-tight text-ink sm:text-5xl">Overview</h1><p class="mt-2 max-w-xl text-sm leading-6 text-muted">A clear view of store performance, orders, and stock.</p></div>
+            <form method="GET" action="{{ route('dashboard') }}" class="flex flex-wrap items-end gap-2 rounded-2xl border border-line bg-white p-3 shadow-card" aria-label="Filter overview date range">
+                <label class="grid gap-1 text-[11px] font-semibold uppercase tracking-wide text-muted">From<input type="date" name="startDate" value="{{ $startDate }}" max="{{ $endDate }}" class="rounded-lg border border-line bg-white px-3 py-2 text-sm font-normal text-ink"></label>
+                <label class="grid gap-1 text-[11px] font-semibold uppercase tracking-wide text-muted">To<input type="date" name="endDate" value="{{ $endDate }}" min="{{ $startDate }}" max="{{ now()->toDateString() }}" class="rounded-lg border border-line bg-white px-3 py-2 text-sm font-normal text-ink"></label>
+                <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent"><span class="material-symbols-outlined text-base">filter_alt</span>Apply</button>
+            </form>
+        </div>
 
+        @php($kpis = [
+            ['Revenue', $revenueValue, 'payments', $apiErrors['summary'] ?? $apiErrors['revenueSummary'] ?? null],
+            ['Total orders', $ordersValue, 'shopping_bag', $apiErrors['summary'] ?? null],
+            ['Average order value', is_numeric($aovValue) ? 'LKR '.number_format((float) $aovValue, 2) : $aovValue, 'receipt', $apiErrors['summary'] ?? null],
+            ['Total customers', $customersValue, 'group', $apiErrors['summary'] ?? null],
+            ['Conversion rate', $conversionValue !== null ? rtrim(rtrim(number_format((float) $conversionValue, 2), '0'), '.').'%' : null, 'conversion_path', $apiErrors['summary'] ?? null],
+            ['Pending orders', $pendingValue, 'pending_actions', $apiErrors['summary'] ?? null],
+        ])
+        @if($summary !== [] && (data_get($summary, 'metric') !== null || data_get($summary, 'grossOrderValue') !== null))
+            <p class="mb-3 text-xs text-muted">Gross order value excludes cancelled orders.</p>
+        @endif
+        <section aria-label="Store performance" class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
+            @foreach($kpis as [$label, $value, $icon, $error])
+                <article class="min-h-36 rounded-2xl border border-line bg-white p-5 shadow-card">
+                    <div class="flex items-start justify-between"><p class="text-xs font-medium text-muted">{{ $label }}</p><span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-soft text-accent"><span class="material-symbols-outlined">{{ $icon }}</span></span></div>
+                    @if($loading)<div class="skeleton mt-5 h-8 w-2/3 rounded-lg" aria-label="Loading {{ $label }}"></div>@elseif($error)<p class="mt-5 text-sm font-medium text-rose-700">Couldn’t load</p>@elseif($value !== null)<p class="mt-4 truncate text-2xl font-semibold tracking-tight text-ink">{{ is_numeric($value) && ! str_contains((string) $value, 'LKR') ? number_format((float) $value) : $value }}</p>@else<p class="mt-5 text-sm text-muted">{{ $label === 'Conversion rate' ? 'Not available from the API' : 'No data returned' }}</p>@endif
+                </article>
+            @endforeach
+        </section>
 
+        <section class="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-5">
+            <article class="rounded-2xl border border-line bg-white p-5 shadow-card xl:col-span-3">
+                <div class="mb-5 flex items-start justify-between gap-4"><div><h2 class="text-base font-semibold">Revenue over time</h2><p class="mt-1 text-xs text-muted">{{ $startDate }} – {{ $endDate }}</p></div><span class="rounded-full bg-canvas px-3 py-1 text-xs text-muted">LKR</span></div>
+                @if($loading)<div class="skeleton h-56 rounded-xl" aria-label="Loading revenue chart"></div>@elseif(isset($apiErrors['salesChart']))<div class="grid h-56 place-items-center rounded-xl bg-canvas text-center"><p class="text-sm text-muted">Revenue chart is unavailable.<br><a class="mt-1 inline-block font-semibold text-accent underline" href="{{ url()->full() }}">Retry</a></p></div>
+                @elseif(count($revenueRows))
+                    <div class="h-56 w-full overflow-hidden" role="img" aria-label="Revenue by date from the admin API"><svg viewBox="0 0 720 230" preserveAspectRatio="none" class="h-full w-full">
+                        @foreach([35,80,125,170,210] as $gridY)<line x1="0" y1="{{ $gridY }}" x2="720" y2="{{ $gridY }}" class="chart-grid"/>@endforeach
+                        @foreach($revenueRows as $index => $row)
+                            @php($chartValue = $revenueValues[$index] ?? (float) (data_get($row, 'grossOrderValue') ?? data_get($row, 'Gross Order Value') ?? data_get($row, 'orderCount') ?? data_get($row, 'Order Count') ?? 0))
+                            @php($barH = max(3, (int) round(($chartValue / $revenueMax) * 175)))
+                            @php($barW = min(38, max(8, 560 / max(1, count($revenueRows)))))
+                            @php($barX = 32 + ($index * (656 / max(1, count($revenueRows)))) )
+                            <rect x="{{ $barX }}" y="{{ 210 - $barH }}" width="{{ $barW }}" height="{{ $barH }}" rx="5" fill="#456b57"><title>{{ data_get($row, 'label') ?? data_get($row, 'date') ?? data_get($row, 'period') ?? 'Period '.($index + 1) }}: {{ number_format($chartValue, 2) }}</title></rect>
+                            @if($index % max(1, (int) ceil(count($revenueRows) / 7)) === 0)<text x="{{ $barX }}" y="228" class="chart-label">{{ data_get($row, 'label') ?? data_get($row, 'date') ?? data_get($row, 'period') ?? ($index + 1) }}</text>@endif
+                        @endforeach
+                    </svg></div>
+                @else<div class="grid h-56 place-items-center rounded-xl bg-canvas px-5 text-center"><div><span class="material-symbols-outlined text-3xl text-muted">monitoring</span><p class="mt-2 text-sm font-medium">No revenue data for this period</p><p class="mt-1 text-xs text-muted">The sales chart endpoint returned no usable points.</p></div></div>@endif
+            </article>
+            <article class="rounded-2xl border border-line bg-white p-5 shadow-card xl:col-span-2">
+                <div class="mb-5"><h2 class="text-base font-semibold">Order status</h2><p class="mt-1 text-xs text-muted">Current distribution from order chart data</p></div>
+                @if($loading)<div class="skeleton h-56 rounded-xl" aria-label="Loading order status chart"></div>@elseif(isset($apiErrors['ordersChart']))<div class="grid h-56 place-items-center rounded-xl bg-canvas text-sm text-muted">Order status chart unavailable</div>
+                @elseif(count($statusRows))
+                    @php($statusTotal = max(1, array_sum(array_column($statusRows, 'value'))))
+                    <div class="space-y-4" role="img" aria-label="Order status distribution from the admin API">
+                        <div class="flex h-4 overflow-hidden rounded-full bg-canvas">@foreach($statusRows as $index => $status)<span title="{{ $status['label'] }}: {{ $status['value'] }}" style="width:{{ ($status['value'] / $statusTotal) * 100 }}%;background:{{ ['#456b57','#d4a85f','#b8756d','#718096','#9ba69f'][$index % 5] }}"></span>@endforeach</div>
+                        @foreach($statusRows as $index => $status)<div class="flex items-center justify-between gap-4"><div class="flex min-w-0 items-center gap-2"><span class="h-2.5 w-2.5 shrink-0 rounded-full" style="background:{{ ['#456b57','#d4a85f','#b8756d','#718096','#9ba69f'][$index % 5] }}"></span><span class="truncate text-sm text-muted">{{ Illuminate\Support\Str::headline($status['label']) }}</span></div><span class="text-sm font-semibold">{{ number_format($status['value']) }} <span class="font-normal text-muted">({{ number_format(($status['value'] / $statusTotal) * 100, 1) }}%)</span></span></div>@endforeach
+                    </div>
+                @else<div class="grid h-56 place-items-center rounded-xl bg-canvas px-5 text-center"><div><span class="material-symbols-outlined text-3xl text-muted">donut_small</span><p class="mt-2 text-sm font-medium">Status breakdown unavailable</p><p class="mt-1 text-xs leading-5 text-muted">The current order chart response does not contain a recognized byStatus, statuses, or statusBreakdown field.</p></div></div>@endif
+            </article>
+        </section>
 
+        <section class="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-3">
+            <article class="overflow-hidden rounded-2xl border border-line bg-white shadow-card xl:col-span-2">
+                <div class="flex items-center justify-between gap-4 border-b border-line px-5 py-4"><div><h2 class="text-base font-semibold">Recent orders</h2><p class="mt-1 text-xs text-muted">Latest orders from the API</p></div><a href="{{ route('orders.index') }}" class="text-xs font-semibold text-accent hover:underline">All orders <span aria-hidden="true">→</span></a></div>
+                @if($loading)<div class="space-y-3 p-5" aria-label="Loading recent orders"><div class="skeleton h-8 rounded-lg"></div><div class="skeleton h-8 rounded-lg"></div><div class="skeleton h-8 rounded-lg"></div></div>@elseif(isset($apiErrors['recentOrders']))<div class="p-8 text-center text-sm text-muted">Recent orders could not be loaded. <a class="font-semibold text-accent underline" href="{{ url()->full() }}">Retry</a></div>
+                @elseif(count($orderRows))<div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><thead class="bg-canvas text-[11px] uppercase tracking-wide text-muted"><tr><th class="px-5 py-3 font-semibold">Order</th><th class="px-5 py-3 font-semibold">Customer</th><th class="px-5 py-3 font-semibold">Date</th><th class="px-5 py-3 font-semibold">Total</th><th class="px-5 py-3 font-semibold">Status</th></tr></thead><tbody class="divide-y divide-line">
+                    @foreach($orderRows as $order)<tr class="hover:bg-canvas/70"><td class="whitespace-nowrap px-5 py-3.5 font-semibold">{{ data_get($order, 'orderNumber') ?? data_get($order, 'orderId') ?? data_get($order, 'id') ?? '—' }}</td><td class="max-w-48 truncate px-5 py-3.5">{{ data_get($order, 'customer.name') ?? data_get($order, 'customerName') ?? data_get($order, 'customer') ?? '—' }}</td><td class="whitespace-nowrap px-5 py-3.5 text-muted">{{ data_get($order, 'createdAt') ?? data_get($order, 'created_at') ?? data_get($order, 'date') ?? '—' }}</td><td class="whitespace-nowrap px-5 py-3.5 font-medium">{{ data_get($order, 'totalFormatted') ?? data_get($order, 'amountFormatted') ?? (is_numeric(data_get($order, 'total') ?? data_get($order, 'amount')) ? 'LKR '.number_format((float) (data_get($order, 'total') ?? data_get($order, 'amount')), 2) : data_get($order, 'total') ?? data_get($order, 'amount') ?? '—') }}</td><td class="whitespace-nowrap px-5 py-3.5"><span class="rounded-full bg-soft px-2.5 py-1 text-xs font-medium text-accent">{{ Illuminate\Support\Str::headline((string) (data_get($order, 'status') ?? 'Unknown')) }}</span></td></tr>@endforeach
+                </tbody></table></div>
+                @else<div class="grid min-h-56 place-items-center px-5 text-center"><div><span class="material-symbols-outlined text-3xl text-muted">receipt_long</span><p class="mt-2 text-sm font-medium">No recent orders</p><p class="mt-1 text-xs text-muted">Orders will appear here when the API returns them.</p></div></div>@endif
+            </article>
+            <article class="rounded-2xl border border-line bg-white shadow-card">
+                <div class="border-b border-line px-5 py-4"><h2 class="text-base font-semibold">Top-selling products</h2><p class="mt-1 text-xs text-muted">Best sellers returned by the API</p></div>
+                @if($loading)<div class="space-y-4 p-5" aria-label="Loading top products"><div class="skeleton h-10 rounded-lg"></div><div class="skeleton h-10 rounded-lg"></div><div class="skeleton h-10 rounded-lg"></div></div>@elseif(isset($apiErrors['topProducts']))<p class="p-6 text-sm text-muted">Top products could not be loaded.</p>@elseif(count($topProducts))<ol class="divide-y divide-line">@foreach(array_slice($topProducts, 0, 5) as $index => $product)<li class="flex items-center gap-3 px-5 py-4"><span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-canvas text-xs font-semibold text-muted">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span><div class="min-w-0 flex-1"><p class="truncate text-sm font-medium">{{ data_get($product, 'name') ?? data_get($product, 'productName') ?? data_get($product, 'title') ?? 'Product' }}</p><p class="mt-1 text-xs text-muted">{{ data_get($product, 'unitsSold') ?? data_get($product, 'quantitySold') ?? data_get($product, 'salesCount') ?? '—' }} sold</p></div><span class="text-xs font-semibold">{{ data_get($product, 'revenueFormatted') ?? data_get($product, 'totalFormatted') ?? '' }}</span></li>@endforeach</ol>@else<div class="grid min-h-56 place-items-center px-5 text-center"><div><span class="material-symbols-outlined text-3xl text-muted">star</span><p class="mt-2 text-sm font-medium">No product data yet</p><p class="mt-1 text-xs text-muted">Top sellers are unavailable for this period.</p></div></div>@endif
+            </article>
+        </section>
 
-
-
-
-
-
-
-
-
+        <section class="rounded-2xl border border-line bg-white shadow-card">
+            <div class="flex items-center justify-between border-b border-line px-5 py-4"><div><h2 class="text-base font-semibold">Low-stock alerts</h2><p class="mt-1 text-xs text-muted">Inventory items flagged by the dashboard API</p></div><a href="{{ route('inventory.index') }}" class="text-xs font-semibold text-accent hover:underline">Inventory <span aria-hidden="true">→</span></a></div>
+            @if($loading)<div class="space-y-3 p-5" aria-label="Loading inventory"><div class="skeleton h-10 rounded-lg"></div><div class="skeleton h-10 rounded-lg"></div></div>@elseif(isset($apiErrors['stock']))<div class="p-7 text-center text-sm text-muted">Inventory stock could not be loaded. <a class="font-semibold text-accent underline" href="{{ url()->full() }}">Retry</a></div>
+            @elseif(count($lowStock))<div class="grid grid-cols-1 divide-y divide-line sm:grid-cols-2 xl:grid-cols-3 xl:divide-x xl:divide-y-0">@foreach($lowStock as $item)<article class="flex items-start gap-3 p-5"><span class="material-symbols-outlined mt-0.5 text-amber-700">warning</span><div class="min-w-0"><p class="truncate text-sm font-semibold">{{ data_get($item, 'productName') ?? data_get($item, 'name') ?? data_get($item, 'sku') ?? 'Inventory item' }}</p><p class="mt-1 text-xs text-muted">{{ data_get($item, 'quantity') ?? data_get($item, 'stock') ?? '—' }} remaining @if(data_get($item, 'reorderLevel') !== null) · Reorder at {{ data_get($item, 'reorderLevel') }}@endif</p></div></article>@endforeach</div>
+            @else<div class="grid min-h-32 place-items-center px-5 text-center"><div><span class="material-symbols-outlined text-2xl text-accent">inventory</span><p class="mt-2 text-sm font-medium">No low-stock alerts</p><p class="mt-1 text-xs text-muted">No items were flagged by the API.</p></div></div>@endif
+        </section>
+    </main>
+</div>
+</body>
+</html>

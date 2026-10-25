@@ -1,1018 +1,149 @@
-<!DOCTYPE html>
-
-<html lang="en"><head><meta charset="utf-8"/><title>Reports &amp; Analytics | Luvora Admin</title><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      "colors": {
-        "surface-bright": "#f7f9fb",
-        "surface-variant": "#e0e3e5",
-        "tertiary-fixed": "#6ffbbe",
-        "primary-fixed-dim": "#a8c8ff",
-        "on-background": "#191c1e",
-        "surface-container": "#eceef0",
-        "inverse-on-surface": "#eff1f3",
-        "on-tertiary-container": "#f5fff6",
-        "secondary-fixed": "#dae2fd",
-        "inverse-primary": "#a8c8ff",
-        "on-tertiary-fixed-variant": "#005236",
-        "inverse-surface": "#2d3133",
-        "on-primary-fixed-variant": "#004689",
-        "on-secondary-fixed": "#131b2e",
-        "surface": "#f7f9fb",
-        "on-tertiary-fixed": "#002113",
-        "outline": "#717785",
-        "surface-container-low": "#f2f4f6",
-        "surface-container-highest": "#e0e3e5",
-        "primary-container": "#0074db",
-        "surface-container-high": "#e6e8ea",
-        "primary": "#005baf",
-        "surface-tint": "#005eb3",
-        "surface-dim": "#d8dadc",
-        "outline-variant": "#c0c6d6",
-        "tertiary-container": "#00855b",
-        "on-error-container": "#93000a",
-        "on-secondary-fixed-variant": "#3f465c",
-        "tertiary": "#006947",
-        "on-tertiary": "#ffffff",
-        "background": "#f7f9fb",
-        "secondary": "#565e74",
-        "on-error": "#ffffff",
-        "primary-fixed": "#d5e3ff",
-        "on-secondary-container": "#5c647a",
-        "tertiary-fixed-dim": "#4edea3",
-        "on-surface": "#191c1e",
-        "surface-container-lowest": "#ffffff",
-        "on-surface-variant": "#404754",
-        "error": "#ba1a1a",
-        "on-primary": "#ffffff",
-        "on-primary-fixed": "#001b3c",
-        "on-primary-container": "#fefcff",
-        "error-container": "#ffdad6",
-        "secondary-container": "#dae2fd",
-        "on-secondary": "#ffffff",
-        "secondary-fixed-dim": "#bec6e0"
-      },
-      "borderRadius": {
-        "DEFAULT": "0.25rem",
-        "lg": "0.5rem",
-        "xl": "0.75rem",
-        "full": "9999px"
-      },
-      "spacing": {
-        "gutter-sm": "1rem",
-        "margin": "1.5rem",
-        "gutter-lg": "2rem",
-        "space-lg": "1.5rem",
-        "space-xs": "0.25rem",
-        "margin-lg": "4rem",
-        "space-sm": "0.5rem",
-        "margin-sm": "1rem",
-        "gutter": "1.5rem",
-        "space-md": "1rem",
-        "space-xl": "2.5rem"
-      },
-      "fontFamily": {
-        "headline-lg": [
-          "Bodoni Moda"
-        ],
-        "label-sm": [
-          "Inter"
-        ],
-        "body-lg": [
-          "Plus Jakarta Sans"
-        ],
-        "label-md": [
-          "Inter"
-        ],
-        "body-md": [
-          "Plus Jakarta Sans"
-        ],
-        "headline-lg-mobile": [
-          "Bodoni Moda"
-        ],
-        "display-hero": [
-          "Bodoni Moda"
-        ],
-        "headline-md": [
-          "Bodoni Moda"
-        ],
-        "headline-sm": [
-          "Plus Jakarta Sans"
-        ],
-        "label-lg": [
-          "Inter"
-        ],
-        "display-hero-mobile": [
-          "Bodoni Moda"
-        ],
-        "body-sm": [
-          "Plus Jakarta Sans"
-        ]
-      },
-      "fontSize": {
-        "headline-lg": [
-          "40px",
-          {
-            "lineHeight": "48px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "500"
-          }
-        ],
-        "label-sm": [
-          "11px",
-          {
-            "lineHeight": "14px",
-            "letterSpacing": "0.06em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-lg": [
-          "18px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "400"
-          }
-        ],
-        "label-md": [
-          "12px",
-          {
-            "lineHeight": "16px",
-            "letterSpacing": "0.04em",
-            "fontWeight": "500"
-          }
-        ],
-        "body-md": [
-          "15px",
-          {
-            "lineHeight": "22px",
-            "fontWeight": "400"
-          }
-        ],
-        "headline-lg-mobile": [
-          "30px",
-          {
-            "lineHeight": "36px",
-            "letterSpacing": "0em",
-            "fontWeight": "500"
-          }
-        ],
-        "display-hero": [
-          "56px",
-          {
-            "lineHeight": "64px",
-            "letterSpacing": "-0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "headline-md": [
-          "28px",
-          {
-            "lineHeight": "34px",
-            "fontWeight": "500"
-          }
-        ],
-        "headline-sm": [
-          "20px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "600"
-          }
-        ],
-        "label-lg": [
-          "14px",
-          {
-            "lineHeight": "20px",
-            "letterSpacing": "0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "display-hero-mobile": [
-          "38px",
-          {
-            "lineHeight": "44px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-sm": [
-          "13px",
-          {
-            "lineHeight": "18px",
-            "fontWeight": "400"
-          }
-        ]
-      }
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}"><title>Reports | Luvora Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{ink:'#202321',muted:'#707873',line:'#e8ebe8',canvas:'#f7f8f6',accent:'#365c4a',soft:'#edf3ee'},fontFamily:{sans:['Inter','ui-sans-serif','system-ui'],serif:['Bodoni Moda','Georgia','serif']},boxShadow:{card:'0 8px 28px rgba(25,35,29,.045)'}}}};</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600&family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+    <style>[x-cloak]{display:none!important}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 20}body{font-family:Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}:focus-visible{outline:3px solid rgba(54,92,74,.45);outline-offset:2px}@keyframes shimmer{100%{transform:translateX(100%)}}.skeleton{position:relative;overflow:hidden;background:#edf0ed}.skeleton:after{position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);content:'';animation:shimmer 1.6s infinite}</style>
+</head>
+<body class="min-h-screen bg-canvas text-ink">
+@php
+    $from = request('from', now('UTC')->subDays(29)->toDateString());
+    $to = request('to', now('UTC')->toDateString());
+    $payloads = $apiData ?? [];
+    $getRows = static function ($payload, array $keys = []) {
+        if (is_array($payload) && array_is_list($payload)) return $payload;
+        foreach ($keys as $key) { $value = data_get($payload, $key); if (is_array($value) && array_is_list($value)) return $value; }
+        return [];
+    };
+    $sales = $payloads['sales'] ?? [];
+    $revenue = $payloads['revenue'] ?? [];
+    $salesDays = $getRows($sales, ['days', 'data.days']);
+    $orderRows = $getRows($payloads['orders'] ?? [], ['orders', 'data.orders', 'items', 'data']);
+    $productRows = $getRows($payloads['products'] ?? [], ['products', 'data.products', 'items', 'data']);
+    $stockRows = $getRows($payloads['inventory'] ?? [], ['stock', 'items', 'records', 'data.stock', 'data.items', 'data']);
+    $paymentRows = $getRows($payloads['payments'] ?? [], ['transactions', 'data.transactions', 'payments', 'items', 'data']);
+    $customerRows = $getRows($payloads['customers'] ?? [], ['customers', 'data.customers', 'items', 'data']);
+    $paymentStatuses = [];
+    foreach ($paymentRows as $payment) {
+        $status = (string) (data_get($payment, 'status') ?? data_get($payment, 'paymentStatus') ?? 'Unknown');
+        $paymentStatuses[$status] = ($paymentStatuses[$status] ?? 0) + 1;
     }
-  }
-}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head><body class="bg-surface text-on-surface">@include('partials.sidebar')<div class="md:pl-64"><header class="fixed top-0 left-0 right-0 md:left-64 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-lg flex items-center justify-between"><button type="button" class="mr-3 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm md:hidden" aria-label="Toggle admin navigation" aria-controls="admin-sidebar" aria-expanded="false" onclick="const nav=document.getElementById('admin-sidebar');const open=nav.classList.toggle('-translate-x-full');this.setAttribute('aria-expanded',String(!open))"><span class="material-symbols-outlined">menu</span></button><div class="flex min-w-0 items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-2 rounded-full"><span class="material-symbols-outlined text-base text-primary">storefront</span><span class="font-label-sm text-label-sm text-on-surface font-semibold">Colombo 07 Flagship</span><span class="material-symbols-outlined text-sm text-outline">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span><input class="w-full bg-surface-container-lowest pl-10 pr-4 py-2 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]" placeholder="Search SKUs, high jewelry orders, sovereign patrons..." type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-tertiary-fixed/30 px-space-sm py-1.5 rounded-full"><span class="h-2 w-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant font-medium">CBSL Escrow Synchronized</span></div><button class="relative p-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-error"></span></button><div class="flex items-center gap-space-sm pl-space-xs"><a href="{{ route('admin.profile') }}" aria-label="Open admin profile" title="Admin profile">@include('partials.profile-avatar', ['avatarSize' => 'h-8 w-8'])</a><div class="hidden xl:flex flex-col text-right"><span class="font-label-md text-label-md text-on-surface font-medium">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span><span class="font-label-sm text-label-sm text-secondary">{{ data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Administrator' }}</span></div></div></div></header><main class="w-full pt-20 px-gutter-lg bg-surface min-h-screen">@include('partials.api-state')<div class="flex flex-col w-full pb-margin-lg space-y-space-lg">
-<!-- Executive Context & Title Navigation Block -->
-<section class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md pt-space-xs pb-space-sm">
-<div class="space-y-space-xs">
-<div class="flex items-center gap-2 text-label-sm font-label-sm text-secondary uppercase tracking-widest">
-<span>Executive Portal</span>
-<span class="text-outline-variant">/</span>
-<span>Analytics &amp; Audits</span>
-<span class="text-outline-variant">/</span>
-<span class="text-primary font-semibold">Reports &amp; Atelier Intelligence</span>
-</div>
-<div class="flex items-center gap-space-sm flex-wrap">
-<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Reports &amp; Financial Intelligence Hub</h1>
-<span class="bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm text-secondary tracking-wider uppercase font-medium">Page 39</span>
-</div>
-<!-- Telemetry Nodes Strip -->
-<div class="flex items-center gap-space-sm flex-wrap pt-1">
-<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface-variant font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-[14px] text-primary">apartment</span>
-<span class="font-medium">Colombo 07 Flagship Node</span>
-</div>
-<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-[14px] text-tertiary">verified_user</span>
-<span class="font-medium">CBSL Escrow Synchronized</span>
-</div>
-<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface-variant font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-[14px] text-tertiary-container">policy</span>
-<span>Sri Lanka PDPA Compliant</span>
-</div>
-<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface-variant font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-[14px] text-primary">badge</span>
-<span class="font-medium text-on-surface">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span>
-<span class="text-secondary">(Director)</span>
-</div>
-</div>
-</div>
-<!-- Action Bar -->
-<div class="flex items-center gap-space-sm self-start xl:self-end">
-<button class="flex items-center gap-2 px-space-md py-2.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-lg text-label-lg shadow-sm transition-all duration-200">
-<span class="material-symbols-outlined text-lg text-primary">alarm_add</span>
-<span>Schedule Dossier</span>
-</button>
-<button type="button" data-export="csv" class="flex items-center gap-2 px-space-md py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg shadow-md hover:opacity-95 active:scale-95 transition-all duration-200">
-<span class="material-symbols-outlined text-lg">download</span>
-<span>Export Full Report</span>
-</button>
-</div>
-</section>
-<!-- Master Category Segmented Tabs -->
-<nav aria-label="Report Segments" class="w-full overflow-x-auto pb-1">
-<div class="flex items-center gap-2 min-w-max p-1 bg-surface-container-lowest rounded-xl shadow-sm">
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold transition-all">
-<span class="material-symbols-outlined text-base">assessment</span>
-<span>All Reports (Overview)</span>
-<span class="ml-1 px-1.5 py-0.5 rounded-full bg-on-primary-container/20 text-[10px] font-bold">24</span>
-</button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-base">query_stats</span>
-<span>Sales Reports</span>
-</button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-base">local_shipping</span>
-<span>Order Reports</span>
-</button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-base">diamond</span>
-<span>Product Performance</span>
-</button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-base">workspace_premium</span>
-<span>Customer Reports</span>
-</button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-base">inventory_2</span>
-<span>Inventory Reports</span>
-</button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-base">account_balance</span>
-<span>Payments &amp; CBSL Escrow</span>
-</button>
-<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-md text-label-md transition-all">
-<span class="material-symbols-outlined text-base">schedule_send</span>
-<span>Scheduled Settings</span>
-</button>
-</div>
-</nav>
-<!-- Multi-Dimensional Filter Toolbar -->
-<section id="inventory-reports" class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
-<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
-<!-- Date Presets -->
-<div class="flex items-center gap-1.5 flex-wrap">
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline mr-1">Time Horizon:</span>
-<button class="px-3 py-1.5 rounded-full text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container transition-all">Today</button>
-<button class="px-3 py-1.5 rounded-full text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container transition-all">Last 7 Days</button>
-<button class="px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-fixed font-semibold transition-all">This Month (Oct 2026)</button>
-<button class="px-3 py-1.5 rounded-full text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container transition-all">Fiscal Q3/Q4</button>
-<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-sm text-primary">calendar_month</span>
-<span class="font-medium">01 Oct - 31 Oct 2026</span>
-<span class="material-symbols-outlined text-sm text-outline">arrow_drop_down</span>
-</div>
-</div>
-<!-- Quick Export Switcher -->
-<div class="flex items-center gap-2 self-start lg:self-auto">
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Ledger Output:</span>
-<div class="flex items-center p-0.5 bg-surface-container rounded-lg text-label-sm font-label-sm">
-<button class="px-2.5 py-1 rounded-md text-on-surface-variant hover:text-on-surface" data-export="pdf">Print</button>
-<button class="px-2.5 py-1 rounded-md text-on-surface-variant hover:text-on-surface" data-export="csv">CSV</button>
-<button class="px-2.5 py-1 rounded-md text-on-surface-variant hover:text-on-surface" data-export="json">JSON</button>
-</div>
-</div>
-</div>
-<!-- Secondary Node Filters -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-xs">
-<div class="flex items-center justify-between px-3.5 py-2 rounded-lg bg-surface-container-low text-body-sm font-body-sm text-on-surface">
-<div class="flex items-center gap-2 truncate">
-<span class="material-symbols-outlined text-base text-primary">pin_drop</span>
-<span class="truncate">Flagship: <strong class="font-medium">Colombo 07, Galle, Kandy</strong></span>
-</div>
-<span class="material-symbols-outlined text-sm text-outline">expand_more</span>
-</div>
-<div class="flex items-center justify-between px-3.5 py-2 rounded-lg bg-surface-container-low text-body-sm font-body-sm text-on-surface">
-<div class="flex items-center gap-2 truncate">
-<span class="material-symbols-outlined text-base text-tertiary">currency_exchange</span>
-<span class="truncate">Settlement: <strong class="font-medium">LKR (CBSL RTGS Escrow)</strong></span>
-</div>
-<span class="material-symbols-outlined text-sm text-outline">expand_more</span>
-</div>
-<div class="flex items-center justify-between px-3.5 py-2 rounded-lg bg-surface-container-low text-body-sm font-body-sm text-on-surface">
-<div class="flex items-center gap-2 truncate">
-<span class="material-symbols-outlined text-base text-secondary">alt_route</span>
-<span class="truncate">Channels: <strong class="font-medium">Doorstep EQV, Salon, Digital</strong></span>
-</div>
-<span class="material-symbols-outlined text-sm text-outline">expand_more</span>
-</div>
-</div>
-</section>
-<!-- Executive Financial Metric Strip (5 KPIs) -->
-<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-space-md">
-<!-- Gross Revenue -->
-<div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Gross Revenue (Oct)</span>
-<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-lg">payments</span>
-</div>
-</div>
-<div>
-<p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">LKR 48,290,400</p>
-<div class="flex items-center gap-1.5 mt-1 text-tertiary font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-sm">trending_up</span>
-<span class="font-semibold">+18.4% MoM</span>
-<span class="text-secondary">(+LKR 7.5M vs target)</span>
-</div>
-</div>
-</div>
-<!-- Net Realized Margin -->
-<div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Net Realized Margin</span>
-<div class="w-8 h-8 rounded-full bg-tertiary-fixed/40 flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined text-lg">pie_chart</span>
-</div>
-</div>
-<div>
-<p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">LKR 17,384,600</p>
-<div class="flex items-center gap-1.5 mt-1 text-tertiary font-label-sm text-label-sm">
-<span class="font-semibold">36.0%</span>
-<span class="text-secondary">Atelier Gross Margin</span>
-</div>
-</div>
-</div>
-<!-- Total Orders Processed -->
-<div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Orders Dispatched</span>
-<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
-<span class="material-symbols-outlined text-lg">inventory</span>
-</div>
-</div>
-<div>
-<p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">— Orders</p>
-<div class="flex items-center gap-1.5 mt-1 text-tertiary font-label-sm text-label-sm">
-<span class="material-symbols-outlined text-sm">check_circle</span>
-<span class="font-semibold">98.4%</span>
-<span class="text-secondary">EQV White-Glove On-Time</span>
-</div>
-</div>
-</div>
-<!-- Sovereign Patron LTV -->
-<div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Patron Cohort LTV</span>
-<div class="w-8 h-8 rounded-full bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed">
-<span class="material-symbols-outlined text-lg">diamond</span>
-</div>
-</div>
-<div>
-<p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">LKR 3,842,000</p>
-<div class="flex items-center gap-1.5 mt-1 text-on-surface-variant font-label-sm text-label-sm">
-<span>AOV LKR 83,520</span>
-<span class="text-outline">|</span>
-<span class="text-tertiary font-semibold">0.0% Returns</span>
-</div>
-</div>
-</div>
-<!-- Artisan Guild Disbursal -->
-<div class="p-space-md bg-surface-container-lowest rounded-xl shadow-sm flex flex-col justify-between space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Artisan Partition</span>
-<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
-<span class="material-symbols-outlined text-lg">handshake</span>
-</div>
-</div>
-<div>
-<p class="font-headline-sm text-headline-sm text-on-surface tracking-tight">LKR 30,905,800</p>
-<div class="flex items-center gap-1.5 mt-1 text-secondary font-label-sm text-label-sm">
-<span class="font-semibold text-tertiary">64.0% Direct Guild</span>
-<span>(Somapala &amp; Cutters)</span>
-</div>
-</div>
-</div>
-</section>
-<!-- Interactive Visual Reports: 3 Bespoke Bento Panels -->
-<section id="sales-reports" class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
-<!-- Card 1: Multi-Stream Sales Velocity Trajectory (6 Cols) -->
-<div id="product-performance" class="lg:col-span-6 bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-md">
-<div class="flex items-center justify-between flex-wrap gap-2">
-<div>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Revenue Velocity by Pillar</h2>
-<p class="font-body-sm text-body-sm text-secondary">Four-week cadence breakdown across high-jewelry &amp; heritage crafts</p>
-</div>
-<div class="flex items-center gap-3 text-label-sm font-label-sm text-secondary">
-<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span> Sapphires</span>
-<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span> Dumbara Handlooms</span>
-<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-secondary"></span> Bespoke Wear</span>
-</div>
-</div>
-<!-- Integrated Inline Vector Telemetry Graph -->
-<div class="relative w-full h-56 flex flex-col justify-end pt-4">
-<!-- SVG Grid Lines & Trajectory Waves -->
-<svg class="w-full h-44 overflow-visible" preserveaspectratio="none" viewbox="0 0 500 160">
-<defs>
-<lineargradient id="sapphireGradient" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#0074db" stop-opacity="0.25"></stop>
-<stop offset="100%" stop-color="#0074db" stop-opacity="0.0"></stop>
-</lineargradient>
-<lineargradient id="handloomGradient" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#006947" stop-opacity="0.2"></stop>
-<stop offset="100%" stop-color="#006947" stop-opacity="0.0"></stop>
-</lineargradient>
-</defs>
-<!-- Subtle Grid Lines -->
-<line stroke="#eceef0" stroke-dasharray="3 3" stroke-width="1" x1="0" x2="500" y1="40" y2="40"></line>
-<line stroke="#eceef0" stroke-dasharray="3 3" stroke-width="1" x1="0" x2="500" y1="80" y2="80"></line>
-<line stroke="#eceef0" stroke-dasharray="3 3" stroke-width="1" x1="0" x2="500" y1="120" y2="120"></line>
-<!-- Area Fills -->
-<path d="M 0,130 Q 125,70 250,90 T 500,25 L 500,160 L 0,160 Z" fill="url(#sapphireGradient)"></path>
-<path d="M 0,145 Q 125,120 250,110 T 500,65 L 500,160 L 0,160 Z" fill="url(#handloomGradient)"></path>
-<!-- Trajectory Strokes -->
-<path d="M 0,130 Q 125,70 250,90 T 500,25" fill="none" stroke="#0074db" stroke-linecap="round" stroke-width="3"></path>
-<path d="M 0,145 Q 125,120 250,110 T 500,65" fill="none" stroke="#006947" stroke-linecap="round" stroke-width="2.5"></path>
-<path d="M 0,150 Q 125,140 250,135 T 500,105" fill="none" stroke="#565e74" stroke-dasharray="4 4" stroke-linecap="round" stroke-width="2"></path>
-<!-- Dynamic Key Markers -->
-<circle cx="250" cy="90" fill="#ffffff" r="4" stroke="#0074db" stroke-width="2.5"></circle>
-<circle cx="500" cy="25" fill="#0074db" r="5" stroke="#ffffff" stroke-width="2"></circle>
-<circle cx="500" cy="65" fill="#006947" r="4" stroke="#ffffff" stroke-width="2"></circle>
-</svg>
-<!-- X-Axis Labels -->
-<div class="flex items-center justify-between pt-3 text-label-sm font-label-sm text-outline">
-<span>Week 1 (Oct 01-07)</span>
-<span>Week 2 (Oct 08-14)</span>
-<span>Week 3 (Oct 15-21)</span>
-<span>Week 4 (Oct 22-31)</span>
-</div>
-</div>
-<div class="flex items-center justify-between pt-space-xs text-body-sm font-body-sm text-secondary bg-surface-container-low px-space-sm py-2 rounded-lg">
-<span class="flex items-center gap-1 text-on-surface"><span class="material-symbols-outlined text-sm text-primary">verified</span> Peak Velocity Day: Oct 24 (Colombo Salon Showcase)</span>
-<span class="font-semibold text-primary">LKR 11.4M / 24h</span>
-</div>
-</div>
-<!-- Card 2: Revenue Distribution Breakdown Donut (3 Cols) -->
-<div class="lg:col-span-3 bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-md">
-<div>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Pillar Share</h2>
-<p class="font-body-sm text-body-sm text-secondary">Gross contribution ratio</p>
-</div>
-<!-- Donut Graphic Representation -->
-<div class="relative flex items-center justify-center my-2">
-<svg class="w-40 h-40 transform -rotate-90" viewbox="0 0 100 100">
-<!-- Background track -->
-<circle cx="50" cy="50" fill="transparent" r="38" stroke="#eceef0" stroke-width="12"></circle>
-<!-- Segment 1: Sapphires 44.3% (Circumference ~238.76 -> 44.3% = 105.7) -->
-<circle cx="50" cy="50" fill="transparent" r="38" stroke="#0074db" stroke-dasharray="105.7 238.76" stroke-dashoffset="0" stroke-width="12"></circle>
-<!-- Segment 2: Dumbara 28.5% -> 68.0 -->
-<circle cx="50" cy="50" fill="transparent" r="38" stroke="#006947" stroke-dasharray="68.0 238.76" stroke-dashoffset="-105.7" stroke-width="12"></circle>
-<!-- Segment 3: Sartorial 18.2% -> 43.4 -->
-<circle cx="50" cy="50" fill="transparent" r="38" stroke="#565e74" stroke-dasharray="43.4 238.76" stroke-dashoffset="-173.7" stroke-width="12"></circle>
-<!-- Segment 4: Heritage Craft 9.0% -> 21.5 -->
-<circle cx="50" cy="50" fill="transparent" r="38" stroke="#dae2fd" stroke-dasharray="21.5 238.76" stroke-dashoffset="-217.1" stroke-width="12"></circle>
-</svg>
-<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Total</span>
-<span class="font-headline-sm text-headline-sm text-on-surface leading-none font-bold">48.3M</span>
-<span class="font-label-sm text-label-sm text-tertiary mt-0.5">LKR CBSL</span>
-</div>
-</div>
-<!-- Legend -->
-<div class="space-y-1.5 pt-1">
-<div class="flex items-center justify-between text-body-sm font-body-sm">
-<span class="flex items-center gap-2 text-on-surface"><span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span> Ceylon Sapphires</span>
-<span class="font-semibold text-on-surface">44.3%</span>
-</div>
-<div class="flex items-center justify-between text-body-sm font-body-sm">
-<span class="flex items-center gap-2 text-on-surface"><span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span> Dumbara Handlooms</span>
-<span class="font-semibold text-on-surface">28.5%</span>
-</div>
-<div class="flex items-center justify-between text-body-sm font-body-sm">
-<span class="flex items-center gap-2 text-on-surface"><span class="w-2.5 h-2.5 rounded-full bg-secondary"></span> Bespoke Sartorial</span>
-<span class="font-semibold text-on-surface">18.2%</span>
-</div>
-<div class="flex items-center justify-between text-body-sm font-body-sm">
-<span class="flex items-center gap-2 text-on-surface"><span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span> Rare Crafts</span>
-<span class="font-semibold text-on-surface">9.0%</span>
-</div>
-</div>
-</div>
-<!-- Card 3: Top Guild Contribution & Realized Margin (3 Cols) -->
-<div class="lg:col-span-3 bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-md">
-<div>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Artisan Contributions</h2>
-<p class="font-body-sm text-body-sm text-secondary">Top performing master guilds</p>
-</div>
-<div class="space-y-3.5 flex-1 flex flex-col justify-center">
-<!-- Item 1 -->
-<div class="p-2.5 rounded-lg bg-surface-container-low space-y-1.5">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-primary text-on-primary font-label-sm text-[10px] flex items-center justify-center font-bold">1</span>
-<span class="font-label-md text-label-md font-semibold text-on-surface">Master Somapala</span>
-</div>
-<span class="font-label-sm text-label-sm text-primary font-bold">LKR 14.8M</span>
-</div>
-<div class="flex items-center justify-between text-[11px] font-label-sm text-secondary">
-<span>Dumbara Pit-Loom Silk</span>
-<span class="text-tertiary font-semibold">92% Purity Score</span>
-</div>
-<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
-<div class="bg-primary-container h-full rounded-full" style="width: 78%"></div>
-</div>
-</div>
-<!-- Item 2 -->
-<div class="p-2.5 rounded-lg bg-surface-container-low space-y-1.5">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-secondary text-on-secondary font-label-sm text-[10px] flex items-center justify-center font-bold">2</span>
-<span class="font-label-md text-label-md font-semibold text-on-surface">Ratnapura Lapidary</span>
-</div>
-<span class="font-label-sm text-label-sm text-primary font-bold">LKR 12.1M</span>
-</div>
-<div class="flex items-center justify-between text-[11px] font-label-sm text-secondary">
-<span>Master Cutter Jinadasa</span>
-<span class="text-tertiary font-semibold">GIA Assayed</span>
-</div>
-<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
-<div class="bg-tertiary h-full rounded-full" style="width: 65%"></div>
-</div>
-</div>
-<!-- Item 3 -->
-<div class="p-2.5 rounded-lg bg-surface-container-low space-y-1.5">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-5 h-5 rounded-full bg-secondary text-on-secondary font-label-sm text-[10px] flex items-center justify-center font-bold">3</span>
-<span class="font-label-md text-label-md font-semibold text-on-surface">Anton Fernando</span>
-</div>
-<span class="font-label-sm text-label-sm text-primary font-bold">LKR 8.8M</span>
-</div>
-<div class="flex items-center justify-between text-[11px] font-label-sm text-secondary">
-<span>Bespoke Sartorial Tailor</span>
-<span class="text-tertiary font-semibold">100% Fit Acc.</span>
-</div>
-<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
-<div class="bg-secondary h-full rounded-full" style="width: 48%"></div>
-</div>
-</div>
-</div>
-<button class="w-full py-2 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm font-medium transition-all text-center">
-        View Guild Partition Dossier
-      </button>
-</div>
-</section>
-<!-- Master Reports Roster & Instant Audit Ledger -->
-<section id="order-reports" class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
-<div class="p-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-<div>
-<div class="flex items-center gap-2">
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Audited Intelligence Dossiers</h2>
-<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">6 Ready for Dispatch</span>
-</div>
-<p class="font-body-sm text-body-sm text-secondary mt-0.5">Automated cryptographic ledgers with CBSL escrow reconciliation and NGJA gem assays.</p>
-</div>
-<div class="flex items-center gap-2">
-<div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-base">filter_list</span>
-<input class="bg-surface-container-low pl-9 pr-3 py-1.5 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none w-56" placeholder="Filter rosters..." type="text"/>
-</div>
-<button class="p-2 rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-all" title="Refresh Telemetry">
-<span class="material-symbols-outlined text-base">refresh</span>
-</button>
-</div>
-</div>
-<!-- Data Table Container -->
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead>
-<tr class="bg-surface-container-low text-label-sm font-label-sm text-secondary uppercase tracking-wider">
-<th class="py-3 px-space-md font-semibold">Report Dossier &amp; Descriptor</th>
-<th class="py-3 px-space-sm font-semibold">Category</th>
-<th class="py-3 px-space-sm font-semibold">Coverage &amp; Cadence</th>
-<th class="py-3 px-space-sm font-semibold">Generated Timestamp</th>
-<th class="py-3 px-space-sm font-semibold">Volume &amp; Size</th>
-<th class="py-3 px-space-sm font-semibold">Originator</th>
-<th class="py-3 px-space-md font-semibold text-right">Audited Dispatches</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container text-body-sm font-body-sm text-on-surface">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3.5 px-space-md">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary flex-shrink-0">
-<span class="material-symbols-outlined text-lg">description</span>
-</div>
-<div class="min-w-0">
-<p class="font-label-md text-label-md font-semibold text-on-surface truncate">Monthly Consolidated Fiscal Dossier (Oct 2026)</p>
-<p class="font-label-sm text-label-sm text-secondary">REF: #DOS-2026-OCT-M1 • Full P&amp;L Ledger</p>
-</div>
-</div>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="px-2 py-0.5 rounded-full bg-primary-fixed/40 text-on-primary-fixed-variant font-label-sm text-label-sm font-medium">Sales &amp; Escrow</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium">Oct 01 - Oct 31, 2026</span>
-<span class="block text-label-sm text-secondary">Monthly Board Rollup</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="text-on-surface">Today, 08:30 SLST</span>
+    $salesValues = array_map(static fn ($row) => (float) (data_get($row, 'grossOrderValue') ?? 0), $salesDays);
+    $chartMax = max(1, ...($salesValues ?: [0]));
+    $apiIssues = $apiErrors ?? [];
+    $loading = request()->boolean('loading');
+    $pick = static function ($row, array $fields) { $safe = []; foreach ($fields as $field) { $value = data_get($row, $field); if ($value !== null) $safe[$field] = $value; } return $safe; };
+    $exportPayloads = [
+        'sales' => ['metric' => data_get($sales, 'metric'), 'orderCount' => data_get($sales, 'orderCount'), 'grossOrderValue' => data_get($sales, 'grossOrderValue'), 'days' => array_map(fn ($row) => $pick($row, ['date','orderCount','grossOrderValue']), $salesDays)],
+        'revenue' => $pick($revenue, ['metric','transactionCount','totalAmount']),
+        'orders' => array_map(fn ($row) => $pick($row, ['id','orderId','orderNumber','createdAt','status','totalAmount','itemCount']), $orderRows),
+        'products' => array_map(fn ($row) => $pick($row, ['productId','units','grossSales']), $productRows),
+        'inventory' => array_map(fn ($row) => $pick($row, ['sku','productId','productName','availableQuantity','quantity','reorderLevel','reorderPoint','status']), $stockRows),
+        'payments' => array_map(fn ($row) => $pick($row, ['status','paymentStatus']), $paymentRows),
+        'customers' => array_map(fn ($row) => $pick($row, ['id','customerId','createdAt','registeredAt']), $customerRows),
+    ];
+@endphp
+@include('partials.sidebar')
+<div class="min-h-screen md:pl-64">
+    <header class="fixed inset-x-0 top-0 z-30 flex h-[76px] items-center justify-between border-b border-line bg-white/90 px-4 backdrop-blur-xl md:left-64 md:px-8">
+        <div class="flex min-w-0 items-center gap-3"><button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink md:hidden" aria-label="Open navigation" aria-controls="admin-sidebar" aria-expanded="false" onclick="const nav=document.getElementById('admin-sidebar');nav.classList.toggle('-translate-x-full');this.setAttribute('aria-expanded',String(!nav.classList.contains('-translate-x-full')))" ><span class="material-symbols-outlined">menu</span></button><form method="GET" action="{{ route('dashboard') }}" class="hidden w-full max-w-lg items-center gap-2 rounded-xl border border-line bg-canvas px-3 py-2 sm:flex"><span class="material-symbols-outlined text-muted">search</span><input type="search" name="search" aria-label="Search admin" placeholder="Search orders, products, customers" class="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-muted"></form></div>
+        <div class="flex items-center gap-3"><a href="{{ route('admin.notifications') }}" class="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-muted" aria-label="Notifications"><span class="material-symbols-outlined">notifications</span></a><a href="{{ route('admin.profile') }}" class="flex items-center gap-3 rounded-full py-1 pl-1 pr-2 hover:bg-canvas" aria-label="Admin profile">@include('partials.profile-avatar', ['avatarSize' => 'h-9 w-9'])<span class="hidden text-left sm:block"><span class="block text-sm font-semibold">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin' }}</span><span class="block text-xs text-muted">{{ data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Administrator' }}</span></span></a></div>
+    </header>
+    <main class="mx-auto max-w-[1600px] px-4 pb-12 pt-24 sm:px-6 lg:px-9">
+        <nav aria-label="Breadcrumb" class="mb-5 flex items-center gap-2 text-xs text-muted"><a href="{{ route('dashboard') }}" class="hover:text-accent">Admin</a><span aria-hidden="true">/</span><span aria-current="page" class="font-semibold text-ink">Reports &amp; analytics</span></nav>
+        @include('partials.api-state')
+        <div class="mb-7 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <div><p class="mb-2 text-[11px] font-semibold uppercase tracking-[.18em] text-accent">Luvora administration</p><h1 class="font-serif text-4xl font-medium tracking-tight text-ink sm:text-5xl">Reports &amp; analytics</h1><p class="mt-2 max-w-2xl text-sm leading-6 text-muted">Reporting data returned by the connected services. Values are shown with the source coverage and limitations.</p></div>
+            <div class="flex flex-wrap items-end gap-2">
+                <form method="GET" action="{{ route('reports.index') }}" class="flex flex-wrap items-end gap-2 rounded-2xl border border-line bg-white p-3 shadow-card" aria-label="Filter report date range">
+                    <label class="grid gap-1 text-[11px] font-semibold uppercase tracking-wide text-muted">From<input type="date" name="from" value="{{ $from }}" max="{{ $to }}" class="rounded-lg border border-line bg-white px-3 py-2 text-sm font-normal text-ink"></label>
+                    <label class="grid gap-1 text-[11px] font-semibold uppercase tracking-wide text-muted">To<input type="date" name="to" value="{{ $to }}" min="{{ $from }}" max="{{ now('UTC')->toDateString() }}" class="rounded-lg border border-line bg-white px-3 py-2 text-sm font-normal text-ink"></label>
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent"><span class="material-symbols-outlined text-base">filter_alt</span>Apply</button>
+                </form>
+                <button type="button" id="export-reports" class="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-3 text-sm font-semibold text-ink hover:bg-canvas" aria-label="Export currently loaded report data as CSV"><span class="material-symbols-outlined text-base">download</span>Export CSV</button>
+            </div>
+        </div>
 
-</td>
-<td class="py-3.5 px-space-sm font-mono text-body-sm">
-<span class="font-medium text-on-surface">— TXNs</span>
-<span class="block text-label-sm text-secondary">4.8 MB (PDF + XLS)</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<div class="flex items-center gap-1.5">
-<span class="material-symbols-outlined text-sm text-primary">smart_toy</span>
-<span class="font-medium">System Automated</span>
-</div>
-</td>
-<td class="py-3.5 px-space-md text-right">
-<div class="inline-flex items-center gap-1.5">
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-primary font-label-sm text-label-sm font-semibold transition-all">PDF</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-on-surface-variant font-label-sm text-label-sm transition-all">CSV</button>
-<button class="p-1 rounded-md text-outline hover:text-on-surface" title="View Quick Preview">
-<span class="material-symbols-outlined text-base">visibility</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3.5 px-space-md">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed flex-shrink-0">
-<span class="material-symbols-outlined text-lg">account_balance_wallet</span>
-</div>
-<div class="min-w-0">
-<p class="font-label-md text-label-md font-semibold text-on-surface truncate">Artisan Guild Revenue Partition &amp; Disbursal Audit</p>
-<p class="font-label-sm text-label-sm text-secondary">REF: #ART-DISB-441 • Ratnapura &amp; Kandy</p>
-</div>
-</div>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed/30 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-medium">Payments &amp; Guilds</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium">Oct 01 - Oct 25, 2026</span>
-<span class="block text-label-sm text-secondary">Bi-weekly Settlement</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="text-on-surface">Yesterday, 18:00 SLST</span>
-<span class="block text-label-sm text-secondary">CBSL RTGS Settled</span>
-</td>
-<td class="py-3.5 px-space-sm font-mono text-body-sm">
-<span class="font-medium text-on-surface">64 Weavers &amp; Cutters</span>
-<span class="block text-label-sm text-secondary">2.1 MB (Encrypted)</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium text-on-surface">Dilini (#PO-441)</span>
-<span class="block text-label-sm text-secondary">Finance Controller</span>
-</td>
-<td class="py-3.5 px-space-md text-right">
-<div class="inline-flex items-center gap-1.5">
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-primary font-label-sm text-label-sm font-semibold transition-all">PDF</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-on-surface-variant font-label-sm text-label-sm transition-all">CSV</button>
-<button class="p-1 rounded-md text-outline hover:text-on-surface" title="View Details">
-<span class="material-symbols-outlined text-base">visibility</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3.5 px-space-md">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed flex-shrink-0">
-<span class="material-symbols-outlined text-lg">local_shipping</span>
-</div>
-<div class="min-w-0">
-<p class="font-label-md text-label-md font-semibold text-on-surface truncate">Doorstep Fitting &amp; EQV Fleet Utilization Log</p>
-<p class="font-label-sm text-label-sm text-secondary">REF: #FLEET-LOG-EQV • Colombo Islandwide</p>
-</div>
-</div>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm font-medium">Orders &amp; Fleet</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium">Last 30 Days (Rolling)</span>
-<span class="block text-label-sm text-secondary">Telematics Active</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="text-on-surface">Today, 06:00 SLST</span>
-<span class="block text-label-sm text-tertiary">99.1% Battery Net Zero</span>
-</td>
-<td class="py-3.5 px-space-sm font-mono text-body-sm">
-<span class="font-medium text-on-surface">840 Van Runs</span>
-<span class="block text-label-sm text-secondary">1.4 MB (GeoJSON)</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium text-on-surface">Fleet Chauffeur Lead</span>
-<span class="block text-label-sm text-secondary">Logistics HQ</span>
-</td>
-<td class="py-3.5 px-space-md text-right">
-<div class="inline-flex items-center gap-1.5">
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-primary font-label-sm text-label-sm font-semibold transition-all">PDF</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-on-surface-variant font-label-sm text-label-sm transition-all">CSV</button>
-<button class="p-1 rounded-md text-outline hover:text-on-surface" title="View Map Route">
-<span class="material-symbols-outlined text-base">visibility</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3.5 px-space-md">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed flex-shrink-0">
-<span class="material-symbols-outlined text-lg">workspace_premium</span>
-</div>
-<div class="min-w-0">
-<p class="font-label-md text-label-md font-semibold text-on-surface truncate">Sovereign Circle VIP Cohort Spend &amp; Fitting Dossiers</p>
-<p class="font-label-sm text-label-sm text-secondary">REF: #SOV-CRM-Q4 • Masked Confidential</p>
-</div>
-</div>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="px-2 py-0.5 rounded-full bg-primary-fixed/30 text-on-primary-fixed-variant font-label-sm text-label-sm font-medium">Customer Reports / CRM</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium">Q3/Q4 Cumulative</span>
-<span class="block text-label-sm text-secondary">Direct Patronage</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="text-on-surface">23 Oct 2026</span>
-<span class="block text-label-sm text-secondary">PDPA Tokenized</span>
-</td>
-<td class="py-3.5 px-space-sm font-mono text-body-sm">
-<span class="font-medium text-on-surface">642 Patrons</span>
-<span class="block text-label-sm text-secondary">3.6 MB (PDF Pack)</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium text-on-surface">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span>
-<span class="block text-label-sm text-primary">{{ data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Administrator' }}</span>
-</td>
-<td class="py-3.5 px-space-md text-right">
-<div class="inline-flex items-center gap-1.5">
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-primary font-label-sm text-label-sm font-semibold transition-all">PDF</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-on-surface-variant font-label-sm text-label-sm transition-all">CSV</button>
-<button class="p-1 rounded-md text-outline hover:text-on-surface" title="View Dossier">
-<span class="material-symbols-outlined text-base">visibility</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 5 -->
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3.5 px-space-md">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-on-surface flex-shrink-0">
-<span class="material-symbols-outlined text-lg text-primary">diamond</span>
-</div>
-<div class="min-w-0">
-<p class="font-label-md text-label-md font-semibold text-on-surface truncate">Gem Vault Provenance &amp; NGJA Certificate Ledger</p>
-<p class="font-label-sm text-label-sm text-secondary">REF: #GEM-NGJA-FY24 • Cornflower &amp; Padparadscha</p>
-</div>
-</div>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-medium">Products &amp; Escrow</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium">Year-to-Date (FY24)</span>
-<span class="block text-label-sm text-secondary">Ratnapura Assay</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="text-on-surface">20 Oct 2026</span>
-<span class="block text-label-sm text-tertiary">100% Traceable</span>
-</td>
-<td class="py-3.5 px-space-sm font-mono text-body-sm">
-<span class="font-medium text-on-surface">112 Assayed Gems</span>
-<span class="block text-label-sm text-secondary">8.2 MB (Hi-Res Certs)</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium text-on-surface">Ratnapura Vault Master</span>
-<span class="block text-label-sm text-secondary">Chief Gemologist</span>
-</td>
-<td class="py-3.5 px-space-md text-right">
-<div class="inline-flex items-center gap-1.5">
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-primary font-label-sm text-label-sm font-semibold transition-all">PDF</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-on-surface-variant font-label-sm text-label-sm transition-all">CSV</button>
-<button class="p-1 rounded-md text-outline hover:text-on-surface" title="View Assays">
-<span class="material-symbols-outlined text-base">visibility</span>
-</button>
-</div>
-</td>
-</tr>
-<!-- Row 6 -->
-<tr class="hover:bg-surface-container-low/60 transition-colors">
-<td class="py-3.5 px-space-md">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-tertiary-fixed/30 flex items-center justify-center text-tertiary flex-shrink-0">
-<span class="material-symbols-outlined text-lg">palette</span>
-</div>
-<div class="min-w-0">
-<p class="font-label-md text-label-md font-semibold text-on-surface truncate">Raw Silk &amp; Botanical Dye Depletion Telemetry</p>
-<p class="font-label-sm text-label-sm text-secondary">REF: #MAT-SILK-OCT • Kandy Central Looms</p>
-</div>
-</div>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed/20 text-on-tertiary-fixed-variant font-label-sm text-label-sm font-medium">Inventory Reports</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium">Oct 2026 Weekly</span>
-<span class="block text-label-sm text-secondary">Real-Time Yarn Weight</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="text-on-surface">22 Oct 2026</span>
-<span class="block text-label-sm text-secondary">Reorder Threshold Met</span>
-</td>
-<td class="py-3.5 px-space-sm font-mono text-body-sm">
-<span class="font-medium text-on-surface">48 SKUs &amp; Dyestuffs</span>
-<span class="block text-label-sm text-secondary">850 KB (JSON/CSV)</span>
-</td>
-<td class="py-3.5 px-space-sm">
-<span class="font-medium text-on-surface">Atelier Inventory Lead</span>
-<span class="block text-label-sm text-secondary">Kandy Weaving Hub</span>
-</td>
-<td class="py-3.5 px-space-md text-right">
-<div class="inline-flex items-center gap-1.5">
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-primary font-label-sm text-label-sm font-semibold transition-all">PDF</button>
-<button class="px-2.5 py-1 rounded-md bg-surface-container hover:bg-surface-variant text-on-surface-variant font-label-sm text-label-sm transition-all">CSV</button>
-<button class="p-1 rounded-md text-outline hover:text-on-surface" title="View Material Spec">
-<span class="material-symbols-outlined text-base">visibility</span>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Table Pagination & Ledger Footer -->
-<div class="p-space-sm bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-sm text-label-sm font-label-sm text-secondary">
-<div class="flex items-center gap-2">
-<span id="report-dossier-count">Displaying 0 audited dossiers</span>
+        <aside class="mb-6 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-muted shadow-card" aria-label="Report conventions">
+            <span class="font-semibold text-ink">Report conventions</span><span class="mx-2 text-slate-300" aria-hidden="true">•</span>Dates and report boundaries use UTC. Aggregated amount fields do not include a currency code; values retain the source amount and are not converted or grouped by currency.<span class="mx-2 text-slate-300" aria-hidden="true">•</span>Sales, order volume, and product aggregates rely on upstream order pagination totals; without them the service can only collect the first page.<span class="mx-2 text-slate-300" aria-hidden="true">•</span>Comparison periods are not supported by ReportingService.
+        </aside>
 
+        <section class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Report highlights">
+            @foreach([
+                ['Sales gross order value', data_get($sales, 'grossOrderValue'), 'Completed order count', data_get($sales, 'orderCount'), 'sales'],
+                ['Completed payment value', data_get($revenue, 'totalAmount'), 'Completed transactions', data_get($revenue, 'transactionCount'), 'revenue'],
+                ['Orders returned', count($orderRows), 'Source-reported total', data_get($payloads['orders'] ?? [], 'totalItems'), 'orders'],
+                ['Payments returned', count($paymentRows), 'Status breakdown', count($paymentStatuses) ? count($paymentStatuses).' states' : 'Unavailable', 'payments'],
+            ] as [$title, $value, $subLabel, $subValue, $key])
+                <article class="rounded-2xl border border-line bg-white p-5 shadow-card">
+                    <div class="flex items-start justify-between gap-3"><h2 class="text-sm font-medium text-muted">{{ $title }}</h2><span class="material-symbols-outlined rounded-xl bg-soft p-2 text-accent" aria-hidden="true">{{ ['sales'=>'monitoring','revenue'=>'payments','orders'=>'receipt_long','payments'=>'account_balance_wallet'][$key] }}</span></div>
+                    @if($loading)<div class="skeleton mt-5 h-8 rounded-lg" aria-label="Loading {{ strtolower($title) }}"></div>@elseif(isset($apiIssues[$key]))<p class="mt-5 text-sm text-rose-700">Could not load</p>@elseif($value !== null)<p class="mt-5 break-words text-2xl font-semibold tracking-tight">{{ is_numeric($value) ? number_format((float) $value, 2) : $value }}</p>@else<p class="mt-5 text-sm text-muted">Not provided by API</p>@endif
+                    <p class="mt-2 text-xs text-muted">{{ $subLabel }}: {{ is_numeric($subValue) ? number_format((float) $subValue) : ($subValue ?? 'Not provided') }}</p>
+                </article>
+            @endforeach
+        </section>
+
+        <div class="grid grid-cols-1 gap-5 xl:grid-cols-2">
+            <section class="rounded-2xl border border-line bg-white p-5 shadow-card" aria-labelledby="sales-title">
+                <div class="mb-4"><p class="text-[10px] font-semibold uppercase tracking-[.16em] text-accent">{{ $from }} — {{ $to }} UTC</p><h2 id="sales-title" class="mt-1 text-lg font-semibold">Sales</h2><p class="mt-1 text-xs leading-5 text-muted">Gross order value by order creation day; cancelled orders excluded by the service.</p></div>
+                @if($loading)<div class="skeleton h-56 rounded-xl" aria-label="Loading sales chart"></div>@elseif(isset($apiIssues['sales']))<p role="alert" class="rounded-xl bg-rose-50 p-5 text-sm text-rose-800">Sales report unavailable. <a class="font-semibold underline" href="{{ url()->full() }}">Retry</a></p>@elseif(count($salesDays))
+                    <div class="overflow-x-auto rounded-xl bg-canvas p-3"><svg viewBox="0 0 720 250" class="h-56 min-w-[560px] w-full" role="img" aria-labelledby="sales-chart-title sales-chart-desc"><title id="sales-chart-title">Gross order value by UTC day</title><desc id="sales-chart-desc">{{ count($salesDays) }} daily points from the sales API; cancelled orders are excluded. Exact values are listed in the adjacent accessible table.</desc><line x1="35" y1="210" x2="705" y2="210" stroke="#dfe5e1"/><line x1="35" y1="130" x2="705" y2="130" stroke="#e8ebe8" stroke-dasharray="3 5"/><line x1="35" y1="50" x2="705" y2="50" stroke="#e8ebe8" stroke-dasharray="3 5"/>
+                        @php($step = count($salesDays) > 1 ? 650 / (count($salesDays) - 1) : 0)
+                        @php($points = collect($salesDays)->map(fn($row,$i) => (35 + $i*$step).','. (210 - ((float)data_get($row,'grossOrderValue',0) / $chartMax * 170)))->implode(' '))
+                        <polyline points="{{ $points }}" fill="none" stroke="#365c4a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>@foreach($salesDays as $i => $row)@php($x=35+$i*$step)@php($y=210-((float)data_get($row,'grossOrderValue',0)/$chartMax*170))<circle cx="{{ $x }}" cy="{{ $y }}" r="4" fill="#365c4a"><title>{{ data_get($row,'date','Date unavailable') }}: {{ data_get($row,'grossOrderValue',0) }} source currency</title></circle>@endforeach
+                    </svg></div>
+                    <div class="mt-4 overflow-x-auto"><table class="min-w-full text-left text-xs"><caption class="sr-only">Daily sales values returned by ReportingService in UTC</caption><thead class="text-muted"><tr><th scope="col" class="px-3 py-2">UTC date</th><th scope="col" class="px-3 py-2">Orders excluding cancellations</th><th scope="col" class="px-3 py-2">Gross order value (source currency)</th></tr></thead><tbody class="divide-y divide-line">@foreach($salesDays as $day)<tr><td class="px-3 py-2">{{ data_get($day,'date','—') }}</td><td class="px-3 py-2">{{ data_get($day,'orderCount','—') }}</td><td class="px-3 py-2">{{ data_get($day,'grossOrderValue','—') }}</td></tr>@endforeach</tbody></table></div>
+                @else<div class="grid min-h-48 place-items-center rounded-xl bg-canvas p-5 text-center"><div><span aria-hidden="true" class="material-symbols-outlined text-3xl text-muted">monitoring</span><p class="mt-2 text-sm font-medium">No sales points for this range</p></div></div>@endif
+            </section>
+
+            <section class="rounded-2xl border border-line bg-white p-5 shadow-card" aria-labelledby="orders-title"><div class="mb-4"><h2 id="orders-title" class="text-lg font-semibold">Order volume</h2><p class="mt-1 text-xs leading-5 text-muted">Daily non-cancelled order counts from the same sales series.</p></div>
+                @if(isset($apiIssues['sales']))<p role="alert" class="rounded-xl bg-rose-50 p-5 text-sm text-rose-800">Order volume unavailable because the sales source failed.</p>@elseif(count($salesDays))<div class="space-y-3" role="img" aria-label="Order count by UTC day; cancelled orders are excluded.">@foreach($salesDays as $day)@php($count=(float)data_get($day,'orderCount',0))<div class="grid grid-cols-[5.5rem_1fr_3rem] items-center gap-3"><span class="truncate text-xs text-muted">{{ IlluminateSupportCarbon::parse(data_get($day,'date'))->format('M j') }}</span><div class="h-3 overflow-hidden rounded-full bg-canvas"><span class="block h-full rounded-full bg-accent" style="width:{{ max(1, $count / max(1, max(array_map(fn($r)=>(float)data_get($r,'orderCount',0),$salesDays))) * 100) }}%"></span></div><span class="text-right text-xs font-semibold">{{ number_format($count) }}</span></div>@endforeach</div>@else<div class="grid min-h-48 place-items-center rounded-xl bg-canvas p-5 text-center text-sm text-muted">No order-volume points returned.</div>@endif
+            </section>
+
+            <section class="rounded-2xl border border-line bg-white p-5 shadow-card" aria-labelledby="products-title"><div class="mb-4"><h2 id="products-title" class="text-lg font-semibold">Best-selling products</h2><p class="mt-1 text-xs leading-5 text-muted">Ranked by gross sales from non-cancelled order lines. The API currently returns product IDs only.</p></div>
+                @if(isset($apiIssues['products']))<p role="alert" class="rounded-xl bg-rose-50 p-5 text-sm text-rose-800">Product report unavailable.</p>@elseif(count($productRows))<div class="space-y-3" role="list" aria-label="Products ordered by gross sales returned by the API">@foreach(array_slice($productRows,0,10) as $product)@php($gross=(float)data_get($product,'grossSales',0))<div role="listitem" class="grid grid-cols-[minmax(0,1fr)_minmax(5rem,2fr)_auto] items-center gap-3"><div class="min-w-0"><p class="truncate text-sm font-medium">{{ data_get($product,'productId','Product ID unavailable') }}</p><p class="text-xs text-muted">{{ data_get($product,'units','—') }} units</p></div><div class="h-2 overflow-hidden rounded-full bg-canvas"><span class="block h-full rounded-full bg-accent" style="width:{{ max(1,$gross/max(1,max(array_map(fn($r)=>(float)data_get($r,'grossSales',0),$productRows)))*100) }}%"></span></div><span class="text-xs font-semibold">{{ data_get($product,'grossSales','—') }}</span></div>@endforeach</div>@else<div class="grid min-h-32 place-items-center rounded-xl bg-canvas p-5 text-center text-sm text-muted">No product sales were returned for this date range.</div>@endif
+            </section>
+
+            <section class="rounded-2xl border border-line bg-white p-5 shadow-card" aria-labelledby="inventory-title"><div class="mb-4"><h2 id="inventory-title" class="text-lg font-semibold">Inventory health</h2><p class="mt-1 text-xs leading-5 text-muted">Current snapshot from InventoryService; not date-filtered. Counts and health ratios are not inferred from this capped response.</p></div>
+                @if(isset($apiIssues['inventory']))<p role="alert" class="rounded-xl bg-rose-50 p-5 text-sm text-rose-800">Inventory snapshot unavailable.</p>@elseif(count($stockRows))<div class="overflow-x-auto"><table class="min-w-full text-left text-xs"><caption class="sr-only">Inventory snapshot fields returned by InventoryService</caption><thead class="text-muted"><tr><th scope="col" class="px-3 py-2">SKU / product</th><th scope="col" class="px-3 py-2">Available</th><th scope="col" class="px-3 py-2">Reorder level</th><th scope="col" class="px-3 py-2">Status</th></tr></thead><tbody class="divide-y divide-line">@foreach(array_slice($stockRows,0,12) as $stock)<tr><td class="max-w-48 truncate px-3 py-2">{{ data_get($stock,'sku') ?? data_get($stock,'productName') ?? data_get($stock,'productId','—') }}</td><td class="px-3 py-2">{{ data_get($stock,'availableQuantity') ?? data_get($stock,'quantity','—') }}</td><td class="px-3 py-2">{{ data_get($stock,'reorderLevel') ?? data_get($stock,'reorderPoint','—') }}</td><td class="px-3 py-2">{{ data_get($stock,'status','—') }}</td></tr>@endforeach</tbody></table></div>@else<div class="grid min-h-32 place-items-center rounded-xl bg-canvas p-5 text-center text-sm text-muted">No inventory records returned.</div>@endif
+            </section>
+
+            <section class="rounded-2xl border border-line bg-white p-5 shadow-card" aria-labelledby="payments-title"><div class="mb-4"><h2 id="payments-title" class="text-lg font-semibold">Payment outcomes</h2><p class="mt-1 text-xs leading-5 text-muted">Status counts among transactions returned for this period. The source may be incomplete if payment pagination metadata is absent.</p></div>
+                @if(isset($apiIssues['payments']))<p role="alert" class="rounded-xl bg-rose-50 p-5 text-sm text-rose-800">Payment outcomes unavailable.</p>@elseif(count($paymentStatuses))<div class="space-y-3" role="list" aria-label="Counts by payment status in returned transaction records">@foreach($paymentStatuses as $status=>$count)<div role="listitem" class="flex items-center justify-between rounded-xl bg-canvas px-4 py-3"><span class="text-sm font-medium">{{ IlluminateSupportStr::headline($status) }}</span><span class="rounded-full bg-white px-3 py-1 text-xs font-semibold">{{ number_format($count) }}</span></div>@endforeach</div><p class="mt-3 text-xs text-muted">{{ count($paymentRows) }} transaction records returned.</p>@else<div class="grid min-h-32 place-items-center rounded-xl bg-canvas p-5 text-center text-sm text-muted">No transactions returned for this period.</div>@endif
+            </section>
+
+            <section class="rounded-2xl border border-line bg-white p-5 shadow-card" aria-labelledby="customers-title"><div class="mb-4"><h2 id="customers-title" class="text-lg font-semibold">Customer growth</h2><p class="mt-1 text-xs leading-5 text-muted">Growth cannot be calculated: this report currently returns at most the first 100 customer records and does not apply the requested date range.</p></div>
+                @if(isset($apiIssues['customers']))<p role="alert" class="rounded-xl bg-rose-50 p-5 text-sm text-rose-800">Customer records unavailable.</p>@elseif(count($customerRows))<p class="mb-3 text-xs text-muted">Showing {{ min(100,count($customerRows)) }} returned customer records; no growth total or trend is inferred.</p><div class="overflow-x-auto"><table class="min-w-full text-left text-xs"><caption class="sr-only">Customer reference and registration time from the first 100 records</caption><thead class="text-muted"><tr><th scope="col" class="px-3 py-2">Customer reference</th><th scope="col" class="px-3 py-2">Registered (API timestamp)</th></tr></thead><tbody class="divide-y divide-line">@foreach(array_slice($customerRows,0,10) as $customer)<tr><td class="max-w-56 truncate px-3 py-2">{{ data_get($customer,'id') ?? data_get($customer,'customerId','—') }}</td><td class="px-3 py-2">{{ data_get($customer,'createdAt') ?? data_get($customer,'registeredAt','—') }}</td></tr>@endforeach</tbody></table></div>@else<div class="grid min-h-32 place-items-center rounded-xl bg-canvas p-5 text-center text-sm text-muted">No customer records returned.</div>@endif
+            </section>
+        </div>
+        <p class="mt-5 text-xs leading-5 text-muted">Export includes only the report responses currently loaded for this authorized admin session. CSV columns are section, record index, field, and source value. Export does not include a comparison period.</p>
+    </main>
 </div>
-</div>
-</section>
-<!-- Automated Report Scheduling & Cryptographic Dispatch Settings -->
-<section id="inventory-reports" class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
-<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm">
-<div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-xl">auto_schedule</span>
-<h2 class="font-headline-sm text-headline-sm text-on-surface">Automated Executive Dispatch &amp; Delivery Settings</h2>
-</div>
-<p class="font-body-sm text-body-sm text-secondary mt-0.5">Configure recurrent cryptographic ledger distributions directly to trustee inboxes and external audit nodes.</p>
-</div>
-<div class="flex items-center gap-space-sm">
-<button class="px-4 py-2 rounded-full bg-surface-container hover:bg-surface-variant text-on-surface font-label-sm text-label-sm font-semibold transition-all">
-          Trigger Instant Board Dispatch
-        </button>
-<button class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm font-semibold shadow-sm hover:opacity-95 transition-all">
-          Save Configuration
-        </button>
-</div>
-</div>
-<!-- 3-Column Settings Matrix -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-xs">
-<!-- Col 1: Frequency & Cadence -->
-<div class="p-space-sm bg-surface-container-low rounded-xl space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="font-label-md text-label-md font-semibold text-on-surface">Dispatch Cadence</span>
-<span class="material-symbols-outlined text-secondary text-lg">event_repeat</span>
-</div>
-<div class="space-y-2">
-<label class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-surface-bright transition-all">
-<div class="flex items-center gap-2">
-<input checked="" class="accent-primary" name="cadence" type="radio"/>
-<div>
-<span class="font-label-md text-label-md font-medium text-on-surface block leading-tight">Daily Midnight Rollup</span>
-<span class="text-[11px] font-label-sm text-secondary">00:00 SLST • Flash Sales &amp; Cashflow</span>
-</div>
-</div>
-<span class="w-2 h-2 rounded-full bg-tertiary"></span>
-</label>
-<label class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-surface-bright transition-all">
-<div class="flex items-center gap-2">
-<input checked="" class="accent-primary" name="cadence_wk" type="checkbox"/>
-<div>
-<span class="font-label-md text-label-md font-medium text-on-surface block leading-tight">Weekly Sunday Summary</span>
-<span class="text-[11px] font-label-sm text-secondary">Artisan payouts &amp; fleet telematics</span>
-</div>
-</div>
-<span class="w-2 h-2 rounded-full bg-tertiary"></span>
-</label>
-<label class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-lowest cursor-pointer hover:bg-surface-bright transition-all">
-<div class="flex items-center gap-2">
-<input checked="" class="accent-primary" name="cadence_mo" type="checkbox"/>
-<div>
-<span class="font-label-md text-label-md font-medium text-on-surface block leading-tight">Monthly Board Pack</span>
-<span class="text-[11px] font-label-sm text-secondary">1st of Month • Assayed Inventory</span>
-</div>
-</div>
-<span class="w-2 h-2 rounded-full bg-tertiary"></span>
-</label>
-</div>
-</div>
-<!-- Col 2: Authorized Recipients -->
-<div class="p-space-sm bg-surface-container-low rounded-xl space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="font-label-md text-label-md font-semibold text-on-surface">Recipient Manifest</span>
-<span class="material-symbols-outlined text-secondary text-lg">mark_email_read</span>
-</div>
-<div class="space-y-1.5">
-<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-lowest">
-<div class="min-w-0 pr-2">
-<span class="font-label-sm text-label-sm font-semibold text-on-surface block truncate">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span>
-<span class="text-[11px] font-label-sm text-primary block truncate">ananya@luvora.lk (Executive Director)</span>
-</div>
-<span class="material-symbols-outlined text-tertiary text-base">check_circle</span>
-</div>
-<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-lowest">
-<div class="min-w-0 pr-2">
-<span class="font-label-sm text-label-sm font-semibold text-on-surface block truncate">CBSL Compliance Sandbox Audit</span>
-<span class="text-[11px] font-label-sm text-secondary block truncate">audit.escrow@cbsl.gov.lk</span>
-</div>
-<span class="material-symbols-outlined text-tertiary text-base">check_circle</span>
-</div>
-<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-lowest">
-<div class="min-w-0 pr-2">
-<span class="font-label-sm text-label-sm font-semibold text-on-surface block truncate">Atelier Guild Trustees Council</span>
-<span class="text-[11px] font-label-sm text-secondary block truncate">trustees@dumbara-guild.lk</span>
-</div>
-<span class="material-symbols-outlined text-tertiary text-base">check_circle</span>
-</div>
-</div>
-</div>
-<!-- Col 3: Security & Watermarking Protocols -->
-<div class="p-space-sm bg-surface-container-low rounded-xl space-y-space-sm">
-<div class="flex items-center justify-between">
-<span class="font-label-md text-label-md font-semibold text-on-surface">Security &amp; Encryption</span>
-<span class="material-symbols-outlined text-secondary text-lg">lock</span>
-</div>
-<div class="space-y-2">
-<div class="p-2.5 rounded-lg bg-surface-container-lowest space-y-1">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm font-semibold text-on-surface">CBSL Level 3 Watermark</span>
-<span class="text-[11px] font-label-sm font-bold text-tertiary uppercase">SHA-256</span>
-</div>
-<p class="text-[11px] font-label-sm text-secondary">Every dispatched page embedded with dynamic patron tamper stamp.</p>
-</div>
-<div class="p-2.5 rounded-lg bg-surface-container-lowest space-y-1">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm font-semibold text-on-surface">PDPA Masking</span>
-<span class="text-[11px] font-label-sm font-bold text-primary uppercase">Active</span>
-</div>
-<p class="text-[11px] font-label-sm text-secondary">High-net-worth VIP patron names obfuscated in non-executive copies.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-</div></main></div><script>document.querySelectorAll("[data-export]").forEach(function(button){button.addEventListener("click",function(){var format=button.dataset.export;if(format==="pdf"){window.print();return;}var rows=Array.from(document.querySelectorAll("table tr")).map(function(row){return Array.from(row.querySelectorAll("th,td")).map(function(cell){return cell.innerText.trim();});});var content=format==="json"?JSON.stringify(rows,null,2):rows.map(function(row){return row.map(function(value){return "\""+value.replaceAll("\"","\"\"")+"\"";}).join(",");}).join("\r\n");var blob=new Blob([content],{type:format==="json"?"application/json":"text/csv;charset=utf-8"});var link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="luvora-reports."+(format==="json"?"json":"csv");link.click();URL.revokeObjectURL(link.href);});});</script><script>
-(() => {const tbody=document.querySelector('main table tbody');const summary=document.getElementById('report-dossier-count');if(!tbody||!summary)return;const rows=[...tbody.rows];const update=()=>{const n=rows.filter(row=>!row.hidden&&row.style.display!=='none').length;summary.textContent=`Displaying ${n} of ${n} audited dossiers`;};new MutationObserver(update).observe(tbody,{subtree:true,attributes:true,attributeFilter:['hidden','style']});update();})();
-</script></body></html>
+<script>
+    (function(){
+        const payloads = @json($exportPayloads);
+        const button = document.getElementById('export-reports');
+        const csvCell = value => '"' + String(value ?? '').replaceAll('"','""') + '"';
+        function extract(value, prefix, rows) {
+            if (Array.isArray(value)) { value.forEach((item,index) => extract(item, prefix ? prefix + '.' + index : String(index), rows)); return; }
+            if (value && typeof value === 'object') { Object.entries(value).forEach(([key,item]) => extract(item, prefix ? prefix + '.' + key : key, rows)); return; }
+            rows.push([prefix, value ?? '']);
+        }
+        button?.addEventListener('click', function(){
+            const rows = [['section','record index','field','source value']];
+            Object.entries(payloads).forEach(([section,payload]) => {
+                const list = Array.isArray(payload) ? payload : [payload];
+                list.forEach((record,index) => { const fields=[]; extract(record,'',fields); fields.forEach(([field,value])=>rows.push([section,index+1,field,value])); });
+            });
+            if(rows.length===1){ window.alert('There is no report data to export.'); return; }
+            const csv='\uFEFF'+rows.map(row=>row.map(csvCell).join(',')).join('\r\n');
+            const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+            const link=document.createElement('a'); link.href=url; link.download='luvora-reports-{{ $from }}-{{ $to }}-utc.csv'; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+        });
+    })();
+</script>
+</body></html>

@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin sign in - Luvora</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600&family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
     <style>
-        body,body :not(.material-symbols-outlined){font-family:Arial,Helvetica,sans-serif!important;-webkit-font-smoothing:antialiased}
+        body,body :not(.material-symbols-outlined){font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;-webkit-font-smoothing:antialiased}
+        .luvora-wordmark{font-family:'Bodoni Moda',Georgia,serif!important;font-weight:500;letter-spacing:-.035em}
         main>section:first-child{background:radial-gradient(ellipse at 18% 18%,rgba(59,130,246,.32),transparent 42%),linear-gradient(145deg,#0b1930,#12345b 72%,#005baf)}
         main>section:last-child>div{border:1px solid #e8edf2;border-radius:1.25rem;box-shadow:0 20px 60px rgba(15,23,42,.10)}
         input:not([type=checkbox]){border-radius:.75rem!important}input:focus{box-shadow:0 0 0 3px rgba(0,91,175,.1)}
@@ -17,13 +20,13 @@
 <body class="min-h-screen bg-[#f7f9fb] text-[#191c1e]">
 <main class="grid min-h-screen lg:grid-cols-2">
     <section class="hidden flex-col justify-between bg-[#101b2e] p-12 text-white lg:flex">
-        <a href="{{ route('login') }}" class="font-serif text-3xl font-medium tracking-tight text-white" aria-label="Luvora admin sign in">Luvora</a>
+        <a href="{{ route('login') }}" class="luvora-wordmark text-3xl text-white" aria-label="Luvora admin sign in">Luvora</a>
         <div class="max-w-lg"><p class="text-xs uppercase tracking-[.3em] text-blue-200">Executive portal</p><h1 class="mt-5 text-5xl font-semibold leading-tight">A considered view of the house.</h1><p class="mt-5 text-lg text-slate-300">Secure access for the Luvora owner and authorized administrators.</p></div>
         <p class="text-sm text-slate-400">Private administration workspace</p>
     </section>
     <section class="flex items-center justify-center p-6 sm:p-12">
         <div class="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-            <div class="mb-8 lg:hidden"><span class="font-serif text-3xl font-medium tracking-tight">Luvora</span><p class="mt-1 text-xs uppercase tracking-widest text-slate-500">Admin portal</p></div>
+            <div class="mb-8 lg:hidden"><span class="luvora-wordmark text-3xl text-[#191c1e]">Luvora</span><p class="mt-1 text-xs uppercase tracking-widest text-slate-500">Admin portal</p></div>
             <p class="text-xs font-semibold uppercase tracking-[.2em] text-blue-700">Administrator access</p><h2 class="mt-2 text-3xl font-semibold">Sign in</h2><p class="mt-2 text-sm text-slate-500">Use your authorized admin account.</p>
             @if ($errors->any())<div class="mt-5 rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ $errors->first() }}</div>@endif
             <form method="POST" action="{{ route('login.store') }}" class="mt-7 space-y-5">@csrf

@@ -1,772 +1,177 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products | Luvora Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{font-family:'Plus Jakarta Sans',sans-serif}.skeleton{background:linear-gradient(90deg,#f1f3f4 25%,#e8ebed 50%,#f1f3f4 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}@keyframes shimmer{to{background-position:-200% 0}}[data-sort]{cursor:pointer}[data-sort]:focus-visible{outline:2px solid #146c60;outline-offset:2px}</style>
+</head>
+<body class="min-h-screen bg-[#f6f7f7] text-[#202523]">
+@include('partials.sidebar')
+<div class="md:pl-64">
+  <header class="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between border-b border-[#e6e9e7] bg-white/95 px-4 backdrop-blur md:left-64 md:px-8">
+    <div class="flex min-w-0 items-center gap-3">
+      <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 md:hidden" aria-label="Toggle admin navigation" aria-controls="admin-sidebar" aria-expanded="false" onclick="const n=document.getElementById('admin-sidebar');const o=n.classList.toggle('-translate-x-full');this.setAttribute('aria-expanded',String(!o))"><span class="material-symbols-outlined">menu</span></button>
+      <p class="hidden text-sm font-semibold text-slate-700 sm:block">Luvora Administration</p>
+    </div>
+    <div class="flex items-center gap-3"><a href="{{ route('admin.profile') }}" aria-label="Admin profile" title="Admin profile">@include('partials.profile-avatar', ['avatarSize' => 'h-9 w-9'])</a><span class="hidden text-sm font-medium text-slate-700 sm:block">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span></div>
+  </header>
+  <main class="min-h-screen px-4 pb-10 pt-20 sm:px-6 lg:px-8">
+    @include('partials.api-state')
+    @if(session('status'))<div role="status" class="mx-auto mb-4 max-w-[1440px] rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ session('status') }}</div>@endif
+    @if(session('created_product_id'))<div class="mx-auto mb-4 max-w-[1440px] text-right"><a href="{{ route('products.index', ['productId' => session('created_product_id')]) }}" class="text-sm font-semibold text-[#17675d] hover:underline">View the product just created</a></div>@endif
+    <div class="mx-auto max-w-[1440px]">
+      <nav aria-label="Breadcrumb" class="mb-5 flex items-center gap-2 text-sm text-slate-500"><a href="{{ route('dashboard') }}" class="hover:text-slate-900">Admin</a><span aria-hidden="true">/</span><span class="font-semibold text-slate-900">Products</span></nav>
+      <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div><p class="mb-2 text-[11px] font-bold uppercase tracking-[.22em] text-[#17675d]">Catalog</p><h1 class="text-3xl font-semibold tracking-tight text-[#202523] sm:text-4xl">Products</h1><p class="mt-2 max-w-xl text-sm leading-6 text-slate-600">Search, review, and organize products returned by the admin catalog API.</p></div>
+        <button type="button" id="open-create-product" onclick="const dialog=document.getElementById('create-product-dialog');if(dialog&&!dialog.open)dialog.showModal()" class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#202523] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#17675d] focus:outline-none focus:ring-2 focus:ring-[#17675d]/40"><span class="material-symbols-outlined text-lg">add</span>Add product</button>
+      </div>
 
-<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      "colors": {
-        "surface-bright": "#f7f9fb",
-        "surface-variant": "#e0e3e5",
-        "tertiary-fixed": "#6ffbbe",
-        "primary-fixed-dim": "#a8c8ff",
-        "on-background": "#191c1e",
-        "surface-container": "#eceef0",
-        "inverse-on-surface": "#eff1f3",
-        "on-tertiary-container": "#f5fff6",
-        "secondary-fixed": "#dae2fd",
-        "inverse-primary": "#a8c8ff",
-        "on-tertiary-fixed-variant": "#005236",
-        "inverse-surface": "#2d3133",
-        "on-primary-fixed-variant": "#004689",
-        "on-secondary-fixed": "#131b2e",
-        "surface": "#f7f9fb",
-        "on-tertiary-fixed": "#002113",
-        "outline": "#717785",
-        "surface-container-low": "#f2f4f6",
-        "surface-container-highest": "#e0e3e5",
-        "primary-container": "#0074db",
-        "surface-container-high": "#e6e8ea",
-        "primary": "#005baf",
-        "surface-tint": "#005eb3",
-        "surface-dim": "#d8dadc",
-        "outline-variant": "#c0c6d6",
-        "tertiary-container": "#00855b",
-        "on-error-container": "#93000a",
-        "on-secondary-fixed-variant": "#3f465c",
-        "tertiary": "#006947",
-        "on-tertiary": "#ffffff",
-        "background": "#f7f9fb",
-        "secondary": "#565e74",
-        "on-error": "#ffffff",
-        "primary-fixed": "#d5e3ff",
-        "on-secondary-container": "#5c647a",
-        "tertiary-fixed-dim": "#4edea3",
-        "on-surface": "#191c1e",
-        "surface-container-lowest": "#ffffff",
-        "on-surface-variant": "#404754",
-        "error": "#ba1a1a",
-        "on-primary": "#ffffff",
-        "on-primary-fixed": "#001b3c",
-        "on-primary-container": "#fefcff",
-        "error-container": "#ffdad6",
-        "secondary-container": "#dae2fd",
-        "on-secondary": "#ffffff",
-        "secondary-fixed-dim": "#bec6e0"
-      },
-      "borderRadius": {
-        "DEFAULT": "0.25rem",
-        "lg": "0.5rem",
-        "xl": "0.75rem",
-        "full": "9999px"
-      },
-      "spacing": {
-        "gutter-sm": "1rem",
-        "margin": "1.5rem",
-        "gutter-lg": "2rem",
-        "space-lg": "1.5rem",
-        "space-xs": "0.25rem",
-        "margin-lg": "4rem",
-        "space-sm": "0.5rem",
-        "margin-sm": "1rem",
-        "gutter": "1.5rem",
-        "space-md": "1rem",
-        "space-xl": "2.5rem"
-      },
-      "fontFamily": {
-        "headline-lg": [
-          "Bodoni Moda"
-        ],
-        "label-sm": [
-          "Inter"
-        ],
-        "body-lg": [
-          "Plus Jakarta Sans"
-        ],
-        "label-md": [
-          "Inter"
-        ],
-        "body-md": [
-          "Plus Jakarta Sans"
-        ],
-        "headline-lg-mobile": [
-          "Bodoni Moda"
-        ],
-        "display-hero": [
-          "Bodoni Moda"
-        ],
-        "headline-md": [
-          "Bodoni Moda"
-        ],
-        "headline-sm": [
-          "Plus Jakarta Sans"
-        ],
-        "label-lg": [
-          "Inter"
-        ],
-        "display-hero-mobile": [
-          "Bodoni Moda"
-        ],
-        "body-sm": [
-          "Plus Jakarta Sans"
-        ]
-      },
-      "fontSize": {
-        "headline-lg": [
-          "40px",
-          {
-            "lineHeight": "48px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "500"
-          }
-        ],
-        "label-sm": [
-          "11px",
-          {
-            "lineHeight": "14px",
-            "letterSpacing": "0.06em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-lg": [
-          "18px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "400"
-          }
-        ],
-        "label-md": [
-          "12px",
-          {
-            "lineHeight": "16px",
-            "letterSpacing": "0.04em",
-            "fontWeight": "500"
-          }
-        ],
-        "body-md": [
-          "15px",
-          {
-            "lineHeight": "22px",
-            "fontWeight": "400"
-          }
-        ],
-        "headline-lg-mobile": [
-          "30px",
-          {
-            "lineHeight": "36px",
-            "letterSpacing": "0em",
-            "fontWeight": "500"
-          }
-        ],
-        "display-hero": [
-          "56px",
-          {
-            "lineHeight": "64px",
-            "letterSpacing": "-0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "headline-md": [
-          "28px",
-          {
-            "lineHeight": "34px",
-            "fontWeight": "500"
-          }
-        ],
-        "headline-sm": [
-          "20px",
-          {
-            "lineHeight": "28px",
-            "fontWeight": "600"
-          }
-        ],
-        "label-lg": [
-          "14px",
-          {
-            "lineHeight": "20px",
-            "letterSpacing": "0.02em",
-            "fontWeight": "600"
-          }
-        ],
-        "display-hero-mobile": [
-          "38px",
-          {
-            "lineHeight": "44px",
-            "letterSpacing": "-0.01em",
-            "fontWeight": "600"
-          }
-        ],
-        "body-sm": [
-          "13px",
-          {
-            "lineHeight": "18px",
-            "fontWeight": "400"
-          }
-        ]
-      }
-    }
-  }
-}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>.catalog-toast{position:fixed;right:22px;bottom:22px;z-index:100;background:#191c1e;color:white;padding:11px 15px;border-radius:8px;font:12px Inter,sans-serif;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}.catalog-toast.visible{opacity:1;transform:none}#product-dialog{width:min(700px,calc(100vw - 28px));max-height:88vh;border:0;border-radius:14px;padding:0;box-shadow:0 20px 70px #0004}#product-dialog::backdrop{background:#191c1e77}.product-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;font:11px Inter,sans-serif}.product-form label{display:block}.product-form input,.product-form select,.product-form textarea{display:block;width:100%;padding:9px;border:1px solid #e0e3e5;border-radius:6px;margin-top:5px}.product-form textarea{min-height:60px}.product-form .wide{grid-column:1/-1}.gallery-upload{display:inline-flex;padding:7px 10px;border-radius:18px;background:#f2f4f6;font:11px Inter,sans-serif}.gallery-upload input{width:170px}@media(max-width:600px){.product-form{grid-template-columns:1fr}.product-form .wide{grid-column:auto}}</style></head><body class="bg-surface text-on-surface">@include('partials.sidebar')<div class="md:pl-64"><header class="fixed top-0 left-0 right-0 md:left-64 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-lg flex items-center justify-between"><button type="button" class="mr-3 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm md:hidden" aria-label="Toggle admin navigation" aria-controls="admin-sidebar" aria-expanded="false" onclick="const nav=document.getElementById('admin-sidebar');const open=nav.classList.toggle('-translate-x-full');this.setAttribute('aria-expanded',String(!open))"><span class="material-symbols-outlined">menu</span></button><div class="flex min-w-0 items-center gap-space-md flex-1 max-w-2xl"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-2 rounded-full"><span class="material-symbols-outlined text-base text-primary">storefront</span><span class="font-label-sm text-label-sm text-on-surface font-semibold">Colombo 07 Flagship</span><span class="material-symbols-outlined text-sm text-outline">expand_more</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span><input class="w-full bg-surface-container-lowest pl-10 pr-4 py-2 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]" placeholder="Search SKUs, high jewelry orders, sovereign patrons..." type="text"/></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-tertiary-fixed/30 px-space-sm py-1.5 rounded-full"><span class="h-2 w-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant font-medium">CBSL Escrow Synchronized</span></div><button class="relative p-2 rounded-full bg-surface-container-lowest text-on-surface-variant hover:text-on-surface shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><span class="material-symbols-outlined text-xl">notifications</span><span class="absolute top-1 right-1 h-2 w-2 rounded-full bg-error"></span></button><div class="flex items-center gap-space-sm pl-space-xs"><a href="{{ route('admin.profile') }}" aria-label="Open admin profile" title="Admin profile">@include('partials.profile-avatar', ['avatarSize' => 'h-8 w-8'])</a><div class="hidden xl:flex flex-col text-right"><span class="font-label-md text-label-md text-on-surface font-medium">{{ data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Admin user' }}</span><span class="font-label-sm text-label-sm text-secondary">{{ data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Administrator' }}</span></div></div></div></header><main class="w-full pt-20 px-gutter-lg bg-surface min-h-screen">@include('partials.api-state')<div class="flex flex-col w-full">
-<!-- Dynamic Breadcrumb & Context Header Bar -->
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-md">
-<div class="flex items-center gap-space-xs font-label-md text-label-md text-secondary">
-<a class="hover:text-primary transition-colors" href="{{ route('dashboard') }}">Executive Portal</a>
-<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
-<a class="hover:text-primary transition-colors" href="{{ route('products.index') }}">Catalog &amp; Products</a>
-<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
-<span class="text-on-surface font-semibold">All Products</span>
-</div>
-<div class="flex items-center gap-space-sm self-start md:self-auto">
-<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface">
-<span class="h-2 w-2 rounded-full bg-tertiary-container animate-pulse"></span>
-<span class="font-label-sm text-label-sm font-semibold tracking-wide uppercase">Colombo 07 Vault &amp; Global Feed</span>
-</div>
-<span class="font-label-sm text-label-sm text-secondary">SLST 15:42</span>
-</div>
-</div>
-<!-- Page Title & Primary Actions Area -->
-<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-lg pb-space-lg">
-<div class="space-y-space-xs max-w-3xl">
-<div class="flex items-center gap-space-xs">
-<span class="material-symbols-outlined text-primary text-base">verified_user</span>
-<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">
-          Catalog Inventory &amp; Artisan Specifications â€¢ Colombo 07 Vault
-        </span>
-</div>
-<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight leading-none">
-        Product Management &amp; Catalog Master
-      </h1>
-<p class="font-body-md text-body-md text-secondary">
-        Curate, audit, and manage high-fashion handlooms, unheated Ceylon gemstones, and bespoke resort silhouettes across islandwide artisan guilds.
-      </p>
-</div>
-<!-- Quick Action Toolbar -->
-<div class="flex flex-wrap items-center gap-space-sm">
-<button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md font-semibold transition-all shadow-sm">
-<span class="material-symbols-outlined text-lg">download</span>
-<span>Export Spec Dossier</span>
-</button>
-<button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md font-semibold transition-all shadow-sm">
-<span class="material-symbols-outlined text-lg">fact_check</span>
-<span>Bulk Stock Audit</span>
-</button>
-<button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-md text-label-md font-semibold transition-all shadow-sm">
-<span class="material-symbols-outlined text-lg">barcode_scanner</span>
-<span>Barcode Mode</span>
-</button>
-<button id="add-product-button" disabled class="inline-flex items-center gap-space-xs px-space-lg py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-container font-label-md text-label-md font-semibold transition-all shadow-md active:scale-95">
-<span class="material-symbols-outlined text-lg">add_circle</span>
-<span>+ Add New Product</span>
-</button>
-</div>
-</div>
-<!-- Key Metrics Strip (4 mini KPI bento blocks) -->
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md pb-space-lg">
-<!-- Metric 1 -->
-<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Total Active SKUs</span>
-<span class="p-2 rounded-lg bg-surface-container text-primary">
-<span class="material-symbols-outlined text-lg">inventory</span>
-</span>
-</div>
-<div class="pt-space-sm">
-<div class="flex items-baseline gap-space-xs">
-<span id="catalog-total-count" class="font-headline-md text-headline-md font-semibold text-on-surface">0</span>
-<span class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center">
-<span class="material-symbols-outlined text-xs">arrow_upward</span>+18 this month
-          </span>
-</div>
-<p class="font-body-sm text-body-sm text-secondary pt-1">
-          <span id="catalog-status-summary">6 active products - 1 archived</span>
-        </p>
-</div>
-<div class="absolute -right-6 -bottom-6 w-20 h-20 bg-primary/5 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
-</div>
-<!-- Metric 2 -->
-<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Low Stock Telemetry</span>
-<span class="p-2 rounded-lg bg-error-container/40 text-error">
-<span class="material-symbols-outlined text-lg">warning</span>
-</span>
-</div>
-<div class="pt-space-sm">
-<div class="flex items-baseline gap-space-xs">
-<span id="catalog-low-stock-count" class="font-headline-md text-headline-md font-semibold text-error">0</span>
-<span class="font-label-sm text-label-sm text-error font-semibold">Critical (&lt; 3 units)</span>
-</div>
-<p class="font-body-sm text-body-sm text-secondary pt-1">
-          <span id="catalog-low-stock-summary">0 products with low stock</span>
-        </p>
-</div>
-<div class="absolute -right-6 -bottom-6 w-20 h-20 bg-error/5 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
-</div>
-<!-- Metric 4 -->
-<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Artisan Guild Network</span>
-<span class="p-2 rounded-lg bg-surface-container text-secondary">
-<span class="material-symbols-outlined text-lg">handshake</span>
-</span>
-</div>
-<div class="pt-space-sm">
-<div class="flex items-baseline gap-space-xs">
-<span id="catalog-guild-count" class="font-headline-md text-headline-md font-semibold text-on-surface">0 guilds</span>
-<span class="font-label-sm text-label-sm text-secondary font-medium">100% Provenance</span>
-</div>
-<p class="font-body-sm text-body-sm text-secondary pt-1 truncate">
-          <span id="catalog-guild-summary">0 distinct product guilds</span>
-        </p>
-</div>
-<div class="absolute -right-6 -bottom-6 w-20 h-20 bg-primary/5 rounded-full blur-xl group-hover:scale-125 transition-transform"></div>
-</div>
-</div>
-<!-- Search, Filter Suite, & View Matrix -->
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm mb-space-md space-y-space-md">
-<!-- Row 1: Search & Dynamic Segment Tabs -->
-<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
-<!-- Search Input -->
-<div class="relative flex-1 max-w-xl">
-<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
-<input id="catalog-search" class="w-full pl-11 pr-4 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all" placeholder="Search by product name, SKU, artisan guild, gemstone cert # (e.g. RAT-4921, Somapala)..." type="text"/>
-</div>
-<!-- Quick Segment Tabs -->
-<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg overflow-x-auto">
-<button data-segment="all" data-label="All" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm font-semibold bg-surface-container-lowest text-on-surface shadow-xs">All</button>
-<button data-segment="active" data-label="Active" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">Active</button>
-<button data-segment="low" data-label="Low Stock" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-error hover:bg-error-container/20 transition-colors flex items-center gap-1">Low Stock</button>
-<button data-segment="archived" data-label="Archived" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">Archived</button>
-<button data-segment="drafts" data-label="Drafts" class="segment-tab px-3 py-1.5 rounded font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">Drafts</button>
-</div>
-<!-- Layout View Toggle -->
-<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg self-end lg:self-auto">
-<button class="p-1.5 rounded bg-surface-container-lowest text-primary shadow-xs" title="Table View">
-<span class="material-symbols-outlined text-lg">table_rows</span>
-</button>
-<button class="p-1.5 rounded text-secondary hover:text-on-surface" title="Grid View">
-<span class="material-symbols-outlined text-lg">grid_view</span>
-</button>
-</div>
-</div>
-<!-- Row 2: Comprehensive Dropdown Filter Row -->
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-space-sm pt-space-xs">
-<!-- Category Filter -->
-<div class="flex flex-col space-y-1">
-<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Category</label>
-<div class="relative">
-<select data-filter="category" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option value="all">All Categories</option>
-<option value="handloom">Handloom Sarees &amp; Silks</option>
-<option value="couture">Haute Couture Kaftans</option>
-<option value="menswear">Bespoke Menswear</option>
-<option value="jewelry">Fine Jewelry &amp; Sapphires</option>
-<option value="accessories">Palm &amp; Beeralu Accessories</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-</div>
-<!-- Stock Status Filter -->
-<div class="flex flex-col space-y-1">
-<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Stock Status</label>
-<div class="relative">
-<select data-filter="status" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option value="all">All Statuses</option>
-<option value="stocked">In Vault Stock</option>
-<option value="low">Critical Stock (&lt;3)</option>
-<option value="made-to-order">Made-to-Order</option>
-<option value="out">Out of Stock / Restock</option>
-<option value="sealed">Vault Sealed</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-</div>
-<!-- Artisan Guild Origin -->
-<div class="flex flex-col space-y-1">
-<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Guild / Provenance</label>
-<div class="relative">
-<select data-filter="guild" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option value="all">All Guilds</option>
-<option>Dumbara Valley Weavers</option>
-<option>Ratnapura Alluvial Basin</option>
-<option>Galle Fort Beeralu &amp; Tailors</option>
-<option>Jaffna Peninsula Collective</option>
-<option>Elahera Gem Artisans</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-</div>
-<!-- Price Tier -->
-<div class="flex flex-col space-y-1">
-<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Price Tier (LKR)</label>
-<div class="relative">
-<select data-filter="price" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option value="all">All Price Tiers</option>
-<option value="under25">Under LKR 25,000</option>
-<option value="25to75">LKR 25,000 - 75,000</option>
-<option value="75to200">LKR 75,000 - 200,000</option>
-<option value="over200">High Jewelry &gt; LKR 200,000</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-</div>
-<!-- Provenance / Verification Badges -->
-<div class="flex flex-col space-y-1">
-<label class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Heritage Assay</label>
-<div class="relative">
-<select data-filter="certificate" class="w-full appearance-none bg-surface-container-low text-on-surface font-body-sm text-body-sm px-3 py-2 rounded-lg pr-8 focus:outline-none focus:bg-surface-container">
-<option value="all">All Heritage Certs</option>
-<option>UNESCO Pit-Loom Certified</option>
-<option>NGJA Gemological Certified</option>
-<option>Certified Natural Organic Dye</option>
-<option>SLIDA Registered Guild</option>
-</select>
-<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-base pointer-events-none">expand_more</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Bulk Batch Toolbar (Rendered when selection is active) -->
-<div class="bg-primary/5 px-space-md py-2.5 rounded-lg mb-space-sm flex flex-wrap items-center justify-between gap-space-sm">
-<div class="flex items-center gap-space-sm">
-<input class="w-4 h-4 rounded text-primary focus:ring-0 cursor-pointer" id="bulk-select-all" type="checkbox"/>
-<span class="font-label-sm text-label-sm font-semibold text-on-surface"><span id="selected-label">Selected 0 items</span></span>
-<span class="font-label-sm text-label-sm text-secondary">|</span>
-<div class="flex items-center gap-1.5">
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container font-label-sm text-label-sm text-on-surface font-medium transition-colors shadow-xs">
-          Adjust Stock Levels
-        </button>
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-surface-container font-label-sm text-label-sm text-on-surface font-medium transition-colors shadow-xs">
-          Update Guild Escrow Split
-        </button>
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest hover:bg-error-container/40 text-error font-label-sm text-label-sm font-medium transition-colors shadow-xs">
-          Archive Selected
-        </button>
-</div>
-</div>
-<div class="flex items-center gap-space-xs font-label-sm text-label-sm text-secondary">
-<span class="material-symbols-outlined text-base">sync</span>
-<span>Auto-sync with Colombo 07 RFID scanner enabled</span>
-</div>
-</div>
-<!-- Comprehensive Master Product Table Container -->
-<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden mb-space-lg">
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<!-- Table Header -->
-<thead>
-<tr class="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider">
-<th class="py-3.5 pl-space-md pr-2 w-12 text-center">
-<span class="sr-only">Select</span>
-</th>
-<th class="py-3.5 px-space-sm min-w-[280px]">Product &amp; SKU Identifier</th>
-<th class="py-3.5 px-space-sm min-w-[190px]">Artisan / Guild Provenance</th>
-<th class="py-3.5 px-space-sm min-w-[170px]">Retail &amp; Escrow Allocation</th>
-<th class="py-3.5 px-space-sm min-w-[160px]">Inventory &amp; Vault Telemetry</th>
-<th class="py-3.5 px-space-sm min-w-[180px]">Assay &amp; Certification</th>
-<th class="py-3.5 pr-space-md pl-space-sm text-right min-w-[140px]">Actions</th>
-</tr>
-</thead>
-<tbody id="products-table-body" class="divide-y divide-surface-container text-on-surface font-body-sm text-body-sm">
-@forelse(($apiRecords['products'] ?? []) as $product)
-    @php($productId = data_get($product, 'id') ?? data_get($product, 'productId') ?? data_get($product, 'product_id'))
-    @php($productName = data_get($product, 'name') ?? data_get($product, 'productName') ?? data_get($product, 'title') ?? 'Unnamed product')
-    @php($productSku = data_get($product, 'sku') ?? data_get($product, 'SKU') ?? data_get($product, 'code') ?? '—')
-    @php($productStatus = strtolower((string) (data_get($product, 'status') ?? data_get($product, 'publicationStatus') ?? 'unknown')))
-    @php($productStock = (int) (data_get($product, 'stockQuantity') ?? data_get($product, 'quantity') ?? data_get($product, 'stock') ?? 0))
-    @php($productCategory = data_get($product, 'category.name') ?? data_get($product, 'categoryName') ?? data_get($product, 'category') ?? '—')
-    @php($productPrice = data_get($product, 'price') ?? data_get($product, 'salePrice') ?? data_get($product, 'unitPrice'))
-    @php($productImage = data_get($product, 'imageUrl') ?? data_get($product, 'image') ?? data_get($product, 'thumbnail'))
-    <tr data-product-row data-id="{{ $productId }}" data-name="{{ $productName }}" data-sku="{{ $productSku }}" data-status="{{ $productStatus }}" data-stock="{{ $productStock }}" data-price="{{ $productPrice ?? 0 }}" data-category="{{ $productCategory }}" data-guild="{{ data_get($product, 'guild.name') ?? data_get($product, 'guild') ?? '' }}" data-cert="{{ data_get($product, 'certification') ?? '' }}" class="hover:bg-surface-container-low/50 transition-colors group">
-        <td class="py-4 pl-space-md pr-2 text-center"><input class="row-check w-4 h-4 rounded text-primary" type="checkbox" aria-label="Select {{ $productName }}"></td>
-        <td class="py-4 px-space-sm"><div class="flex items-center gap-space-sm">@if($productImage)<img class="w-14 h-18 shrink-0 rounded-lg object-cover" src="{{ $productImage }}" alt="{{ $productName }}">@else<div class="w-14 h-18 shrink-0 rounded-lg bg-surface-container"></div>@endif<div class="min-w-0"><div class="product-title font-semibold text-on-surface">{{ $productName }}</div><div class="flex items-center gap-2"><span class="font-mono text-xs text-secondary">#{{ $productSku }}</span><span class="rounded-full bg-surface-container px-2 py-0.5 text-xs">{{ $productCategory }}</span></div><span data-publication-state class="text-xs text-secondary">{{ $productStatus }}</span></div></div></td>
-        <td class="py-4 px-space-sm"><div>{{ data_get($product, 'artisan.name') ?? data_get($product, 'artisan') ?? data_get($product, 'guild.name') ?? data_get($product, 'guild') ?? '—' }}</div><div class="text-xs text-secondary">{{ data_get($product, 'provenance') ?? data_get($product, 'origin') ?? '—' }}</div></td>
-        <td class="py-4 px-space-sm"><div class="font-semibold">{{ $productPrice !== null ? 'LKR '.number_format((float) $productPrice, 2) : '—' }}</div><div class="text-xs text-secondary">{{ data_get($product, 'escrowAllocation') ?? data_get($product, 'escrow') ?? '—' }}</div></td>
-        <td class="py-4 px-space-sm"><span class="inline-flex rounded-full bg-surface-container px-2 py-0.5 text-xs">{{ $productStock }} available</span><div class="text-xs text-secondary">{{ data_get($product, 'location') ?? data_get($product, 'stockLocation') ?? '—' }}</div></td>
-        <td class="py-4 px-space-sm"><span class="inline-flex rounded-full bg-surface-container px-2.5 py-0.5 text-xs">{{ data_get($product, 'certification') ?? data_get($product, 'assay') ?? '—' }}</span></td>
-        <td class="py-4 pr-space-md pl-space-sm text-right"><span class="text-xs text-secondary">{{ $productId ? 'ID '.$productId : '—' }}</span></td>
-    </tr>
-@empty
-    <tr><td colspan="7" class="px-4 py-10 text-center text-sm text-secondary">{{ !empty($apiErrors['products'] ?? null) ? 'Product data could not be loaded.' : 'No products are available.' }}</td></tr>
-@endforelse
-</tbody>
-</table>
-</div>
-<!-- Table Pagination & Ledger Bar -->
-<div class="bg-surface-container-low px-space-md py-space-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
-<!-- Showing Results Status -->
-<div class="flex items-center gap-space-md">
-<span class="font-body-sm text-body-sm text-secondary">
-          Showing <span class="font-semibold text-on-surface" id="products-range">0â€“0</span> of <span class="font-semibold text-on-surface" id="products-total">0</span> master products
-        </span>
-<div class="flex items-center gap-2">
-<span class="font-label-sm text-label-sm text-outline">Per page:</span>
-<select id="products-page-size" aria-label="Products per page" class="bg-surface-container-lowest text-on-surface font-label-sm text-label-sm px-2 py-1 rounded shadow-xs focus:outline-none">
-<option>10</option>
-<option>25</option>
-<option>50</option>
-<option>100</option>
-</select>
-</div>
-</div>
-<!-- Pagination Buttons -->
-<div class="flex items-center gap-1">
-<button type="button" data-products-page="previous" aria-label="Previous page" class="p-1.5 rounded bg-surface-container-lowest text-outline hover:text-on-surface shadow-xs transition-colors disabled:opacity-40" disabled>
-<span class="material-symbols-outlined text-base">chevron_left</span>
-</button>
-<div id="products-page-buttons" class="flex items-center gap-1" aria-label="Products pages"></div>
-<button type="button" data-products-page="next" aria-label="Next page" class="p-1.5 rounded bg-surface-container-lowest text-secondary hover:text-on-surface shadow-xs transition-colors" disabled>
-<span class="material-symbols-outlined text-base">chevron_right</span>
-</button>
-</div>
-</div>
-</div>
+      @if(!empty($apiData['product'] ?? null))
+        @php($detail = data_get($apiData, 'product.data') ?? data_get($apiData, 'product.product') ?? data_get($apiData, 'product'))
+        @if(is_array($detail))
+          <section class="mb-6 rounded-2xl border border-[#dfe6e3] bg-white p-5 shadow-sm" aria-labelledby="product-detail-heading">
+            <div class="mb-4 flex items-start justify-between gap-4"><div><p class="text-xs font-semibold uppercase tracking-[.15em] text-[#17675d]">Product detail Â· API response</p><h2 id="product-detail-heading" class="mt-1 text-xl font-semibold">{{ data_get($detail,'name') ?? data_get($detail,'productName') ?? data_get($detail,'title') ?? 'Product' }}</h2></div><a href="{{ route('products.index') }}" class="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium hover:bg-slate-50">Back to products</a></div>
+            <dl class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2 lg:grid-cols-4">@foreach(['sku' => 'SKU','category.name' => 'Category','price' => 'Price','description' => 'Description','status' => 'Publication status','stockQuantity' => 'Stock'] as $field => $label)@php($value=data_get($detail,$field))<div class="min-w-0"><dt class="text-xs font-medium uppercase tracking-wide text-slate-500">{{ $label }}</dt><dd class="mt-1 break-words text-slate-900">{{ is_scalar($value) ? $value : ($value === null ? 'Not provided' : json_encode($value, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)) }}</dd></div>@endforeach</dl>
+            <p class="mt-4 border-t border-slate-100 pt-3 text-xs text-slate-500">Edit, archive, and delete are unavailable until the admin API write DTOs are documented.</p>
+          </section>
+        @endif
+      @endif
 
+      <section class="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <article class="rounded-2xl border border-[#e4e9e7] bg-white p-5 shadow-[0_8px_30px_rgba(22,40,34,.03)]"><div class="flex items-center justify-between"><div><p class="text-sm text-slate-500">Products in this API response</p><p id="catalog-total-count" class="mt-3 text-3xl font-semibold tracking-tight">{{ count($apiRecords['products'] ?? []) }}</p></div><span class="grid h-11 w-11 place-items-center rounded-xl bg-[#edf4f0] text-[#17675d]"><span class="material-symbols-outlined">inventory_2</span></span></div><p class="mt-2 text-xs text-slate-500">The catalog endpoint supports up to 100 products per API page.</p></article>
+        <article class="rounded-2xl border border-[#e4e9e7] bg-white p-5 shadow-[0_8px_30px_rgba(22,40,34,.03)]"><div class="flex items-center justify-between"><div><p class="text-sm text-slate-500">Low stock</p><p id="catalog-low-stock-count" class="mt-3 text-3xl font-semibold tracking-tight">N/A</p></div><span class="grid h-11 w-11 place-items-center rounded-xl bg-[#fbf4e8] text-[#8b6428]"><span class="material-symbols-outlined">warning</span></span></div><p id="catalog-low-stock-summary" class="mt-2 text-xs text-slate-500">Requires stock and reorder-level fields in the product response.</p></article>
+      </section>
+
+      <section class="overflow-hidden rounded-2xl border border-[#e4e9e7] bg-white shadow-[0_8px_30px_rgba(22,40,34,.03)]" aria-labelledby="products-table-title">
+        <div class="border-b border-slate-100 p-4 sm:p-5">
+          <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between"><div><h2 id="products-table-title" class="text-lg font-semibold">Catalog</h2><p class="mt-1 text-xs text-slate-500">Search and filters apply to the API page currently loaded.</p></div>
+            <label class="relative block w-full xl:max-w-sm"><span class="sr-only">Search products</span><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-lg text-slate-400">search</span><input id="catalog-search" type="search" autocomplete="off" placeholder="Search name or SKU" class="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-[#17675d] focus:ring-2 focus:ring-[#17675d]/15"></label>
+          </div>
+          <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <label class="text-xs font-semibold text-slate-600">Category<select id="category-filter" class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-slate-800 focus:border-[#17675d] focus:outline-none"><option value="all">All categories</option>@foreach(($apiRecords['categories'] ?? []) as $category)@php($categoryId=data_get($category,'id')??data_get($category,'categoryId')??data_get($category,'category_id'))@php($categoryName=data_get($category,'name')??data_get($category,'categoryName')??data_get($category,'title'))@if($categoryId!==null && $categoryName)<option value="{{ $categoryId }}">{{ $categoryName }}</option>@endif @endforeach</select></label>
+            <label class="text-xs font-semibold text-slate-600">Publication status<select id="publication-filter" class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-slate-800 focus:border-[#17675d] focus:outline-none"><option value="all">All statuses</option>@foreach(collect($apiRecords['products'] ?? [])->map(fn($row)=>data_get($row,'status')??data_get($row,'publicationStatus'))->filter()->unique() as $state)<option value="{{ strtolower((string)$state) }}">{{ ucfirst((string)$state) }}</option>@endforeach</select></label>
+            <label class="text-xs font-semibold text-slate-600">Stock level<select id="stock-filter" class="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-slate-800 focus:border-[#17675d] focus:outline-none"><option value="all">All stock levels</option><option value="in">In stock</option><option value="low">Low stock (API threshold)</option><option value="out">Out of stock</option></select></label>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-[900px] w-full text-left text-sm">
+            <thead class="bg-[#f7f9f8] text-[11px] uppercase tracking-[.08em] text-slate-500"><tr><th scope="col" data-sort="name" tabindex="0" class="px-5 py-3.5">Product / SKU</th><th scope="col" data-sort="category" tabindex="0" class="px-4 py-3.5">Category</th><th scope="col" data-sort="price" tabindex="0" class="px-4 py-3.5">Price</th><th scope="col" data-sort="stock" tabindex="0" class="px-4 py-3.5">Stock</th><th scope="col" data-sort="status" tabindex="0" class="px-4 py-3.5">Publication</th><th scope="col" class="px-5 py-3.5 text-right">Actions</th></tr></thead>
+            <tbody id="products-table-body" class="divide-y divide-slate-100">
+              @forelse(($apiRecords['products'] ?? []) as $product)
+                @php($productId=data_get($product,'id')??data_get($product,'productId')??data_get($product,'product_id'))
+                @php($productName=data_get($product,'name')??data_get($product,'productName')??data_get($product,'title')??'Unnamed product')
+                @php($productSku=data_get($product,'sku')??data_get($product,'SKU')??data_get($product,'code')??'â€”')
+                @php($productStatus=(string)(data_get($product,'status')??data_get($product,'publicationStatus')??'Unknown'))
+                @php($stockRaw=data_get($product,'stockQuantity')??data_get($product,'quantity')??data_get($product,'stock'))
+                @php($reorderLevel=data_get($product,'reorderLevel')??data_get($product,'lowStockThreshold')??data_get($product,'minimumStock'))
+                @php($productCategory=data_get($product,'category.name')??data_get($product,'categoryName')??(is_string(data_get($product,'category'))?data_get($product,'category'):'â€”'))
+                @php($categoryId=data_get($product,'categoryId')??data_get($product,'category.id')??data_get($product,'category_id'))
+                @php($productPrice=data_get($product,'price')??data_get($product,'salePrice')??data_get($product,'unitPrice'))
+                @php($productImage=data_get($product,'imageUrl')??data_get($product,'image')??data_get($product,'thumbnail'))
+                @if(is_string($productImage) && str_starts_with($productImage,'/api/products/images/')) @php($productImage=rtrim((string)config('services.luvora.base_url'),'/').$productImage) @endif
+                <tr data-product-row data-id="{{ $productId }}" data-name="{{ $productName }}" data-sku="{{ $productSku }}" data-status="{{ strtolower($productStatus) }}" data-stock="{{ is_numeric($stockRaw)?$stockRaw:'' }}" data-reorder="{{ is_numeric($reorderLevel)?$reorderLevel:'' }}" data-price="{{ is_numeric($productPrice)?$productPrice:'' }}" data-category-id="{{ $categoryId }}" data-category="{{ $productCategory }}">
+                  <td class="px-5 py-4"><div class="flex min-w-0 items-center gap-3">@if($productImage)<img src="{{ $productImage }}" alt="{{ $productName }}" loading="lazy" class="h-14 w-11 shrink-0 rounded-md bg-slate-100 object-cover">@else<div class="grid h-14 w-11 shrink-0 place-items-center rounded-md bg-slate-100 text-slate-400"><span class="material-symbols-outlined">image</span></div>@endif<div class="min-w-0"><a class="product-title block truncate font-semibold text-slate-900 hover:text-[#17675d]" href="{{ $productId ? route('products.index',['productId'=>$productId]) : '#' }}">{{ $productName }}</a><span class="mt-1 block font-mono text-xs text-slate-500">{{ $productSku }}</span></div></div></td>
+                  <td class="px-4 py-4 text-slate-700">{{ $productCategory }}</td><td class="px-4 py-4 font-medium text-slate-900">{{ is_numeric($productPrice)?'LKR '.number_format((float)$productPrice,2):'â€”' }}</td><td class="px-4 py-4 text-slate-700">{{ is_numeric($stockRaw)?number_format((float)$stockRaw).' available':'Not provided' }}</td><td class="px-4 py-4"><span class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ $productStatus }}</span></td>
+                  <td class="px-5 py-4 text-right"><div class="inline-flex items-center gap-2">@if($productId)<a href="{{ route('products.index',['productId'=>$productId]) }}" class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">View</a>@else<span class="text-xs text-slate-400">No ID</span>@endif<button type="button" disabled title="Product edit DTO is pending" class="rounded-lg border border-slate-100 px-2.5 py-1.5 text-xs text-slate-400">Edit</button></div></td>
+                </tr>
+              @empty
+                <tr><td colspan="6" class="px-5 py-14 text-center">@if(!empty($apiErrors['products'] ?? null))<span class="mx-auto grid h-11 w-11 place-items-center rounded-full bg-rose-50 text-rose-600"><span class="material-symbols-outlined">cloud_off</span></span><p class="mt-3 font-semibold text-slate-800">Products could not be loaded</p><p class="mt-1 text-sm text-slate-500">Use the retry control above to request the API again.</p>@else<span class="mx-auto grid h-11 w-11 place-items-center rounded-full bg-slate-100 text-slate-500"><span class="material-symbols-outlined">inventory_2</span></span><p class="mt-3 font-semibold text-slate-800">No products yet</p><p class="mt-1 text-sm text-slate-500">The admin API returned an empty product list.</p>@endif</td></tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+        <div class="flex flex-col gap-3 border-t border-slate-100 bg-[#fbfcfb] px-5 py-3 sm:flex-row sm:items-center sm:justify-between"><p class="text-xs text-slate-500">Showing <span id="products-range" class="font-semibold text-slate-800">0-0</span> of <span id="products-total" class="font-semibold text-slate-800">0</span> products loaded for this API page</p><div class="flex items-center gap-2"><label for="products-page-size" class="text-xs text-slate-500">Rows</label><select id="products-page-size" class="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs"><option>10</option><option>25</option><option>50</option><option>100</option></select><button type="button" data-page="previous" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs disabled:opacity-40">Previous</button><span id="page-indicator" class="min-w-12 text-center text-xs text-slate-600" aria-live="polite">1 / 1</span><button type="button" data-page="next" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs disabled:opacity-40">Next</button></div></div>
+      </section>
+      @if(isset($apiPagination['products']))
+        @php($paging=$apiPagination['products'])
+        @if($paging['total']!==null && ($paging['pages']??1)>1)<nav class="mt-4 flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" aria-label="Product API pages"><span class="text-slate-500">API page {{ $paging['page'] }} of {{ $paging['pages'] }}</span><div class="flex gap-2"><a @if($paging['page']<=1) aria-disabled="true" tabindex="-1" @endif href="{{ request()->fullUrlWithQuery(['page'=>max(1,$paging['page']-1),'pageSize'=>$paging['pageSize']]) }}" class="rounded-lg border border-slate-200 px-3 py-1.5 {{ $paging['page']<=1?'pointer-events-none opacity-40':'hover:bg-slate-50' }}">Previous API page</a><a @if(!$paging['hasNext']) aria-disabled="true" tabindex="-1" @endif href="{{ request()->fullUrlWithQuery(['page'=>$paging['page']+1,'pageSize'=>$paging['pageSize']]) }}" class="rounded-lg border border-slate-200 px-3 py-1.5 {{ !$paging['hasNext']?'pointer-events-none opacity-40':'hover:bg-slate-50' }}">Next API page</a></div></nav>@endif
+      @endif
+      <p class="mt-5 text-center text-xs text-slate-500">Product creation sends the supported ProductService create payload. Editing, publication changes, and deletion are not available until their write contracts are supported.</p>
+    </div>
+  </main>
 </div>
-</main></div><dialog id="product-dialog"><form method="dialog"><header style="padding:16px 20px;border-bottom:1px solid #e0e3e5;display:flex;justify-content:space-between;align-items:center"><div><div style="font:600 10px Inter,sans-serif;color:#005baf;text-transform:uppercase">Catalog workspace</div><h2 id="product-dialog-title" style="font:600 24px Arial,Helvetica,sans-serif;margin:4px 0 0">Product</h2></div><button value="close" aria-label="Close">Ã—</button></header><div id="product-dialog-content" style="padding:18px 20px;max-height:65vh;overflow:auto"></div><footer style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #e0e3e5"><button value="close" class="px-3 py-2 rounded bg-surface-container">Close</button><button id="save-product-preview" type="button" class="px-3 py-2 rounded bg-primary text-on-primary">Save preview</button></footer></form></dialog><div class="catalog-toast" id="catalog-toast" role="status" aria-live="polite"></div><script>
-const catalogRows = [...document.querySelectorAll('[data-product-row]')];
-const catalogSearch = document.getElementById('catalog-search');
-let activeSegment = 'all';
-let currentProductsPage = 1;
-const productsPageSize = document.getElementById('products-page-size');
-const productsRange = document.getElementById('products-range');
-const productsTotal = document.getElementById('products-total');
-const productsPageButtons = document.getElementById('products-page-buttons');
-const selectedLabel = document.getElementById('selected-label');
-const categoryFilter = document.querySelector('[data-filter="category"]');
-const statusFilter = document.querySelector('[data-filter="status"]');
-const guildFilter = document.querySelector('[data-filter="guild"]');
-const certificateFilter = document.querySelector('[data-filter="certificate"]');
-const priceFilter = document.querySelector('[data-filter="price"]');
-const productTableBody = document.getElementById('products-table-body');
-
-function refreshCatalog() {
-    const query = catalogSearch.value.trim().toLowerCase();
-    const matchingRows = catalogRows.filter((row) => {
-        const stock = Number(row.dataset.stock || 0);
-        const status = row.dataset.status || '';
-        const haystack = row.innerText.toLowerCase();
-        const matchesSegment = activeSegment === 'all'
-            || (activeSegment === 'active' && ['published', 'active'].includes(status))
-            || (activeSegment === 'low' && stock > 0 && stock <= 3)
-            || (activeSegment === 'archived' && status === 'archived')
-            || (activeSegment === 'drafts' && ['draft', 'unpublished'].includes(status));
-        const matchesCategory = !categoryFilter?.value || categoryFilter.value === 'all' || row.dataset.category === categoryFilter.value;
-        const matchesStatus = !statusFilter?.value || statusFilter.value === 'all' || (statusFilter.value === 'stocked' && Number(row.dataset.stock || 0) > 0) || (statusFilter.value === 'low' && Number(row.dataset.stock || 0) > 0 && Number(row.dataset.stock || 0) <= 3) || (statusFilter.value === 'out' && Number(row.dataset.stock || 0) === 0) || (statusFilter.value === 'made-to-order' && row.dataset.stock === 'made-to-order') || (statusFilter.value === 'sealed' && row.dataset.status === 'sealed');
-        const matchesGuild = !guildFilter?.value || guildFilter.value === 'all' || row.dataset.guild === guildFilter.value;
-        const matchesCertificate = !certificateFilter?.value || certificateFilter.value === 'all' || row.dataset.cert === certificateFilter.value;
-        const price = Number(row.dataset.price || 0);
-        const matchesPrice = !priceFilter?.value || priceFilter.value === 'all' || (priceFilter.value === 'under25' && price < 25000) || (priceFilter.value === '25to75' && price >= 25000 && price <= 75000) || (priceFilter.value === '75to200' && price > 75000 && price <= 200000) || (priceFilter.value === 'over200' && price > 200000);
-        return haystack.includes(query) && matchesSegment && matchesCategory && matchesStatus && matchesGuild && matchesCertificate && matchesPrice;
-    });
-    const pageSize = Number(productsPageSize.value) || 10;
-    const pageCount = Math.max(1, Math.ceil(matchingRows.length / pageSize));
-    currentProductsPage = Math.min(Math.max(currentProductsPage, 1), pageCount);
-    const start = matchingRows.length ? (currentProductsPage - 1) * pageSize : 0;
-    const end = Math.min(start + pageSize, matchingRows.length);
-    catalogRows.forEach((row) => { row.hidden = true; });
-    matchingRows.slice(start, end).forEach((row) => { row.hidden = false; });
-    productsRange.textContent = matchingRows.length ? `${start + 1} to ${end}` : '0 to 0';
-    productsTotal.textContent = String(matchingRows.length);
-    if (selectedLabel) selectedLabel.textContent = `Selected ${document.querySelectorAll('.row-check:checked').length} of ${matchingRows.length} items`;
-    productsPageButtons.replaceChildren();
-    for (let page = 1; page <= pageCount; page++) {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.textContent = String(page);
-        button.setAttribute('aria-current', page === currentProductsPage ? 'page' : 'false');
-        button.addEventListener('click', () => { currentProductsPage = page; refreshCatalog(); });
-        productsPageButtons.append(button);
-    }
-    document.querySelector('[data-products-page="previous"]').disabled = currentProductsPage <= 1;
-    document.querySelector('[data-products-page="next"]').disabled = currentProductsPage >= pageCount;
-    const activeRows = catalogRows.filter((row) => ['published', 'active'].includes(row.dataset.status));
-    const lowStockRows = activeRows.filter((row) => Number(row.dataset.stock || 0) > 0 && Number(row.dataset.stock || 0) <= 3);
-    const guilds = new Set(catalogRows.map((row) => row.dataset.guild).filter(Boolean));
-    document.getElementById('catalog-total-count').textContent = String(activeRows.length);
-    document.getElementById('catalog-status-summary').textContent = `${activeRows.length} active products`;
-    document.getElementById('catalog-low-stock-count').textContent = String(lowStockRows.length);
-    document.getElementById('catalog-low-stock-summary').textContent = `${lowStockRows.length} products with low stock`;
-    document.getElementById('catalog-guild-count').textContent = `${guilds.size} guilds`;
-    document.getElementById('catalog-guild-summary').textContent = `${guilds.size} distinct product guilds`;
-    document.querySelectorAll('.segment-tab').forEach((tab) => {
-        const segment = tab.dataset.segment;
-        const count = catalogRows.filter((row) => {
-            const stock = Number(row.dataset.stock || 0);
-            const status = row.dataset.status || '';
-            return segment === 'all'
-                || (segment === 'active' && ['published', 'active'].includes(status))
-                || (segment === 'low' && stock > 0 && stock <= 3)
-                || (segment === 'archived' && status === 'archived')
-                || (segment === 'drafts' && ['draft', 'unpublished'].includes(status));
-        }).length;
-        const label = tab.dataset.label;
-        const badge = tab.querySelector('.segment-count');
-        if (badge) badge.textContent = String(count);
-        else tab.textContent = `${label} (${count})`;
-    });
-}
-
-catalogSearch.addEventListener('input', () => { currentProductsPage = 1; refreshCatalog(); });
-productsPageSize.addEventListener('change', () => { currentProductsPage = 1; refreshCatalog(); });
-document.querySelector('[data-products-page="previous"]').addEventListener('click', () => { currentProductsPage--; refreshCatalog(); });
-document.querySelector('[data-products-page="next"]').addEventListener('click', () => { currentProductsPage++; refreshCatalog(); });
-document.querySelectorAll('.segment-tab').forEach((tab) => tab.addEventListener('click', () => {
-    currentProductsPage = 1;
-    activeSegment = tab.dataset.segment;
-    refreshCatalog();
-}));
-[categoryFilter, statusFilter, guildFilter, certificateFilter, priceFilter].forEach((filter) => filter?.addEventListener('change', () => { currentProductsPage = 1; refreshCatalog(); }));
-
-document.getElementById('bulk-select-all')?.addEventListener('change', (event) => {
-    catalogRows.filter((row) => !row.hidden).forEach((row) => { row.querySelector('.row-check').checked = event.target.checked; });
-    if (selectedLabel) selectedLabel.textContent = `Selected ${document.querySelectorAll('.row-check:checked').length} of ${catalogRows.filter((row) => !row.hidden).length} items`;
-});
-document.querySelectorAll('.row-check').forEach((checkbox) => checkbox.addEventListener('change', () => {
-    if (selectedLabel) selectedLabel.textContent = `Selected ${document.querySelectorAll('.row-check:checked').length} of ${catalogRows.filter((row) => !row.hidden).length} items`;
-}));
-document.getElementById('add-product-button')?.setAttribute('disabled', 'disabled');
-document.querySelectorAll('[title="Edit Specifications"], [title="Manage Vault Stock"], [title="Deactivate SKU"], [title="Reactivate SKU"]').forEach((button) => button.setAttribute('disabled', 'disabled'));
-catalogRows.forEach((row) => {
-    row.querySelector('.product-title')?.addEventListener('click', () => {
-        const id = row.dataset.id;
-        if (id) window.location.assign(`${window.location.pathname}?productId=${encodeURIComponent(id)}`);
-    });
-});
-refreshCatalog();
-const message = document.getElementById('catalog-toast');
-let messageTimer;
-function notify(text) {
-    message.textContent = text;
-    message.classList.add('visible');
-    clearTimeout(messageTimer);
-    messageTimer = setTimeout(() => message.classList.remove('visible'), 2300);
-}
-
-const dialog = document.getElementById('product-dialog');
-const dialogTitle = document.getElementById('product-dialog-title');
-const dialogContent = document.getElementById('product-dialog-content');
-const saveButton = document.getElementById('save-product-preview');
-let editingRow = null;
-
-function openProductDialog(row, mode) {
-    editingRow = row;
-    const name = row?.dataset.name || '';
-    const sku = row?.dataset.sku || '';
-    const image = row?.querySelector('img')?.src || '';
-    dialogTitle.textContent = mode === 'add' ? 'Add new product' : name;
-    saveButton.hidden = mode === 'details';
-
-    if (mode === 'details') {
-        dialogContent.innerHTML = `<div style="display:grid;grid-template-columns:150px 1fr;gap:16px"><img src="${image}" alt="${name}" style="width:150px;height:190px;object-fit:cover;border-radius:8px"><div><h3>${name}</h3><p>SKU: ${sku}<br>Artisan guild: ${row.dataset.guild}<br>Certification: ${row.dataset.cert}</p><p>Variants: ${row.dataset.variants || 'Material, size, finish and variant-specific SKUs.'}</p><label class="gallery-upload">Add gallery images<input type="file" accept="image/*" multiple></label><div class="gallery-preview" style="display:flex;gap:6px;margin-top:9px"></div></div></div>`;
-    } else {
-        dialogContent.innerHTML = `<div class="product-form"><label>Product name<input id="product-name-field" value="${name}" required></label><label>SKU<input id="product-sku-field" value="${sku}" required></label><label>Category<input id="product-category-field" value="${row?.dataset.category || ''}"></label><label>Publication state<select id="product-state-field"><option value="published">Published</option><option value="draft">Unpublished Â· Draft</option><option value="archived">Archived</option></select></label><label class="wide">Variants and variant SKUs<textarea placeholder="Option Â· SKU Â· stock"></textarea></label><label class="wide">Product details<textarea placeholder="Materials, sizing, artisan details, provenance"></textarea></label><label class="wide">Product images and gallery<input type="file" accept="image/*" multiple><div class="gallery-preview" style="display:flex;gap:6px;margin-top:8px"></div></label></div>`;
-        if (row) document.getElementById('product-state-field').value = row.dataset.status || 'published';
-    }
-
-    dialogContent.querySelectorAll('input[type="file"]').forEach((input) => input.addEventListener('change', () => {
-        const preview = dialogContent.querySelector('.gallery-preview');
-        if (!preview) return;
-        [...input.files].forEach((file) => {
-            const imagePreview = document.createElement('img');
-            imagePreview.src = URL.createObjectURL(file);
-            imagePreview.alt = `Selected image: ${file.name}`;
-            imagePreview.style.cssText = 'width:48px;height:58px;object-fit:cover;border-radius:5px';
-            preview.append(imagePreview);
-        });
-    }));
-
-    dialog.showModal();
-}
-
-document.querySelectorAll('.product-title').forEach((title) => title.addEventListener('click', () => openProductDialog(title.closest('tr'), 'details')));
-document.querySelectorAll('[title="Edit Specifications"]').forEach((button) => button.addEventListener('click', () => openProductDialog(button.closest('tr'), 'edit')));
-document.querySelectorAll('[title="Manage Vault Stock"]').forEach((button) => button.addEventListener('click', () => notify('Stock adjustment selected.')));
-document.querySelectorAll('[title="Deactivate SKU"], [title="Reactivate SKU"]').forEach((button) => button.addEventListener('click', () => {
-    const row = button.closest('tr');
-    row.dataset.status = row.dataset.status === 'archived' ? 'published' : 'archived';
-    button.title = row.dataset.status === 'archived' ? 'Reactivate SKU' : 'Deactivate SKU';
-    row.classList.toggle('opacity-85');
-    const statusBadge = row.querySelector('[data-publication-state]');
-    if (statusBadge) statusBadge.textContent = row.dataset.status === 'archived' ? 'Archived' : 'Published';
-    notify(`SKU ${row.dataset.status} in this preview.`);
-    refreshCatalog();
-}));
-
-document.querySelectorAll('button').forEach((button) => {
-    const label = button.innerText.trim();
-    if (/Add New Product/.test(label)) button.addEventListener('click', () => openProductDialog(null, 'add'));
-    if (/Export Spec Dossier|Bulk Stock Audit|Barcode Mode|Adjust Stock Levels|Update Guild Escrow Split|Archive Selected/.test(label)) {
-        button.addEventListener('click', () => notify(`${label} selected.`));
-    }
-});
-
-saveButton.addEventListener('click', () => {
-    const name = document.getElementById('product-name-field')?.value.trim();
-    const sku = document.getElementById('product-sku-field')?.value.trim();
-    const variants = dialogContent.querySelector('textarea')?.value.trim() || '';
-    const imageFile = dialogContent.querySelector('input[type="file"]')?.files?.[0];
-    if (!name || !sku) return notify('Product name and SKU are required.');
-    if (editingRow) {
-        editingRow.dataset.name = name;
-        editingRow.dataset.sku = sku;
-        editingRow.dataset.status = document.getElementById('product-state-field').value;
-        editingRow.dataset.variants = variants;
-        editingRow.querySelector('.product-title').textContent = name;
-        if (imageFile && editingRow.querySelector('img')) editingRow.querySelector('img').src = URL.createObjectURL(imageFile);
-        const skuLabel = [...editingRow.querySelectorAll('span')].find((node) => node.textContent.includes('LUV-'));
-        if (skuLabel) skuLabel.textContent = `#${sku}`;
-        const statusBadge = editingRow.querySelector('[data-publication-state]');
-        const visibleStatus = statusBadge || document.createElement('span');
-        visibleStatus.textContent = editingRow.dataset.status === 'draft' ? 'Unpublished Â· Draft' : editingRow.dataset.status;
-        if (!statusBadge) {
-            visibleStatus.dataset.publicationState = '';
-            visibleStatus.className = 'text-[10px] text-secondary';
-            editingRow.querySelector('.product-title').parentElement.append(visibleStatus);
-        }
-    } else {
-        const category = document.getElementById('product-category-field').value.trim() || 'uncategorized';
-        const status = document.getElementById('product-state-field').value;
-        const imageFile = dialogContent.querySelector('input[type="file"]')?.files?.[0];
-        const imageMarkup = imageFile ? `<img src="${URL.createObjectURL(imageFile)}" alt="${name}" class="w-14 h-18 shrink-0 rounded-lg object-cover">` : '<div class="w-14 h-18 shrink-0 rounded-lg overflow-hidden bg-surface-container"></div>';
-        const row = document.createElement('tr');
-        row.dataset.productRow = '';
-        row.dataset.name = name;
-        row.dataset.sku = sku;
-        row.dataset.status = status;
-        row.dataset.stock = '0';
-        row.dataset.category = category;
-        row.dataset.guild = 'Luvora catalog';
-        row.dataset.cert = 'Pending';
-        row.dataset.variants = variants;
-        row.className = 'hover:bg-surface-container-low/50 transition-colors group';
-        row.innerHTML = `<td class="py-4 pl-space-md pr-2 text-center"><input class="row-check w-4 h-4 rounded text-primary" type="checkbox" aria-label="Select ${name}"></td><td class="py-4 px-space-sm"><div class="flex items-center gap-space-sm">${imageMarkup}<div><div class="product-title font-headline-sm text-[15px] font-semibold text-on-surface cursor-pointer">${name}</div><div class="flex items-center gap-2"><span class="font-label-sm text-label-sm font-mono text-outline">#${sku}</span><span class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-[11px] text-secondary">${category}</span></div><span data-publication-state class="text-[10px] text-secondary">${status === 'draft' ? 'Unpublished Â· Draft' : status}</span></div></div></td><td class="py-4 px-space-sm"><div class="font-semibold">Luvora catalog</div><div class="text-[11px] text-secondary">Provenance pending</div></td><td class="py-4 px-space-sm"><div class="font-headline-sm text-[15px] font-bold">Price pending</div><div class="text-[11px] text-secondary">Escrow not assigned</div></td><td class="py-4 px-space-sm"><span class="inline-flex px-2 py-0.5 rounded-full bg-surface-container text-[11px]">0 available</span></td><td class="py-4 px-space-sm"><span class="inline-flex px-2.5 py-0.5 rounded-full bg-surface-container text-[11px]">Certification pending</span></td><td class="py-4 pr-space-md pl-space-sm text-right"><div class="flex items-center justify-end gap-1"><button class="p-1.5 rounded-lg" title="Edit Specifications"><span class="material-symbols-outlined text-base">edit</span></button><button class="p-1.5 rounded-lg" title="Deactivate SKU"><span class="material-symbols-outlined text-base">archive</span></button></div></td>`;
-        document.querySelector('tbody').prepend(row);
-        catalogRows.unshift(row);
-        row.querySelector('.product-title').addEventListener('click', () => openProductDialog(row, 'details'));
-        row.querySelector('[title="Edit Specifications"]').addEventListener('click', () => openProductDialog(row, 'edit'));
-        row.querySelector('[title="Deactivate SKU"]').addEventListener('click', () => {
-            row.dataset.status = row.dataset.status === 'archived' ? 'published' : 'archived';
-            notify(`Product ${row.dataset.status} in this preview.`);
-            refreshCatalog();
-        });
-        row.querySelector('.row-check').addEventListener('change', updateSelectedCount);
-        currentProductsPage = 1;
-    }
-    dialog.close();
-    notify(editingRow ? 'Product updated in this page preview.' : 'Product added to this page preview.');
-    refreshCatalog();
-});
-
-document.querySelectorAll('[data-view="table"], [data-view="grid"]').forEach((button) => button.addEventListener('click', () => notify(`${button.dataset.view} view selected.`)));
-
-</script></body></html>
-
-
-
-
-
-
-
-
+<dialog id="create-product-dialog" class="w-[min(760px,calc(100%-2rem))] max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/40">
+  <form id="create-product-form" method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
+    @csrf<input type="hidden" name="_product_form" value="1">
+    <header class="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-slate-100 bg-white px-5 py-4 sm:px-7"><div><p class="text-[11px] font-bold uppercase tracking-[.18em] text-[#17675d]">Catalog Â· New item</p><h2 class="mt-1 text-xl font-semibold">Add product</h2></div><button type="button" id="close-create-product" class="grid h-9 w-9 place-items-center rounded-lg text-slate-500 hover:bg-slate-100" aria-label="Close add product form"><span class="material-symbols-outlined">close</span></button></header>
+    <div class="space-y-5 px-5 py-5 sm:px-7">
+      <div role="status" class="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm leading-5 text-emerald-900"><strong>Connected to ProductService.</strong> Product name, active category, description, price, discount price, brand, SKU, sizes, colors, and images are persisted by the product API.</div>
+      @if($errors->any() && old('_product_form'))<div role="alert" class="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-900"><ul class="list-inside list-disc">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <label class="text-xs font-semibold text-slate-600">Product name <input name="Name" value="{{ old('Name') }}" required maxlength="250" autocomplete="off" class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-900 focus:border-[#17675d] focus:outline-none focus:ring-2 focus:ring-[#17675d]/15"></label>
+        <label class="text-xs font-semibold text-slate-600">SKU <input name="SKU" value="{{ old('SKU') }}" required maxlength="100" autocomplete="off" class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-900 focus:border-[#17675d] focus:outline-none focus:ring-2 focus:ring-[#17675d]/15"></label>
+        <div><label for="product-category-select" class="text-xs font-semibold text-slate-600">Category</label><div class="mt-1.5 flex gap-2"><select id="product-category-select" name="CategoryId" required class="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-slate-900 focus:border-[#17675d] focus:outline-none"><option value="">Select a category</option>@foreach(($apiRecords['categories'] ?? []) as $category)@php($categoryId=data_get($category,'id')??data_get($category,'categoryId')??data_get($category,'category_id'))@php($categoryName=data_get($category,'name')??data_get($category,'categoryName')??data_get($category,'title'))@if($categoryId!==null && $categoryName)<option value="{{ $categoryId }}" @selected(old('CategoryId') == $categoryId)>{{ $categoryName }}</option>@endif @endforeach</select><button type="button" id="open-create-category" class="shrink-0 rounded-lg border border-slate-200 px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50">+ Category</button></div>@if(empty($apiRecords['categories'] ?? []))<p class="mt-1 text-xs text-amber-700">No active categories loaded. Add a category to continue.</p>@endif</div>
+        <label class="text-xs font-semibold text-slate-600">Price (LKR) <input name="Price" value="{{ old('Price') }}" type="number" min="0.01" max="999999999" step="0.01" required inputmode="decimal" class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-900 focus:border-[#17675d] focus:outline-none"></label>
+        <label class="text-xs font-semibold text-slate-600">Discount price (optional) <input name="DiscountPrice" value="{{ old('DiscountPrice') }}" type="number" min="0.01" max="999999999" step="0.01" inputmode="decimal" class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-900 focus:border-[#17675d] focus:outline-none"></label>
+        <label class="text-xs font-semibold text-slate-600">Brand (optional) <input name="Brand" value="{{ old('Brand') }}" maxlength="150" class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-900 focus:border-[#17675d] focus:outline-none"></label>
+        <label class="text-xs font-semibold text-slate-600 sm:col-span-2">Description <textarea name="Description" required maxlength="5000" rows="4" class="mt-1.5 w-full resize-y rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal text-slate-900 focus:border-[#17675d] focus:outline-none">{{ old('Description') }}</textarea></label>
+        <fieldset class="sm:col-span-2"><legend class="text-xs font-semibold text-slate-700">Sizes</legend><p class="mt-1 text-xs text-slate-500">Choose available sizes or add a custom size.</p><div data-options-buttons="Sizes" class="mt-2 flex flex-wrap gap-2">@foreach(['XS','S','M','L','XL','XXL','One size'] as $sizeOption)<button type="button" data-option-button data-option-group="Sizes" data-option-value="{{ $sizeOption }}" aria-pressed="{{ in_array($sizeOption, old('Sizes', []), true) ? 'true' : 'false' }}" class="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium">{{ $sizeOption }}</button>@endforeach</div><div class="mt-2 flex gap-2"><input id="custom-size-value" maxlength="80" placeholder="Add a size" class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm"><button type="button" data-add-option="Sizes" data-input="custom-size-value" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Add size</button></div><div data-option-values="Sizes">@foreach(old('Sizes', []) as $sizeOption)<input type="hidden" name="Sizes[]" value="{{ $sizeOption }}">@endforeach</div></fieldset>
+        <fieldset class="sm:col-span-2"><legend class="text-xs font-semibold text-slate-700">Colors</legend><p class="mt-1 text-xs text-slate-500">Choose available colors or add a custom color.</p><div data-options-buttons="Colors" class="mt-2 flex flex-wrap gap-2">@foreach([['Black','#171717'],['White','#ffffff'],['Red','#dc2626'],['Blue','#2563eb'],['Green','#15803d'],['Pink','#ec4899'],['Beige','#d6c3a1'],['Navy','#1e3a8a']] as [$colorOption,$swatch])<button type="button" data-option-button data-option-group="Colors" data-option-value="{{ $colorOption }}" aria-pressed="{{ in_array($colorOption, old('Colors', []), true) ? 'true' : 'false' }}" class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium" aria-label="{{ $colorOption }}"><span class="h-3.5 w-3.5 rounded-full border border-black/10" style="background-color:{{ $swatch }}"></span>{{ $colorOption }}</button>@endforeach</div><div class="mt-2 flex gap-2"><input id="custom-color-value" maxlength="80" placeholder="Add a color" class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm"><button type="button" data-add-option="Colors" data-input="custom-color-value" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold hover:bg-slate-50">Add color</button></div><div data-option-values="Colors">@foreach(old('Colors', []) as $colorOption)<input type="hidden" name="Colors[]" value="{{ $colorOption }}">@endforeach</div></fieldset>
+        <label class="text-xs font-semibold text-slate-600 sm:col-span-2">Product images <input id="new-product-image" name="images[]" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple class="mt-1.5 block w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-normal text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-semibold"><span class="mt-1 block font-normal text-slate-500">Images upload through the documented admin image endpoint before product creation. JPEG, PNG, WebP, or GIF; up to 10 MB each.</span></label>
+        <div id="new-product-image-preview" class="hidden sm:col-span-2"></div>
+      </div>
+      <div id="create-product-validation" class="hidden rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900" role="status" aria-live="polite">Product fields are validated against ProductService's create contract.</div>
+    </div>
+    <footer class="flex flex-col-reverse gap-2 border-t border-slate-100 bg-slate-50 px-5 py-4 sm:flex-row sm:justify-end sm:px-7"><button type="button" id="cancel-create-product" class="rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</button><button type="submit" id="save-create-product" class="rounded-lg bg-[#17675d] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#12594f]">Create product</button></footer>
+  </form>
+</dialog>
+<dialog id="create-category-dialog" class="w-[min(440px,calc(100%-2rem))] rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/40"><form id="create-category-form" class="p-5">@csrf<h2 class="text-lg font-semibold">Add category</h2><p class="mt-1 text-xs text-slate-500">Creates a category using the admin categories API.</p><label class="mt-4 block text-xs font-semibold text-slate-600">Name<input name="Name" required maxlength="150" class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal"></label><label class="mt-3 block text-xs font-semibold text-slate-600">Description (optional)<textarea name="Description" maxlength="1000" rows="3" class="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-normal"></textarea></label><p id="create-category-feedback" class="mt-3 hidden rounded-lg px-3 py-2 text-sm" role="status" aria-live="polite"></p><div class="mt-5 flex justify-end gap-2"><button type="button" id="cancel-create-category" class="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold">Cancel</button><button type="submit" id="save-create-category" class="rounded-lg bg-[#17675d] px-3 py-2 text-sm font-semibold text-white">Create category</button></div></form></dialog>
+<script>
+(() => {
+ const rows=[...document.querySelectorAll('[data-product-row]')];
+ const search=document.getElementById('catalog-search'), category=document.getElementById('category-filter'), publication=document.getElementById('publication-filter'), stock=document.getElementById('stock-filter'), size=document.getElementById('products-page-size');
+ let page=1, key='', direction=1;
+ function render(){
+  const term=search.value.trim().toLocaleLowerCase();
+  let filtered=rows.filter(row=>{const q=row.dataset.stock===''?null:Number(row.dataset.stock), r=row.dataset.reorder===''?null:Number(row.dataset.reorder); const query=`${row.dataset.name} ${row.dataset.sku}`.toLocaleLowerCase(); return query.includes(term)&&(category.value==='all'||row.dataset.categoryId===category.value)&&(publication.value==='all'||row.dataset.status===publication.value)&&(stock.value==='all'||(stock.value==='in'&&q!==null&&q>0)||(stock.value==='out'&&q===0)||(stock.value==='low'&&q!==null&&r!==null&&q<=r));});
+  if(key)filtered.sort((a,b)=>{const x=a.dataset[key]||'',y=b.dataset[key]||'';return ((key==='price'||key==='stock')?Number(x||0)-Number(y||0):x.localeCompare(y,undefined,{numeric:true,sensitivity:'base'}))*direction});
+  const perPage=Number(size.value)||10,totalPages=Math.max(1,Math.ceil(filtered.length/perPage)); page=Math.min(Math.max(page,1),totalPages); const start=(page-1)*perPage;
+  rows.forEach(row=>row.hidden=true); filtered.slice(start,start+perPage).forEach(row=>row.hidden=false);
+  document.getElementById('products-range').textContent=filtered.length?`${start+1}-${Math.min(start+perPage,filtered.length)}`:'0-0'; document.getElementById('products-total').textContent=String(filtered.length); document.getElementById('page-indicator').textContent=`${page} / ${totalPages}`;
+  document.querySelector('[data-page="previous"]').disabled=page<=1; document.querySelector('[data-page="next"]').disabled=page>=totalPages;
+  const low=rows.filter(row=>row.dataset.stock!==''&&row.dataset.reorder!==''&&Number(row.dataset.stock)<=Number(row.dataset.reorder)).length;
+  document.getElementById('catalog-low-stock-count').textContent=low?String(low):'N/A'; document.getElementById('catalog-low-stock-summary').textContent=low?`${low} products at or below the API reorder threshold`:'Requires stock and reorder-level fields in the product response.';
+ }
+ [search].forEach(el=>el.addEventListener('input',()=>{page=1;render()})); [category,publication,stock,size].forEach(el=>el.addEventListener('change',()=>{page=1;render()}));
+ document.querySelector('[data-page="previous"]').addEventListener('click',()=>{page--;render()}); document.querySelector('[data-page="next"]').addEventListener('click',()=>{page++;render()});
+ document.querySelectorAll('[data-sort]').forEach(th=>{const sort=()=>{direction=key===th.dataset.sort?-direction:1;key=th.dataset.sort;render()};th.addEventListener('click',sort);th.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sort()}})});
+ const createDialog=document.getElementById('create-product-dialog'), createForm=document.getElementById('create-product-form'), validNotice=document.getElementById('create-product-validation');
+ document.getElementById('open-create-product').addEventListener('click',()=>{validNotice.classList.add('hidden');if(!createDialog.open)createDialog.showModal()});
+ ['close-create-product','cancel-create-product'].forEach(id=>document.getElementById(id).addEventListener('click',()=>createDialog.close()));
+ const categoryDialog=document.getElementById('create-category-dialog'), categoryForm=document.getElementById('create-category-form'), categoryFeedback=document.getElementById('create-category-feedback'), categorySelect=document.getElementById('product-category-select');
+ document.getElementById('open-create-category').addEventListener('click',()=>categoryDialog.showModal());
+ document.getElementById('cancel-create-category').addEventListener('click',()=>categoryDialog.close());
+ categoryForm.addEventListener('submit',async event=>{event.preventDefault();if(!categoryForm.reportValidity())return;const button=document.getElementById('save-create-category');button.disabled=true;button.textContent='Creatingâ€¦';categoryFeedback.className='mt-3 hidden rounded-lg px-3 py-2 text-sm';try{const response=await fetch(@json(route('categories.store')),{method:'POST',headers:{'Accept':'application/json','X-CSRF-TOKEN':categoryForm.querySelector('input[name="_token"]').value},body:new FormData(categoryForm)});const result=await response.json();if(!response.ok)throw new Error(result.message||Object.values(result.errors||{}).flat().join(' ')||'Could not create category.');if(result.id&&result.name){const option=document.createElement('option');option.value=result.id;option.textContent=result.name;categorySelect.append(option);categorySelect.value=String(result.id);categoryDialog.close();categoryForm.reset();categoryFeedback.textContent='Category created and selected.';categoryFeedback.className='mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800';return}categoryFeedback.textContent='Category was created. Refreshing the catalog to load its API-generated identifierâ€¦';categoryFeedback.className='mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800';window.setTimeout(()=>window.location.reload(),700)}catch(error){categoryFeedback.textContent=error.message;categoryFeedback.className='mt-3 rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-800'}finally{button.disabled=false;button.textContent='Create category'}});
+ function setOptionButton(button,selected){button.setAttribute('aria-pressed',String(selected));button.classList.toggle('border-[#17675d]',selected);button.classList.toggle('bg-[#17675d]',selected&&button.dataset.optionGroup==='Sizes');button.classList.toggle('text-white',selected&&button.dataset.optionGroup==='Sizes');button.classList.toggle('bg-[#edf5f2]',selected&&button.dataset.optionGroup==='Colors');button.classList.toggle('bg-white',!selected)}
+ document.querySelectorAll('[data-option-values]').forEach(container=>{const group=container.dataset.optionValues,buttonWrap=document.querySelector(`[data-options-buttons="${group}"]`);container.querySelectorAll('input').forEach(input=>{if([...buttonWrap.querySelectorAll('[data-option-button]')].some(button=>button.dataset.optionValue.toLocaleLowerCase()===input.value.toLocaleLowerCase()))return;const button=document.createElement('button');button.type='button';button.dataset.optionButton='';button.dataset.optionGroup=group;button.dataset.optionValue=input.value;button.className='rounded-full border border-[#17675d] px-3 py-1.5 text-xs font-medium';button.textContent=input.value;button.setAttribute('aria-pressed','true');buttonWrap.append(button)})});
+ document.querySelectorAll('[data-option-button]').forEach(button=>{const group=button.dataset.optionGroup,value=button.dataset.optionValue,container=document.querySelector(`[data-option-values="${group}"]`);const existing=[...container.querySelectorAll('input')].find(input=>input.value===value);setOptionButton(button,Boolean(existing));button.addEventListener('click',()=>{const selected=[...container.querySelectorAll('input')].find(input=>input.value===value);if(selected){selected.remove();setOptionButton(button,false);return}if(container.querySelectorAll('input').length>=50){validNotice.textContent=`Up to 50 ${group.toLowerCase()} can be selected.`;validNotice.classList.remove('hidden');return}const input=document.createElement('input');input.type='hidden';input.name=`${group}[]`;input.value=value;container.append(input);setOptionButton(button,true)})});
+ document.querySelectorAll('[data-add-option]').forEach(addButton=>addButton.addEventListener('click',()=>{
+  const valueInput=document.getElementById(addButton.dataset.input),value=valueInput.value.trim(),group=addButton.dataset.addOption;
+  if(!value){valueInput.focus();return}
+  const container=document.querySelector(`[data-option-values="${group}"]`),buttonWrap=document.querySelector(`[data-options-buttons="${group}"]`);
+  if([...container.querySelectorAll('input')].some(input=>input.value.toLocaleLowerCase()===value.toLocaleLowerCase())){valueInput.setCustomValidity('This option is already selected.');valueInput.reportValidity();return}
+  valueInput.setCustomValidity('');
+  if(container.querySelectorAll('input').length>=50){valueInput.setCustomValidity(`You can select up to 50 ${group.toLowerCase()}.`);valueInput.reportValidity();return}
+  const optionButton=document.createElement('button');optionButton.type='button';optionButton.dataset.optionButton='';optionButton.dataset.optionGroup=group;optionButton.dataset.optionValue=value;optionButton.className='rounded-full border border-[#17675d] px-3 py-1.5 text-xs font-medium';optionButton.textContent=value;optionButton.setAttribute('aria-pressed','true');
+  const toggleOption=()=>{
+   const selected=[...container.querySelectorAll('input')].find(item=>item.value.toLocaleLowerCase()===value.toLocaleLowerCase());
+   if(selected){selected.remove();optionButton.setAttribute('aria-pressed','false');optionButton.classList.remove('border-[#17675d]','bg-[#17675d]','text-white','bg-[#edf5f2]');optionButton.classList.add('border-slate-200','bg-white');return}
+   if(container.querySelectorAll('input').length>=50){validNotice.textContent=`Up to 50 ${group.toLowerCase()} can be selected.`;validNotice.classList.remove('hidden');return}
+   const input=document.createElement('input');input.type='hidden';input.name=`${group}[]`;input.value=value;container.append(input);optionButton.setAttribute('aria-pressed','true');optionButton.classList.add('border-[#17675d]');optionButton.classList.toggle('bg-[#17675d]',group==='Sizes');optionButton.classList.toggle('text-white',group==='Sizes');optionButton.classList.toggle('bg-[#edf5f2]',group==='Colors');
+  };
+  optionButton.addEventListener('click',toggleOption);buttonWrap.append(optionButton);valueInput.value='';
+ }));
+ createForm.addEventListener('submit',event=>{validNotice.classList.add('hidden');if(!createForm.reportValidity()){event.preventDefault();return}const submit=document.getElementById('save-create-product');submit.disabled=true;submit.textContent='Creating productâ€¦'});
+ document.getElementById('new-product-image').addEventListener('change',event=>{const files=[...(event.target.files||[])],preview=document.getElementById('new-product-image-preview');preview.replaceChildren();preview.classList.toggle('hidden',files.length===0);for(const file of files){if(!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)||file.size>10*1000*1000){event.target.setCustomValidity('Choose JPEG, PNG, WebP, or GIF images up to 10 MB each.');event.target.reportValidity();preview.classList.add('hidden');return}}event.target.setCustomValidity('');for(const file of files){const image=document.createElement('img');image.src=URL.createObjectURL(file);image.alt=`Selected product image: ${file.name}`;image.className='mr-2 inline-block h-24 w-20 rounded-lg border border-slate-200 object-cover';preview.append(image)}});
+ @if(old('_product_form'))createDialog.showModal();@endif
+ render();
+})();
+</script>
+</body>
+</html>

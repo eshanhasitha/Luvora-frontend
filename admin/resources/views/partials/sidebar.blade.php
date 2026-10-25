@@ -1,20 +1,22 @@
 @php
     $adminNavigation = [
         ['Overview', [['dashboard', 'Dashboard', 'space_dashboard']]],
-        ['Catalog', [['products.index', 'Products', 'inventory_2'], ['categories.index', 'Categories', 'category'], ['inventory.index', 'Inventory', 'warehouse']]],
-        ['Sales', [['orders.index', 'Orders', 'receipt_long'], ['payments.index', 'Payments', 'payments'], ['delivery.index', 'Delivery', 'local_shipping']]],
+        ['Catalog', [['products.index', 'Products', 'inventory_2'], ['categories.index', 'Categories', 'category'], ['brands.index', 'Brands', 'sell']]],
+        ['Inventory', [['inventory.index', 'Stock overview', 'warehouse']]],
+        ['Sales', [['orders.index', 'All orders', 'receipt_long'], ['payments.refunds', 'Returns and refunds', 'assignment_return'], ['payments.index', 'Payments', 'payments'], ['delivery.index', 'Shipments', 'local_shipping']]],
         ['Customers', [['customers.index', 'Customers', 'group'], ['reviews.index', 'Reviews', 'reviews'], ['support.tickets', 'Support tickets', 'support_agent'], ['support.complaints', 'Complaints', 'report']]],
         ['Marketing', [['marketing.promotions', 'Promotions', 'campaign'], ['marketing.coupons', 'Coupons', 'sell'], ['marketing.campaigns', 'Campaigns', 'event'], ['marketing.banners', 'Banners', 'view_carousel']]],
         ['Insights', [['reports.index', 'Reports', 'analytics']]],
-        ['Administration', [['admin.staff', 'Staff accounts', 'manage_accounts'], ['admin.roles', 'Roles', 'admin_panel_settings'], ['admin.notifications', 'Notifications', 'notifications'], ['admin.audit-logs', 'Audit logs', 'receipt_long'], ['admin.security-activity', 'Security activity', 'security'], ['settings.index', 'Settings', 'settings'], ['admin.profile', 'My profile', 'account_circle']]],
+        ['Administration', [['admin.staff', 'Users and roles', 'manage_accounts'], ['admin.roles', 'Roles', 'admin_panel_settings'], ['admin.notifications', 'Notifications', 'notifications'], ['admin.audit-logs', 'Audit logs', 'receipt_long'], ['admin.security-activity', 'System activity', 'security'], ['admin.system-health', 'System health', 'monitor_heart'], ['settings.index', 'Settings', 'settings'], ['admin.profile', 'My profile', 'account_circle']]],
     ];
 @endphp
 <style>
     :root{--admin-ink:#191c1e;--admin-muted:#64748b;--admin-line:#e2e8f0;--admin-paper:#fff;--admin-wash:#f7f9fb;--admin-blue:#005baf}
-    html{scroll-behavior:smooth}body{background:var(--admin-wash)!important;color:var(--admin-ink);font-family:Arial,Helvetica,ui-sans-serif,system-ui,sans-serif!important;-webkit-font-smoothing:antialiased}
-    .font-headline-lg,.font-headline-md,.font-headline-sm,.font-body-lg,.font-body-md,.font-body-sm,.font-label-lg,.font-label-md,.font-label-sm,.font-serif,main h1,main h2,main h3,main h4,main button,main th{font-family:Arial,Helvetica,ui-sans-serif,system-ui,sans-serif!important}
-    #admin-sidebar{width:16rem!important;background:rgba(255,255,255,.96)!important;border-color:var(--admin-line)!important;box-shadow:0 8px 32px rgba(15,23,42,.06)!important;backdrop-filter:blur(18px)}
-    #admin-sidebar>a:first-child{height:5rem!important;border-color:#edf1f5!important}#admin-sidebar nav{padding:1.25rem .8rem!important}#admin-sidebar nav section+section{margin-top:1.1rem}#admin-sidebar nav a{min-height:2.55rem;border-radius:.8rem!important;font-size:.83rem!important}#admin-sidebar nav a[aria-current=page]{background:#eaf3ff!important;color:#064f91!important;box-shadow:inset 3px 0 #005baf}#admin-sidebar nav a:hover{background:#f4f7fb!important;color:#0f172a!important}#admin-sidebar nav a[aria-current=page]:hover{background:#eaf3ff!important;color:#064f91!important}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bodoni+Moda:wght@500;600&display=swap');html{scroll-behavior:smooth}body{background:var(--admin-wash)!important;color:var(--admin-ink);font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;-webkit-font-smoothing:antialiased}
+    .font-headline-lg,.font-headline-md,.font-headline-sm,.font-body-lg,.font-body-md,.font-body-sm,.font-label-lg,.font-label-md,.font-label-sm,main h1,main h2,main h3,main h4,main button,main th{font-family:Inter,ui-sans-serif,system-ui,sans-serif!important}.font-serif{font-family:'Bodoni Moda',Georgia,serif!important}
+    #admin-sidebar{top:0!important;bottom:0!important;width:16rem!important;background:rgba(255,255,255,.98)!important;border-color:var(--admin-line)!important;box-shadow:0 8px 32px rgba(15,23,42,.06)!important;backdrop-filter:blur(18px)}
+    #admin-sidebar>a:first-child{height:6rem!important;min-height:6rem!important;border-color:#edf1f5!important}#admin-sidebar nav{padding:1.25rem .8rem!important}#admin-sidebar nav section+section{margin-top:1.1rem}#admin-sidebar nav a{min-height:2.55rem;border-radius:.8rem!important;font-size:.83rem!important}#admin-sidebar nav a[aria-current=page]{background:#eaf3ff!important;color:#064f91!important;box-shadow:inset 3px 0 #005baf}#admin-sidebar nav a:hover{background:#f4f7fb!important;color:#0f172a!important}#admin-sidebar nav a[aria-current=page]:hover{background:#eaf3ff!important;color:#064f91!important}
+    #admin-topbar{padding-left:16rem!important;padding-right:2rem!important}#admin-topbar>div:first-child{padding-left:clamp(1.25rem,3vw,3rem)}
     body>div>header,body>div>div>header{background:rgba(255,255,255,.9)!important;border-bottom:1px solid var(--admin-line);box-shadow:0 4px 18px rgba(15,23,42,.035)!important;backdrop-filter:blur(16px)}
     main{padding:6.5rem clamp(1rem,3vw,3rem) 3rem!important;max-width:100%!important}
     main>div.flex.flex-col{gap:1.25rem!important}main>div.flex.flex-col>*{margin-block-start:0!important}
@@ -30,7 +32,7 @@
     .admin-breadcrumb{font:600 .72rem/1.5 Arial,Helvetica,sans-serif!important;letter-spacing:.12em;text-transform:uppercase;color:#475569;min-width:0}.admin-breadcrumb a,.admin-breadcrumb span{font:inherit!important;letter-spacing:inherit;text-transform:inherit}.admin-breadcrumb a{color:#475569;text-decoration:none}.admin-breadcrumb a:hover{color:#005baf}.admin-breadcrumb [aria-current=page]{color:#005baf}.admin-breadcrumb .admin-breadcrumb-separator{color:#b7c4d3;padding-inline:.2rem}
     main nav[aria-label=Breadcrumb],main>div>nav[aria-label=Breadcrumb],main [class*=breadcrumb]{display:flex;align-items:center;flex-wrap:wrap;column-gap:.5rem;row-gap:.25rem;min-width:0;line-height:1.5}main nav[aria-label=Breadcrumb] a,main>div>nav[aria-label=Breadcrumb] a{display:inline-flex;align-items:center;min-height:1.5rem}main nav[aria-label=Breadcrumb] .material-symbols-outlined,main>div>nav[aria-label=Breadcrumb] .material-symbols-outlined{font-size:1rem;line-height:1;color:#94a3b8}
     @media(min-width:768px){main{min-height:100vh}body>div>header{padding-inline:clamp(1.25rem,3vw,3rem)!important}}
-    @media(max-width:767px){main{padding-top:6rem!important;padding-inline:1rem!important}#admin-sidebar{width:min(18rem,88vw)!important}body>div>header,body>div>div>header{left:0!important;padding-inline:1rem!important}}
+    @media(max-width:767px){main{padding-top:6rem!important;padding-inline:1rem!important}#admin-sidebar{width:min(18rem,88vw)!important}#admin-topbar{padding-inline:1rem!important}#admin-topbar>div:first-child{padding-left:0}body>div>header,body>div>div>header{left:0!important;padding-inline:1rem!important}}
 </style>
 <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col border-r border-slate-200 bg-white shadow-sm transition-transform md:translate-x-0">
     <a href="{{ route('dashboard') }}" class="flex h-20 shrink-0 items-center gap-3 border-b border-slate-100 px-6" aria-label="Luvora admin home">
@@ -56,6 +58,40 @@
 </aside>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const adminTopbar = [...document.querySelectorAll('header')].find(header =>
+        header.classList.contains('fixed') && (header.classList.contains('top-0') || header.classList.contains('inset-y-0'))
+    );
+    if (adminTopbar) {
+        const adminDisplayName = @json(data_get(session('admin_user'), 'name') ?? data_get(session('admin_user'), 'Name') ?? 'Store Administrator');
+        const adminDisplayRole = @json(data_get(session('admin_user'), 'role') ?? data_get(session('admin_user'), 'Role') ?? 'Admin');
+        const adminNotificationsUrl = @json(route('admin.notifications'));
+        const adminProfileUrl = @json(route('admin.profile'));
+        adminTopbar.id = 'admin-topbar';
+        adminTopbar.className = 'fixed inset-x-0 top-0 z-40 flex h-24 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-[0_1px_8px_rgba(15,23,42,.04)] sm:px-6 md:px-8';
+        adminTopbar.innerHTML = `
+            <div class="flex min-w-0 flex-1 items-center gap-3">
+                <button type="button" class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-600 md:hidden" aria-label="Toggle admin navigation" aria-controls="admin-sidebar" aria-expanded="false"><span class="material-symbols-outlined">menu</span></button>
+                <div class="relative w-full max-w-[430px]">
+                <label class="flex h-[54px] w-full items-center gap-3 rounded-[18px] border border-slate-200 bg-[#f6f7f6] px-5 text-slate-500 focus-within:border-[#365c4a] focus-within:ring-2 focus-within:ring-[#365c4a]/15">
+                    <span class="material-symbols-outlined shrink-0 text-[21px]">search</span>
+                    <input data-admin-global-search type="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="admin-global-search-results" aria-label="Search products, orders, and customers" placeholder="Search products, orders, customers" class="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-slate-800 outline-none placeholder:text-slate-500 focus:ring-0">
+                </label>
+                <div id="admin-global-search-results" data-admin-global-search-results class="absolute left-0 right-0 top-full z-50 mt-2 hidden max-h-[min(70vh,32rem)] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-xl" role="listbox" aria-label="Search results" aria-busy="false"></div>
+                </div>
+            </div>
+            <div class="ml-3 flex shrink-0 items-center gap-3 sm:gap-6">
+                <a data-admin-notifications href="#" class="inline-flex h-14 w-14 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 hover:text-slate-900" aria-label="Notifications" title="Notifications"><span class="material-symbols-outlined text-2xl">notifications</span></a>
+                <a data-admin-profile href="#" class="flex items-center gap-3 rounded-full py-1 pl-1 pr-2 text-left transition hover:bg-slate-50" aria-label="Admin profile">
+                    <span class="grid h-14 w-14 place-items-center rounded-full bg-slate-100 text-slate-600"><span class="material-symbols-outlined text-[32px]">account_circle</span></span>
+                    <span class="hidden min-w-0 sm:block"><span data-admin-user-name class="block max-w-48 truncate text-sm font-semibold text-slate-800"></span><span data-admin-user-role class="block text-xs text-slate-500"></span></span>
+                </a>
+            </div>`;
+        adminTopbar.querySelector('[data-admin-notifications]').href = adminNotificationsUrl;
+        adminTopbar.querySelector('[data-admin-profile]').href = adminProfileUrl;
+        adminTopbar.querySelector('[data-admin-user-name]').textContent = adminDisplayName;
+        adminTopbar.querySelector('[data-admin-user-role]').textContent = adminDisplayRole;
+    }
+
     const breadcrumbLinks = new Map([
         ['Executive Portal', '/dashboard'], ['Catalog & Products', '/products'], ['Categories & Collections', '/categories'],
         ['Customers & VIP Patrons', '/customers'], ['Orders & Escrow', '/orders'], ['Payments & Settlements', '/payments'],
@@ -70,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         breadcrumb.setAttribute('aria-label', 'Breadcrumb');
         breadcrumb.setAttribute('role', 'navigation');
         [...breadcrumb.children].forEach(item => {
-            if (item.matches('.material-symbols-outlined') || ['/', '�', 'chevron_right'].includes(item.textContent.trim())) {
+            if (item.matches('.material-symbols-outlined') || ['/', '›', 'chevron_right'].includes(item.textContent.trim())) {
                 item.textContent = '/';
                 item.classList.remove('material-symbols-outlined');
                 item.classList.add('admin-breadcrumb-separator');
@@ -99,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     const sidebar = document.getElementById('admin-sidebar');
-    const unsupportedStatusPattern = /Colombo 07 Vault & Global Feed|Catalog Inventory & Artisan Specifications|Colombo 07 Vault|CBSL Escrow Sync Active|CBSL Escrow Synchronized|NTC & CBSL Escrow Active|CBSL RTGS Node|CBSL LankaPay RTGS Synchronized|Audit Integrity Assured|View Cryptographic Audit Trail|End-of-day batch settlement verified/i;
+    const unsupportedStatusPattern = /Colombo 07 Vault & Global Feed|Catalog Inventory & Artisan Specifications|Colombo 07 Vault|CBSL Escrow Sync Active|CBSL Escrow Synchronized|NTC & CBSL Escrow Active|CBSL RTGS Node|CBSL LankaPay RTGS Synchronized|Audit Integrity Assured|View Cryptographic Audit Trail|End-of-day batch settlement verified|Colombo 07 Flagship|Search SKUs, high jewelry orders, sovereign patrons/i;
     document.querySelectorAll('main, header').forEach(region => {
         [...region.querySelectorAll('span, p, button, a')].forEach(node => {
             if (!unsupportedStatusPattern.test(node.textContent.trim())) return;
@@ -121,7 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
             menuButton.setAttribute('aria-expanded', String(open));
             document.body.classList.toggle('overflow-hidden', open);
         };
-        menuButton.addEventListener('click', () => requestAnimationFrame(syncMenu));
+        menuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            syncMenu();
+        });
         backdrop.addEventListener('click', () => {
             sidebar.classList.add('-translate-x-full');
             syncMenu();
@@ -149,32 +188,52 @@ document.addEventListener('DOMContentLoaded', () => {
         button.replaceWith(link);
     });
 
-    const globalSearch = [...document.querySelectorAll('header input[type="search"], header input[type="text"]')]
-        .find(input => (input.placeholder || '').toLowerCase().includes('search skus'));
-    if (globalSearch) {
-        globalSearch.setAttribute('aria-label', 'Search this admin page');
-        const rows = [...document.querySelectorAll('main table tbody tr')];
-        const cards = [...document.querySelectorAll('main [data-admin-searchable]')];
-        const deliverySearch = document.getElementById('delivery-search');
+    const globalSearch = document.querySelector('[data-admin-global-search]');
+    const globalResults = document.querySelector('[data-admin-global-search-results]');
+    if (globalSearch && globalResults) {
+        const searchUrl = @json(route('admin.global-search'));
+        let debounceTimer;
+        let abortController;
+        let activeIndex = -1;
+        let optionLinks = [];
+        const closeResults = () => { globalResults.classList.add('hidden'); globalSearch.setAttribute('aria-expanded', 'false'); globalSearch.removeAttribute('aria-activedescendant'); activeIndex = -1; };
+        const showMessage = (message, busy = false) => { globalResults.replaceChildren(); const row = document.createElement('div'); row.className = 'px-4 py-5 text-center text-sm text-slate-500'; row.textContent = message; globalResults.append(row); globalResults.setAttribute('aria-busy', busy ? 'true' : 'false'); globalResults.classList.remove('hidden'); globalSearch.setAttribute('aria-expanded', 'true'); optionLinks = []; activeIndex = -1; };
+        const selectActive = index => { if (!optionLinks.length) return; activeIndex = (index + optionLinks.length) % optionLinks.length; optionLinks.forEach((link, i) => { link.classList.toggle('bg-emerald-50', i === activeIndex); link.setAttribute('aria-selected', i === activeIndex ? 'true' : 'false'); }); globalSearch.setAttribute('aria-activedescendant', optionLinks[activeIndex].id); optionLinks[activeIndex].scrollIntoView({block: 'nearest'}); };
+        const renderResults = payload => {
+            globalResults.replaceChildren(); optionLinks = []; activeIndex = -1;
+            const groups = payload?.results || {}; let total = 0;
+            Object.entries(groups).forEach(([category, records]) => {
+                if (!Array.isArray(records) || !records.length) return;
+                total += records.length;
+                const heading = document.createElement('h3'); heading.className = 'px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[.15em] text-slate-400'; heading.textContent = category; globalResults.append(heading);
+                records.forEach(record => {
+                    const link = document.createElement('a'); link.id = `admin-search-option-${optionLinks.length}`; link.href = record.url; link.role = 'option'; link.setAttribute('aria-selected','false'); link.className = 'flex items-start justify-between gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-emerald-50 focus:bg-emerald-50 focus:outline-none';
+                    const text = document.createElement('span'); text.className = 'min-w-0'; const title = document.createElement('span'); title.className = 'block truncate text-sm font-semibold text-slate-800'; title.textContent = record.label || category; const detail = document.createElement('span'); detail.className = 'mt-0.5 block truncate text-xs text-slate-500'; detail.textContent = record.detail || ''; text.append(title, detail); const icon = document.createElement('span'); icon.className = 'material-symbols-outlined mt-1 text-base text-slate-400'; icon.setAttribute('aria-hidden','true'); icon.textContent = 'arrow_outward'; link.append(text, icon); globalResults.append(link); optionLinks.push(link);
+                });
+            });
+            if (!total) { const unavailable = Array.isArray(payload?.errors) && payload.errors.length > 0; showMessage(unavailable ? `Search is unavailable for: ${payload.errors.join(', ')}.` : 'No matching products, orders, or customers.'); return; }
+            if (Array.isArray(payload?.errors) && payload.errors.length) { const note = document.createElement('p'); note.className = 'border-t border-slate-100 px-3 py-2 text-xs text-amber-800'; note.textContent = `Some categories could not be searched: ${payload.errors.join(', ')}.`; globalResults.append(note); }
+            globalResults.setAttribute('aria-busy', 'false'); globalResults.classList.remove('hidden'); globalSearch.setAttribute('aria-expanded', 'true');
+        };
         globalSearch.addEventListener('input', () => {
-            const query = globalSearch.value.trim().toLocaleLowerCase();
-            rows.forEach(row => {
-                row.hidden = query !== '' && !row.innerText.toLocaleLowerCase().includes(query);
-            });
-            cards.forEach(card => {
-                card.hidden = query !== '' && !card.innerText.toLocaleLowerCase().includes(query);
-            });
-            if (deliverySearch) {
-                deliverySearch.value = globalSearch.value;
-                deliverySearch.dispatchEvent(new Event('input', { bubbles: true }));
-            }
+            clearTimeout(debounceTimer); abortController?.abort();
+            const query = globalSearch.value.trim();
+            if (query.length < 2) { closeResults(); globalResults.replaceChildren(); return; }
+            showMessage('Searching products, orders, and customers…', true);
+            debounceTimer = setTimeout(async () => {
+                abortController = new AbortController();
+                try { const url = new URL(searchUrl, window.location.origin); url.searchParams.set('q', query); const response = await fetch(url, {headers:{'Accept':'application/json','X-Requested-With':'XMLHttpRequest'}, credentials:'same-origin', signal:abortController.signal, cache:'no-store'}); if (!response.ok) throw new Error('search_failed'); renderResults(await response.json()); }
+                catch (error) { if (error.name !== 'AbortError') showMessage('Search could not be completed. Try again.'); }
+            }, 250);
         });
         globalSearch.addEventListener('keydown', event => {
-            if (event.key === 'Escape') {
-                globalSearch.value = '';
-                globalSearch.dispatchEvent(new Event('input', { bubbles: true }));
-            }
+            if (event.key === 'ArrowDown' && !globalResults.classList.contains('hidden')) { event.preventDefault(); selectActive(activeIndex + 1); }
+            else if (event.key === 'ArrowUp' && !globalResults.classList.contains('hidden')) { event.preventDefault(); selectActive(activeIndex < 0 ? optionLinks.length - 1 : activeIndex - 1); }
+            else if (event.key === 'Enter' && activeIndex >= 0) { event.preventDefault(); optionLinks[activeIndex].click(); }
+            else if (event.key === 'Escape') { closeResults(); globalSearch.value = ''; abortController?.abort(); }
         });
+        globalSearch.addEventListener('focus', () => { if (globalSearch.value.trim().length >= 2 && globalResults.childElementCount) { globalResults.classList.remove('hidden'); globalSearch.setAttribute('aria-expanded','true'); } });
+        document.addEventListener('click', event => { if (!event.target.closest('[data-admin-global-search-results]') && !event.target.closest('[data-admin-global-search]')) closeResults(); });
     }
 
     // Keep page-level search inputs useful on the many table pages that share

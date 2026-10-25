@@ -1,10 +1,26 @@
-﻿@extends('finance.layout')
+@extends('finance.layout')
 @section('crumb', 'Payment details')
 @section('heading', 'Payment Details')
-@section('description', 'Review transaction instruments, order allocation, settlement progress, and audit references.')
+@section('description', 'Review a transaction using the authorized PaymentService response.')
 @section('page_content')
 @include('partials.api-state')
-<section class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm mb-space-md"><article class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm"><span class="text-xs uppercase text-secondary">Transactions today</span><strong class="mt-2 block text-2xl">186</strong><span class="text-xs text-tertiary">Successful and pending</span></article><article class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm"><span class="text-xs uppercase text-secondary">Gross processed</span><strong class="mt-2 block text-2xl">LKR 4.82M</strong><span class="text-xs text-secondary">Illustrative total</span></article><article class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm"><span class="text-xs uppercase text-secondary">Escrow held</span><strong class="mt-2 block text-2xl">LKR 1.24M</strong><span class="text-xs text-secondary">Awaiting release conditions</span></article></section>
-<section class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm"><div class="mb-space-md flex flex-col gap-3 md:flex-row md:items-center md:justify-between"><div><h2 class="font-headline-sm text-headline-sm font-semibold">Transaction ledger</h2><p class="text-sm text-secondary">Payment method, customer, order, fees, and settlement references</p></div><input id="finance-search" type="search" placeholder="Search transaction, order, customer, method..." class="w-full max-w-md rounded-lg bg-surface-container-low px-4 py-2.5 text-sm"></div><div class="overflow-x-auto"><table class="w-full min-w-[850px] text-left text-sm"><thead class="bg-surface-container-low text-xs uppercase text-secondary"><tr><th class="p-3">Transaction</th><th class="p-3">Customer / Order</th><th class="p-3">Method</th><th class="p-3">Amount</th><th class="p-3">Fee / Net</th><th class="p-3">Payment status</th><th class="p-3">Settlement reference</th></tr></thead><tbody id="finance-rows" class="divide-y divide-surface-container"><tr><td class="p-3 font-semibold">TXN-LK-991204</td><td class="p-3">Lady Sharanya · #LUV-OR-9912</td><td class="p-3">Visa Infinite</td><td class="p-3">LKR 50,220</td><td class="p-3">LKR 1,506 / 48,714</td><td class="p-3"><span class="rounded-full bg-tertiary-fixed/40 px-2 py-1 text-xs">Settled</span></td><td class="p-3 font-mono text-xs">CBSL-RTGS-8821</td></tr><tr><td class="p-3 font-semibold">TXN-LK-991198</td><td class="p-3">Dr. Radhika · #LUV-OR-9910</td><td class="p-3">CBSL RTGS</td><td class="p-3">LKR 185,000</td><td class="p-3">LKR 0 / 185,000</td><td class="p-3"><span class="rounded-full bg-primary-fixed px-2 py-1 text-xs">Escrow locked</span></td><td class="p-3 font-mono text-xs">ESC-2026-1108</td></tr><tr><td class="p-3 font-semibold">TXN-LK-991173</td><td class="p-3">Ayesha De Silva · #LUV-OR-9901</td><td class="p-3">Koko 3-Split</td><td class="p-3">LKR 28,400</td><td class="p-3">LKR 852 / 27,548</td><td class="p-3"><span class="rounded-full bg-secondary-container px-2 py-1 text-xs">Installment 1/3</span></td><td class="p-3 font-mono text-xs">KOKO-771904</td></tr></tbody></table></div></section>
-<script>(()=>{const q=document.getElementById('finance-search');const rows=[...document.querySelectorAll('#finance-rows tr')];q?.addEventListener('input',()=>{const v=q.value.toLowerCase();rows.forEach(r=>r.hidden=!r.innerText.toLowerCase().includes(v));});})();</script>
+@php
+$transaction=$apiData['transaction']??null;
+$transaction=data_get($transaction,'data.transaction')??data_get($transaction,'transaction')??data_get($transaction,'data')??$transaction;
+@endphp
+@if(is_array($transaction)&&count($transaction))
+<section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" aria-labelledby="payment-detail-heading">
+    <div class="border-b border-slate-100 px-5 py-4"><h2 id="payment-detail-heading" class="font-semibold">Transaction details</h2><p class="mt-1 font-mono text-xs text-slate-500">{{ data_get($transaction,'transactionId',data_get($transaction,'id','Reference unavailable')) }}</p></div>
+    <dl class="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-3">
+        @foreach(['orderId'=>'Order reference','amount'=>'Amount','currency'=>'Currency','provider'=>'Provider','paymentMethod'=>'Payment method','status'=>'Status','createdAt'=>'Created','updatedAt'=>'Last updated'] as $field=>$label)
+        @php($value=data_get($transaction,$field))
+        <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ $label }}</dt><dd class="mt-2 break-words text-sm font-medium text-slate-900">{{ $value===null||$value===''?'Not provided':(str_ends_with($field,'At')?\Illuminate\Support\Carbon::parse($value)->timezone(config('app.timezone'))->format('Y-m-d H:i T'):$value) }}</dd></div>
+        @endforeach
+    </dl>
+</section>
+@elseif(!empty($apiErrors['transaction']))
+<section role="alert" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-950"><h2 class="font-semibold">Transaction details are unavailable</h2><p class="mt-1">{{ $apiErrors['transaction'] }}</p><a class="mt-4 inline-flex rounded-lg border border-amber-300 bg-white px-4 py-2 font-semibold" href="{{ request()->fullUrl() }}">Retry</a></section>
+@else
+<section class="rounded-2xl border border-slate-200 bg-white p-10 text-center"><h2 class="font-semibold text-slate-900">Select a transaction to inspect</h2><p class="mt-1 text-sm text-slate-600">Open a transaction reference from the Payments table to load its details.</p><a href="{{ route('payments.index') }}" class="mt-4 inline-flex rounded-lg bg-[#202321] px-4 py-2.5 text-sm font-semibold text-white">View payments</a></section>
+@endif
 @endsection
